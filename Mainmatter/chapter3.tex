@@ -1,0 +1,829 @@
+\chapter{Construction of $\Cp$}
+	\section{Ultrametric spaces}
+		\label{section:ultrametrics}
+		In this section we'll explore some useful properties of ultrametric spaces. 
+		\begin{defn}
+			An \emph{ultrametric space} is a metric space $(X, d)$ where 
+			\[
+			d(x ,y) \leq \max\left\{d(x, z), d(z, y)\right\}
+			\]
+			for every $x, y, z \in X$.
+		\end{defn}
+		In these section, to avoid confusion, we'll use different names for open and closed balls:
+		\begin{itemize}
+			\item $B_{< r}(a)$ is a \textit{stripped ball};
+			\item $B_{\leq r}(a)$ is a \textit{dressed ball}.
+		\end{itemize}
+		
+		\begin{prop}
+			Let $(X, d)$ be an ultrametric space. The following properties hold:
+			\begin{enumerate}[label=(\roman*)]
+				\item any point of a ball is a center;
+				\item ff two balls have a common point, one is contained in the other;
+				\item the diameter of a ball is less or equal than its radius.
+			\end{enumerate}
+		\end{prop}
+		\begin{proof}
+			\textit{(i)} If $b \in B_{<r}(a)$ then $d(a, b) < r$  and we have
+			\begin{gather*}
+				x \in B_{< r}(a) \implies d(x, a) < r \implies d(x, b) \leq \max \{d(x, a), d(a, b) \} < r \\
+				\implies x \in B_{<r}(b)
+			\end{gather*}
+			which implies $B_{< r}(a) \subseteq B_{< r}(b)$. Exchanging the roles of $a$ and $b$ we obtain $B_{< r}(a) = B_{< r}(b)$. The result for dressed balls is identical.
+			
+			\textit{(ii)} If $c = B_{< r}(a) \cap B_{\leq r'}(b)$ then we have $B_{< r}(a) = B_{< r}(c)$ and $B_{\leq r'}(b) = B_{\leq r'}(c)$, by \textit{(i)}. Now the result is obvious.
+			
+			\textit{(iii)} Direct application of the ultrametric inequality.
+		\end{proof}
+		Let $S_r(a) := \{x \in X \mid d(x, a) = r \}$ be the sphere of radius $r$ centered in $a$.  
+		\begin{prop}
+			\label{prop:spheres}
+			Let $(X, d)$ be an ultrametric space. The following properties hold:
+			\begin{enumerate}[label=(\roman*)]
+				\item if $d(x, z) > d(z, y)$ then $d(x, y) = d(x, z)$;
+				\item if $x \in S_r(a)$ then $B_{< r}(x) \subset S_r(a)$ and $S_r(a) = \bigcup_{x \in S_r(a)} B_{< r}(x)$. 
+			\end{enumerate}
+		\end{prop}
+		\begin{proof}
+			\textit{(i)} We have 
+			\begin{gather*}
+				d(x, y) \leq \max \{d(x, z), d(z, y) \} = d(x, z) \\
+				d(x, z) \leq \max \{d(x, y), d(y, z) \} \leq d(x, z)
+			\end{gather*}
+			so $\max \{d(x, y), d(y,z)\} = d(x, z)$ which implies $d(x, y) = d(x, z)$.
+			This property is well known as the \emph{isosceles triangle principle}, i.e. every triangle of an ultrametric space is isosceles, with at most one short side.
+			
+			\textit{(ii)} We need to prove that $y \in B_{< r}(x) \implies d(a, y) = r$. By \textit{(i)}, since $d(x, y) < d(a, x) = r$, we must have $d(y, a) = d(a, x)= r$. The second part of the statement is obvious.
+		\end{proof}
+		We can give a slightly more general version of the isosceles triangle principle. Let $x_1, \dots,x_n \in X$, $x_{n+1} := x_1$ and assume $d(x_1, x_n) = \max_{1 \leq i \leq n} d(x_i, x_{i+1})$. Applying the ultrametric inequality (with a rapid induction) we obtain
+		\begin{gather*}
+			d(x_1, x_n) \leq \max \left\{d(x_1, x_2), \dots, d(x_{n-1}, x_n) \right\} = d(x_1, x_n)
+		\end{gather*}
+		so there exists $i \in \{1, \dots, n-1\}$ such that $d(x_i, x_{i+1}) = d(x_1, x_n)$. 
+		We have proved that given a cycle of length $n$ there are always at least two pairs of elements with equal maximal distance.
+		
+		With the next lemma we'll understand why it is a better choice to use a different nomenclature for balls.
+		\begin{prop}
+			Let $(X, d)$ be an ultrametric space. The following properties hold:
+			\begin{enumerate}[label=(\roman*)]
+				\item the spheres $S_r(a)$ are clopen for every $a \in X, r > 0$;
+				\item the dressed balls are open (and closed);
+				\item the stripped balls are closed (and open);
+				\item if $B$ and $B'$ are disjoint balls then $d(B, B') = d(x, x')$ for every $x \in B, x' \in B'$.
+			\end{enumerate}
+		\end{prop}
+		\begin{proof}
+			\textit{(i)} Since the function $x \mapsto d(x, a)$ is continuous, $S_r(a)$ is closed. By \cref{prop:spheres} $S_r(a)$ is also open (union of stripped balls, which are trivially open).
+			
+			\textit{(ii)} If $r > 0$ we have $B_{\leq r}(a) = B_{<r}(a) \sqcup S_r(a)$ so $B_{\leq r}(a)$ is open.
+			
+			\textit{(iii)} If $r > 0$ we have $B_{<r}(a) = B_{\leq r}(a) \setminus S_r(a)$ so $B_{<r}(a)$ is closed (intersection of closed sets).
+			
+			\textit{(iv)} Given $x, y \in B$ and $x', y' \in B'$ we can consider the $4$-cycle $x, x', y', y$: there must be two pairs with equal maximal distance. Since $B \cap B' = \emptyset$, such distance is $c := d(x, x') = d(y, y')$ and $d(B, B') = \inf_{a \in B, b \in B'} d(a, b) = c$.
+		\end{proof}
+		\begin{lemma}
+			\label{lemma:cauchy-sequence-ultrametric}
+			Let $(X, d)$ be an ultrametric space. The following properties hold:
+			\begin{enumerate}[label=(\roman*)]
+				\item $(x_n)_{n \in \N} \subseteq X$ is Cauchy if (and only if) $d(x_n, x_{n+1}) \to 0$ as $n \to +\infty$;
+				\item if $x_n \to x \neq a$ then $\exists N \in \N$ such that $d(x_n, a) = d(x, a)$ for every $n \geq N$.
+			\end{enumerate} 
+		\end{lemma}	 
+		\begin{proof}
+			\textit{(i)} Fixed $\varepsilon > 0$ if $d(x_n, x_{n+1}) < \varepsilon$ for $n \geq N$ then
+			\begin{gather*}
+			d(x_n, x_{n+m}) \leq \max_{0 \leq i < m} d(x_{n+i}, x_{n+i+1}) < \varepsilon
+			\end{gather*}
+			for all $n \geq N$ and $m \geq 0$.
+			
+			\textit{(ii)} As soon as $d(x_n, x) < d(x, a)$ we have, by the isosceles triangle principle, $d(x_n, a) = d(x, a)$.
+		\end{proof}
+	
+		There are some more interesting properties if the space is an abelian (additive) group $G$ equipped with an \emph{ultrametric norm}, i.e. a function $\abs{\ }\colon G \to \R_{\geq 0}$ satisfying:
+		\begin{itemize}
+			\item $\abs{x} > 0 \iff x \neq 0$;
+			\item $\abs{-x} = \abs{x}$;
+			\item $\abs{x + y} \leq \max \{\abs{x}, \abs{y} \}$.
+		\end{itemize}
+		These groups are called \textit{abelian ultrametric groups}. Here we can consider finite sums and series and we will see that there are  simpler conditions for them to converge than in classic analysis.
+		\begin{prop}
+			\label{prop:competitivity}
+			Let $G$ be an abelian ultrametric group. If $a_1 + a_2 + \dots + a_n = 0$ then $\exists i \neq j$ such that $\abs{a_i} = \abs{a_j} = \max_{1 \leq h \leq n} \abs{a_h}$. This property is called \emph{competitivity}.
+		\end{prop}
+		\begin{proof}
+			It's just the group version of the generalized isosceles triangle principle.
+		\end{proof}
+		\begin{prop}
+			\label{prop:summable_families}
+			Let $(a_n)_{n \in \N}$ a sequence in a complete ultrametric abelian group $G$. The series $\sum_{n \geq 0} a_n$ converges if and only if $\lim_{n \to +\infty} a_n = 0$.
+			
+			If $\sum_{n \geq 0} a_n$ converges and $s$ is its sum then
+			\begin{enumerate}[label=(\roman*)]
+				\item for any bijection $\sigma\colon \N \to \N$ we have $s = \sum_{n \geq 0} a_{\sigma(n)}$,
+				\item for any partition $\N = \coprod_j I_j$ we have $s = \sum_j \left( \sum_{i \in I_j} a_i \right)$.
+			\end{enumerate}
+		\end{prop}
+		\begin{proof}
+			For the first part the only if is trivial. To prove the converse let $s_n = \sum_{0 \leq i < n} a_i$. Since $G$ is complete we just need to show $(s_n)_{n \in \N}$ is Cauchy:
+			\begin{gather*}
+				\abs{s_{n+m} - s_n} = \abs{a_n + \dots + a_{n+m-1}} \leq \max\left\{\abs{a_n}, \dots, \abs{a_{n+m-1}}\right\} \to 0
+			\end{gather*} 
+			as $n, m \to +\infty$. 
+			
+			The proof of the second part is not so interesting and can be found at \cite[75]{robert:padic-analysis}.
+		\end{proof}
+		This last result is much cleaner than the corresponding one in classical analysis: in an ultrametric group if a series converge we are free to exchange and group its terms without changing the sum, unlike in classical analysis, where there is distinction between absolutely convergent  and conditionally convergent series. Anyway, in both contexts, grouping terms of a divergent series can produce a convergent one.
+		
+		From now on we'll mainly work with \textit{ultrametric fields}, fields equipped with an ultrametric norm. Some of these results will be generalizations of facts proved in Chapter 2 with regards to $\Zp$ and $\Qp$.
+		\begin{lemma}
+			All balls containing $0$ in an ultrametric field $K$ are additive subgroups. The dressed ball $B_{\leq 1}(0)$ is a subring of $K$ and the balls $B_{\leq r}(0)$ and $B_{< r}(0)$ (with $r < 1$) are ideals of $B_{\leq 1}(0)$.
+		\end{lemma}
+		\begin{proof}
+			All these verifications are trivial using the ultrametric inequality.
+		\end{proof}
+		Let $K$ be an ultrametric field and let
+		\begin{align*}
+			A :=& B_{\leq 1}(0) = \{x \in K \mid \abs{x} \leq 1\}, \\
+			M :=& B_{<1}(0) = \{x \in K \mid \abs{x} < 1\}.
+		\end{align*}
+		\begin{prop}
+			\label{prop:general-A-and-M}
+			$A$ is a maximal subring of $K$ and $M$ is the unique maximal ideal of $A$.
+		\end{prop}
+		\begin{proof}
+			If $A'$ is a subring of $K$ such that $A \subsetneq A'$, there exists $y \in A'$ with $\abs{y} = r > 1$, so $y^n \in A'$ for every $n \in \N$. Hence $B_{\leq r^n}(0) = y^nA \subset A' \text{ } \forall n \in \N$ which implies $K = \bigcup_{n \geq 1} y^nA = A'$ since $r^n = \abs{y}^n \to +\infty$. So $A$ is a maximal subring of $K$. To see why $M$ is the unique maximal ideal of $A$ we observe that $A = A^\times \sqcup M$, so every ideal which strictly contains $M$ is the whole ring $A$, because it must contain a unit.
+		\end{proof}
+		We note that $A$ is a local ring (by the previous proposition) and a valuation ring of $K$, since $x \in A \text{ } \lor \text{ }1/x \in A$ for every $x \in K^\times$. An example we have already studied is $K = \Qp$, $A = \Zp$ and $M = p\Zp$.
+		\begin{defn}
+			Let $K$ be an ultrametric field, $A = B_{\leq 1}(0)$, $M=B_{<1}(0)$. The quotient $k := A/M$ is the \emph{residue field} of $K$.
+		\end{defn}
+		Finally we are ready to prove the representation theorem.
+		\begin{thm}
+			\label{thm:representation-ultrametrics}
+			Let $K$ be a complete ultrametric field, $A$ its maximal subring defined by $\abs{x} \leq 1$. If $\xi \in A$ with $\abs{\xi} < 1$ and $0 \in S \subset A$ is a set of representatives for the classes $A/\xi A$, then every $x \in K^\times$ is a sum
+			\begin{gather*}
+				x = \sum_{i \geq m} a_i \xi^i \quad (m \in \Z, a_i \in S, a_m \neq 0)
+			\end{gather*}
+			with $m \geq 0$ precisely when $x \in A$. There's an isomorphism $A \cong \lim \limits_{\longleftarrow} A/\xi^n A$ defined by $x \mapsto (s_n)$ where $s_n = \sum_{m \leq i < n} a_i \xi ^i$.
+		\end{thm}
+		\begin{proof}
+			If $x \in A$ we can find a unique $a_0 \in S$ such that $x - a_0 \in \xi A$, so we can write
+			\begin{gather*}
+				x = a_0 + \xi x_1 \quad \text(x_1 \in A).
+			\end{gather*}
+			By induction we obtain
+			\begin{gather*}
+				x = a_0 + a_1\xi + a_2\xi^2 + \dots + \xi^nx_n \quad (a_i \in S, x_n \in A).
+			\end{gather*}
+			Using the same notation of the theorem we have $x = s_n + \xi^nx_n$ and we immediately note that $(s_n)_n$ converges, because it is a Cauchy sequence since $\abs{\xi^nx_n} \leq \abs{\xi}^n \to 0$ as $n \to +\infty$. It can be easily checked that $s_n \to x$, so $x = \sum_{i \geq 0} a_i\xi^i$. Since for every $x \in K^\times$ there exists $k \in \Z$ such that $\abs{\xi^k x} \leq 1$ we can repeat this reasoning for $x$ starting at index $i = k$. It's now easy to see that the ring morphism $A \to \lim \limits_{\longleftarrow} A/\xi^n A$ is an isomorphism, since it is clearly injective and surjective (by completeness of $K$).
+		\end{proof}
+		If $K$ is not complete we could anyway represent every $x \in K$ as $x = \sum_{i \geq m} a_i\xi^i$, but we would only have an injection $A \hookrightarrow \lim \limits_{\longleftarrow} A/\xi^n A$. Applying this theorem to $K = \Qp$, $A = \Zp$ and $\xi = p$ we obtain exactly how \padic numbers are represented and the fact that $\Zp \cong \lim \limits_{\longleftarrow} \Zp/p^n \Zp = \lim \limits_{\longleftarrow} \Z/p^n \Z$.
+	\section{Extension of norms}
+		Let $V$ be a vector space over the field $\Qp$, equipped with a norm. For example $V = \Qp$ with norm $\norm{x} := c\pabs{x}$ ($c > 0$) is a $\Qp$-vector space; we immediately note that the set $\set{\norm{v} | v \in V}$ can be different from the set of the absolute values of scalars (in this case $\pabs{\Qp} = p^\Z \cup \{0\}$). From now on, to have a lighter notation, we'll omit the pedix $p$ in the \padic absolute value.
+		We recall that two norms $\norm{\ }, \norm{\ }'$ on a vector space are equivalent if we can find $0 < c \leq C < +\infty$ such that
+		\begin{gather*}
+			c\norm{x} \leq \norm{x}' \leq C\norm{x} \quad \forall x \in V.
+		\end{gather*}
+		Now we are ready to state and prove the following theorem.
+		\begin{thm}
+			\label{thm:equiv-norm-finite-dim}
+			Let $V$ be a finite-dimensional $\Qp$-vector space. Then all norms on $V$ are equivalent.
+		\end{thm}
+		\begin{proof}
+			Let $n = \dim V$ and $(e_i)_{1 \leq i \leq n}$ be a basis. It's clear that there is an isomorphism $\varphi\colon\Qp^n \xrightarrow{\sim} V$ sending $(x_i)_{1 \leq i \leq n} \mapsto \sum_i x_ie_i$. We consider $\Qp^n$ equipped with the sup-norm $\norm{x}_{\infty} := \sup \pabs{x_i}$. We only need to prove that $\varphi$ is a homeomorphism. \\
+			It's easy to prove that $\varphi$ is continuous:
+			\begin{gather*}
+				\norm{\varphi(x)} = \norm{\sum x_ie_i} \leq \sum \pabs{x_i}\norm{e_i} \leq \max \norm{e_i} \cdot \sum \pabs{x_i} \leq C\norm{x}_{\infty}
+			\end{gather*}
+			where $C := n \cdot \max \norm{e_i}$ is a fixed constant. We'll conclude showing that $\varphi$ is an open map (any continue invertible open map is a homeomorphism). Let $B := \{x \in \Qp^n \mid \norm{x}_{\infty} \leq 1\}$ be the unit ball in $\Qp^n$: we have to show that $\varphi(B)$ contains an open ball of positive radius centered in $0 \in V$. We firstly note that $B \subset \Qp^n$ is a compact set: it's possible to extract a convergent subsequence from any sequence, exploiting the fact that $(\Qp, \pabs{\ })$ is a locally compact field. Let's consider the unit sphere in $\Qp^n$:
+			\begin{gather*}
+				S_1 := \Set{x \in \Qp^n | \norm{x}_{\infty} = 1}.
+			\end{gather*}
+			This is a closed subset of $B$ and, since $B$ is compact, $S_1$ is a compact set hence $\varphi(S_1)$ is also compact. Since $\varphi$ is bijective we have $0 \notin \varphi(S_1)$ so $0 < \dist(\{0\}, \varphi(S_1))$ and, by Weierstrass theorem, we find a point $\varphi(x_0)$ such that
+			\begin{gather*}
+				x \in S_1 \implies \norm{\varphi(x)} \geq \norm{\varphi(x_0)} = \varepsilon > 0.
+			\end{gather*}
+			Let $v \in V \setminus \{0\}$ and observe that
+			\begin{gather*}
+				\norm{v} < \epsilon, \lambda \in \Qp, \pabs{\lambda} \leq 1 \implies \norm{\lambda v} < \epsilon \implies \lambda v \notin \phi(S_1).
+			\end{gather*}
+			We can write
+			\begin{gather*}
+				v = \sum_i v_ie_i = \phi((v_i)_i).
+			\end{gather*}
+			Let's assume without loss of generality that $0 \neq \pabs{v_n} = \max\,\pabs{v_i} = \norm{(v_i)_i}_{\infty}$. If $\lambda = 1/v_n$ then $\lambda v = \phi((v_i/v_n)_i) \in \phi(S_1)$ so it must be $\pabs{\lambda} > 1$ which implies
+			\begin{gather*}
+				\norm{(v_i)_i}_{\infty} = \pabs{v_n} = \frac{1}{\pabs{\lambda}} < 1.
+			\end{gather*}
+			This shows that $v = \phi((v_i)_i) \in \phi(B)$. We have just proved that $B_{< \epsilon}(0, V) \subseteq \phi(B)$.
+		\end{proof}
+		This theorem can be generalized: it holds for any finite dimensional $F$-vector space, where $F$ is a locally compact field.
+		\begin{corollary}
+			If $V$ and $W$ are two finite-dimensional $\Qp$-vector spaces and $\alpha\colon V \to W$ is a linear map, then $\alpha$ is continuous.
+		\end{corollary}
+		This is an analogue to the classic result on real or complex vectorial spaces of finite dimension. 
+		
+		Now let's consider a finite extension $K/\Qp$ and let's assume there is at least one absolute value on $K$ extending the \padic absolute value of $\Qp$. Then we can see $K$ as a $\Qp$-vectorial space of finite dimension equipped with a norm (every such absolute value on $K$ is actually also a norm).
+		\begin{prop}
+			There is at most one absolute value on $K$ extending the \padic one of $\Qp$.
+		\end{prop}
+		\begin{proof}
+			Let $\abs{\ }$ and $\abs{\ }'$ two such absolute values on $K$. By \cref{thm:equiv-norm-finite-dim} they must be equivalent norms so there exist constants $0 < c \leq C < \infty$ such that
+			\begin{gather*}
+				c\abs{x} \leq \abs{x}' \leq C\abs{x} \quad (x \in K).
+			\end{gather*}
+			Replacing $x^n$ with $x$ in the previous inequalities we obtain
+			\begin{gather*}
+				c\abs{x}^n \leq \abs{x}'^n \leq C\abs{x}^n 
+				\implies c^{1/n}\abs{x} \leq \abs{x}' \leq C^{1/n}\abs{x}.
+			\end{gather*}
+			Letting $n \to +\infty$ we have $c^{1/n}, C^{1/n} \to 1$ so $\abs{x} = \abs{x}'$.
+		\end{proof}
+		We now know that if $K/\Qp$ is a finite extension and $K$ admits an absolute value extending the \padic one, there can only be one such absolute value. Anyway, if $K/\Qp$ is a generic finite extension we don't know if there is an absolute value on $K$ compatible with the \padic one. The next theorem will give us an answer (yes, there always is such a field norm) and also a method to define this (unique) absolute value. First we quickly present two technical lemmas we'll need.
+		\begin{defn}
+			A \emph{generalized absolute value} on a field $K$ is a group morphism $f\colon K^\times \to \R_{> 0}$ extended by $f(0)=0$ which satisfies $f(x + y) \leq C\max \{f(x), f(y)\}$, where $C > 0$ is a fixed constant. If $C = 1$, $f$ is a classical ultrametric absolute value.
+		\end{defn}
+		\begin{lemma}
+			\label{lemma:generalized-absolute-value}
+			Let $f$ be a generalized absolute value on a field $K$. If $f$ is bounded on $\N$ (thought as a subset of $K$) then $f$ is an ultrametric absolute value.
+		\end{lemma}
+		\begin{proof}
+			See \cite[88]{robert:padic-analysis}.
+		\end{proof}
+		\begin{lemma}
+			\label{lemma:locally-compact-vector}
+			If $V$ is a locally compact normed space over $\Qp$ then its dimension is finite. In a locally compact normed $\Qp$-vector space the compact subsets are the closed bounded subsets.
+		\end{lemma}
+		\begin{proof}
+			See \cite[93]{robert:padic-analysis}.
+		\end{proof}
+		\begin{defn}
+			Let $K/\Qp$ be a finite extension, $\alpha \in K$ and $\ell_{\alpha}$ be the $\Qp$-linear map $K \to K: x \mapsto \alpha x$. We define the ``Norm''\footnote{We'll write ``Norm'' to avoid confusion: we're talking about the field norm in field theory, not about an absolute value on $K$.} of $\alpha$ on $K$ as
+			\[
+				\Nb_{K/\Qp}(\alpha) := \det \ell_{\alpha}.
+			\]
+		\end{defn}
+		Now we are ready to prove the following. Let's recall that $\norm{K}=\set{ \norm{k} | k \in K}$.
+		\begin{thm}
+			\label{thm:norm-extension}
+			Let $K$ be a field extension of $\Qp$ of degree $d < \infty$. For each $x \in K$ let $\ell_x \colon K \to K$ the $\Qp$-linear map $y \mapsto xy$. Then
+			\begin{gather*}
+				f(x) := \pabs{\Nb_{K/\Qp}(x)}^{1/d} = \pabs{\det \ell_x}^{1/d}
+			\end{gather*}
+			defines an absolute value on $K$ that extends the \padic one. This is the unique such absolute value.
+		\end{thm}
+		\begin{proof}
+			First of all it's clear that if $a \in \Qp$ then $\pabs{\Nb_{K/\Qp}(a)}^{1/d} = \pabs{a}$, so the formula correspond to the \padic absolute value on $\Qp$. It's also clear that $f(x) = 0 \iff x = 0$ (every $y \mapsto xy$ is invertible if $x \neq 0$) and $f(x \cdot y) = f(x) \cdot f(y)$, thanks to the Binet's formula for $\det$. We only need to check the ultrametric inequality. Let's choose any ultrametric norm $x \mapsto \norm{x}$ on $K$ such that $\norm{K} = \abs{\Qp}$ (for example we could choose the sup-norm). Since $K$ is a $\Qp$-vector space with $\dim K = d$ we know, from \cref{thm:equiv-norm-finite-dim}, that $K$ is homeomorphic to $(\Qp^d, \norm{\ }_{\infty})$ so it is locally compact. By \cref{lemma:locally-compact-vector} we know that the unit sphere $S_1 = \{x \in K \mid \norm{x}=1 \}$ is compact so the continuous function $f$, by Weierstrass theorem, is bounded on $S_1$, namely
+			\begin{gather*}
+				0 < \epsilon \leq f(x) \leq A < +\infty \quad (\norm{x} = 1).
+			\end{gather*}
+			For $x \in K^\times$ we can find $\lambda \in \Qp$ such that $\norm{x/\lambda} = 1$ so $\epsilon \leq f(x/\lambda) \leq A$. Since $f(x/\lambda) = f(x)/\pabs{\lambda} = f(x) / \norm{x}$ we get
+			\begin{gather*}
+				\epsilon \norm{x} \leq f(x) \leq A\norm{x} \\
+				\implies \norm{x} \leq \epsilon^{-1}f(x), \quad f(x) \leq A\norm{x} \quad (x \in K). 
+			\end{gather*}
+			If $f(x) \leq 1$ we have that $\norm{x} \leq \epsilon^{-1}$ and
+			\begin{gather*}
+				f(1 + x) \leq A\norm{1 + x} \leq A\max\{\norm{1}, \norm{x}\} \leq \\
+				\leq A\max\{\norm{1}, \epsilon^{-1}\} =: C\cdot 1 = C\max\{f(1), f(x)\}.
+			\end{gather*}
+			More generally, if $f(y) \geq f(x)$ then $f(x/y) = f(x)/f(y) \leq 1$ so we can apply our previous results. Multiplying both sides by $f(y)$ we obtain
+			\begin{gather*}
+				f(x + y) \leq C\max\{f(x), f(y)\}.
+			\end{gather*}
+			This proves that $f$ is a generalized absolute value on $K$. Since $f$ is bounded on $\N \subset \Qp \subset K$, being an extension of the \padic absolute value, by \cref{lemma:generalized-absolute-value} we obtain that $f$ is an ultrametric absolute value.
+		\end{proof}
+		\begin{corollary}
+			\label{corollary:galois-isometric}
+			Let $K/\Qp$ be a finite Galois extension and $\alpha \in K$. Then the norm of $\alpha$ equals the norm of each of his conjugates, i.e. Galois automorphisms are isometric.
+		\end{corollary}
+		\begin{proof}
+			Let $\alpha'$ be a conjugate of $\alpha$ and $\sigma$ a $\Qp$-automorphism such that $\sigma(\alpha) = \alpha'$ (from Galois theory we know it actually exists). Thanks to \cref{thm:norm-extension}, we know there exists a unique \padic norm $\norm{\ }$ on $K$. The map $\norm{\ }'\colon K \to \R$ defined by $\norm{x}' := \norm{\sigma(x)}$ is clearly a field norm on $K$ which extends $\pabs{\ }$. Hence $\norm{\ }' = \norm{\ }$ so $\norm{\alpha} = \norm{\alpha'}$.
+		\end{proof}
+		We have proved that for every finite extension $K/\Qp$ there's a unique norm which extends the \padic one. We'll now give a more practical method to calculate this norm. 
+		\begin{prop}
+			Let $K/\Qp$ be a finite extension of degree $d$. Then 
+			\[
+				\pabs{\alpha} = \pabs{a_n}^{1/n}
+			\]
+			where $\alpha \in K$ and $a_n \in \Qp$ is the constant term of the minimal polynomial of $\alpha$ over $\Qp$ (which has degree $n$).
+		\end{prop}
+		\begin{proof}
+			First of all, let's consider the simple case where $K = \Qp(\alpha)$ (the smallest field containing $\Qp$ and $\alpha$), where the minimal polynomial of $\alpha$ on $\Qp$ is
+			\begin{equation*}
+				\lambda_{\Qp}(\alpha) = x^n + a_1x^{n-1} + \dots + a_{n-1}x + a_n \in \Qp[X].
+			\end{equation*}
+			If we use $\{1, \alpha, \alpha^2, \dots, \alpha^{n-1}\}$ as a $\Qp$-basis for $K$ then $\ell_{\alpha}$ has matrix
+			\[
+				\begin{pmatrix}
+					0 & 0 & 0 & \dots & 0 & -a_n \\
+					1 & 0 & 0 & \dots & 0 & -a_{n-1} \\
+					0 & 1 & 0 & \dots & 0 &-a_{n-2} \\
+					0 & 0 & 1 & \dots & 0 & -a_{n-3} \\
+					\vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+					0 & 0 & 0 & \dots & 1 & -a_1 \\
+				\end{pmatrix}
+			\]
+			where we used $\alpha^n = -a_1\alpha^{n-1} -a_2\alpha^{n-2} - \dots -a_{n-1}\alpha -a_n$. It's easy to see that $\det \ell_{\alpha} = (-1)^na_n$, expanding using the first row. If $x^n + a_1x^{n-1} + \dots + a_{n-1}x + a_n = \prod_{i=1}^n (x - \alpha_i)$, where $\alpha_i$ are the conjugates of $\alpha = \alpha_1$ in $\Qp$, then $\det \ell_{\alpha} = \prod_{i=1}^n \alpha_i$. \newline
+			Now let's consider an arbitrary element $\beta \in K$. It's immediate that
+			\[
+				\Nb_{K/\Qp}(\beta) = \left( \Nb_{\Qp(\beta)/\Qp}(\beta) \right)^{[K : \Qp(\beta)]}
+			\]  
+			because if we consider $\Qp \leq \Qp(\beta) \leq K$ and we first choose a basis for $\Qp(\beta)$ over $\Qp$ and then a basis for $K$ over $\Qp(\beta)$, we can then take all products of elements of these two basis and obtain a basis for $K$ over $\Qp$ (this is exactly the idea used to prove $[K : \Qp] = [K : \Qp(\beta)]\cdot [\Qp(\beta):\Qp]$). In this basis the matrix of $\ell_\beta$ has form
+			\[
+				\begin{pmatrix}
+					A_{\beta} & 0         & & & \\
+					0         & A_{\beta} & & & \\
+							  & 		  & \ddots & & \\
+							  & 		  &  	   & A_{\beta} \\
+				\end{pmatrix}
+			\]
+			where $A_{\beta}$ is the matrix of the multiplication by $\beta$ in $\Qp(\beta)$. The determinant of this matrix is clearly $(\det A_{\beta})^{[K:\Qp(\beta)]}$, since there are exactly $[K:\Qp(\beta)]$ blocks. Finally, if $\alpha \in K$ has minimal polynomial $\lambda_{\Qp}(\alpha) = x^n + \dots + a_{n-1}x + a_0$ we obtain
+			\[
+				\pabs{\alpha} = \pabs{\Nb_{K/\Qp}(\alpha)}^{1/d} = \pabs{\Nb_{\Qp(\alpha)/\Qp}(\alpha)}^{[K:\Qp(\alpha)]/d} = \pabs{\Nb_{\Qp(\alpha)/\Qp}(\alpha)}^{1/n} = \pabs{a_n}^{1/n}
+			\]
+			where we used $d = [K:\Qp(\alpha)] \cdot n$.
+		\end{proof}
+	\section{Field extensions of $\Qp$}
+		\begin{defn}
+			Let $K/\Qp$ be a finite extension. The set 
+			\[
+				A := \{\alpha \in K \mid \exists (a_i) \subset \Zp \text{ such that } \alpha^n + a_1\alpha^{n-1} + \dots + a_{n-1}\alpha + a_n = 0 \}
+			\]
+			is called the \emph{integral closure} of $\Zp$ in $K$.
+		\end{defn}
+		It can be shown that if $\alpha \in A$ then its minimal polynomial over $\Qp$ has the above form, i.e. coefficients in $\Zp$. Moreover, the integral closure is always a ring. We'll prove it only in our special case.
+		\begin{prop}
+			\label{prop:finite-extension-A-integral-closure-Zp}
+			Let $K/\Qp$ be a finite extension of degree $n$ and let
+			\begin{gather*}
+				A = \{x \in K \mid \pabs{x} \leq 1\}, \\
+				M = \{x \in K \mid \pabs{x} < 1\}.
+			\end{gather*}
+			Then $A$ is a ring, which is exactly the integral closure of $\Zp$ in $K$. $M$ is the maximal ideal of $A$ and $A/M$ is a finite extension of $\Fp$ of degree at most $n$.
+		\end{prop}
+		\begin{proof}
+			Thanks to \cref{thm:norm-extension} we know that there exists a \padic absolute value on $K$, which makes it an ultrametric field. Then we can apply \cref{prop:general-A-and-M}, which states that $A$ is the maximal subring of $K$ and $M$ is its maximal ideal. \newline
+			Now let $\alpha \in K$ have degree $m$ over $\Qp$ and suppose it is integral over $\Zp$, i.e. 
+			\[
+				\alpha^m + a_1\alpha^{m-1} + \dots a_{m-1}\alpha + a_m = 0 \quad (a_i \in \Zp).
+			\]
+			If $\pabs{\alpha} > 1$ then we would have 
+			\[
+				\pabs{\alpha}^m = \pabs{a_1\alpha^{m-1} + \dots + a_m} \leq \max_{1 \leq i \leq m} \pabs{a_i\alpha^{m-i}} \leq \max_{1 \leq i \leq m} \pabs{\alpha^{m-i}} = \pabs{\alpha}^{m-1}
+			\]
+			which is a contradiction. Conversely, let $\alpha \in K$ with $\pabs{\alpha} \leq 1$. Then, thanks to \cref{corollary:galois-isometric}, all the conjugates of $\alpha = \alpha_1$ over $\Qp$ have the same norm
+			\[
+				\pabs{\alpha_i} = \prod_{j=1}^m \pabs{\alpha_j}^{1/m} = \pabs{\alpha} \leq 1.
+			\]
+			Since all coefficients in $\lambda_{\Qp}(\alpha) \in \Qp[X]$ are sums or differences of products of $\alpha_i$ (more exactly they're the symmetric polynomials evaluated in $(\alpha_i)$) it follows that they also have $\pabs{\ } \leq 1$ so they're in $\Zp$. We have proved that $A$ is exactly the integral closure of $\Zp$ in $K$. \newline
+			To prove that $A/M$ is a finite extension of $\Fp$ let's consider the map
+			\[
+				\Zp/p\Zp \to A/M: a + p\Zp \mapsto a + M \quad (a \in \Zp).
+			\]
+			It's well defined, since if $a - b \in p\Zp \subset M$ then $a - b \in M$ so $a + M = b + M$. It is also injective, thanks to the fact that $M \cap \Zp = p\Zp$. Then we have an inclusion $\Fp \cong \Zp/p\Zp \hookrightarrow A/M$, which proves that $A/M$ is an extension of $\Fp$. Finally, to prove that $[A/M : \Fp] \leq n$ we just need to show that any $n+1$ elements $\overline{a_1}, \overline{a_2}, \dots, \overline{a_{n+1}} \in A/M$ are linearly dependent on $\Fp$. Let $a_i \in A$ be any element such that $\overline{a_i} = a_i + M$, for $i=1,2,\dots,n+1$. By hypothesis $n = [K:\Qp]$ so the elements $a_1, \dots, a_{n+1}$ are linearly dependent on $\Qp$, i.e.
+			\[
+				a_1b_1 + a_2b_2 + \dots + a_{n+1}b_{n+1} = 0 \qquad (b_i \in \Qp, \exists j: b_j \neq 0).
+			\]
+			We can assume that every coefficient is in $\Zp \subset A$ but at least one $b_i$ is not in $p\Zp$ (we can multiply by a suitable power of $p$). Then the image of this expression in $A/M$ is
+			\[
+				\overline{a_1}\cdot\overline{b_1} + \overline{a_2}\cdot\overline{b_2} + \dots + \overline{a_{n+1}}\cdot\overline{b_{n+1}} = 0
+			\]
+			where $\overline{b_i}$ is the image of $b_i$ in $\Zp/p\Zp$ by the standard projection. Since at least one $b_i$ is not in $p\Zp$ we have that at least one $\overline{b_i}$ is not $0$, so $\overline{a_1}, \overline{a_2}, \dots, \overline{a_{n+1}}$ are linearly dependent on $\Fp$.
+		\end{proof}
+		Let's denote $\pabs{K^\times} := \Set{\pabs{x} | x \in K^\times} \leq \R_{> 0}$ and $p^\Z = \Set{p^z | z \in \Z} = \pabs{\Qp^\times}$. They're clearly two multiplicative groups and $\pabs{\Qp^{\times}} \leq \pabs{K^{\times}}$.
+		\begin{defn}
+			Let $K/\Qp$ be a finite extension. Using the same notations as above for $A$ and $M$, $k := A/M$ is called the \emph{residue field} of $K$, $f := [k : \Fp] = \dim_{\Qp}k$ is called the \emph{residue degree} and $e := \left(\pabs{K^\times} : \pabs{\Qp^\times}\right)$ is called the \emph{ramification index}. 
+		\end{defn}
+		If $K/\Qp$ is an extension of degree $n$, we can extend to $K$ the function $\ord\colon  \Qp \to \R_{\geq 0} \cup \{+\infty\}$ defined in \cref{section:Qp}: if $\alpha \in K$ then
+		\[
+			\ord \alpha := -\log_p\pabs{\alpha} = -\log_p\pabs{\Nb_{K/\Qp}(\alpha)}^{1/n} = -\frac{1}{n}\log_p\pabs{\Nb_{K/\Qp}(\alpha)}
+		\]
+		with the usual convention $\log_p0 = -\infty$. Clearly this definition agrees with the old one when $\alpha \in \Qp$ and has the usual property $\ord \alpha\beta = \ord\alpha + \ord\beta$. Let's observe that fixed $\alpha \in K$, the number $\ord \alpha$ doesn't depend on the choice of $K$: for every field $J$ such that $\alpha \in J$ and $[J:\Qp] < +\infty$, $\ord\alpha$ is the same.
+		The image of $K^\times$ under the map $\ord$ is a non-trivial additive subgroup of $(1/n)\Z = \set{x \in \Q | nx \in \Z }$ which contains $\Z$: it must be of the form $(1/e)\Z$ for some positive integer $e$ dividing $n$. The name $e$ is not randomly chosen: it is exactly the ramification index of $K/\Qp$.
+		\begin{prop}
+			Let $K/\Qp$ be a finite extension of degree $n$. Then $n = e\cdot f$.
+		\end{prop}
+		\begin{proof}
+			Let's choose $\pi \in K$ such that $\ord \pi = 1/e$ and a family $(s_i)_{1 \leq i \leq f}$ in $A$ such that the images $\tilde{s_i} \in k$ make up a basis of $k$ over $\Fp$. We claim that 
+			\[
+				\Set{s_i\pi^j | 1 \leq i \leq f, 0 \leq j < e}
+			\]
+			is a basis for $K$ over $\Qp$. Let's first prove independence over $\Qp$. Let's consider a non-trivial linear combination
+			\[
+				\sum_{i,j} c_{ij}s_i\pi^j = \sum_j x_j\pi^j \qquad (c_{ij} \in \Qp)
+			\]
+			where $x_j = \sum_i c_{ij}s_i$. For every $j$ there's an index $\ell = \ell(j)$ such that
+			\[
+				\pabs{c_{\ell j}} \geq \pabs{c_{ij}} \quad \text{for all $i$}
+			\]
+			so $x_j/c_{\ell j} = \sum_i (c_{ij}/c_{\ell j})s_i = \sum_i \gamma_is_i$ is a non trivial linear combination with coefficients in $A$ and $\gamma_\ell = 1$ (clearly we're considering only the cases in which $c_{\ell j} \neq 0$ and there is at least one such case by assumption). We can consider this relation in the residue field $k$. Let $\tilde{\gamma_i}$ be the image of $\gamma_i$ in $k$; since by hypothesis $(\tilde{s_i})_i$ is a basis for $k$ over $\Fp$ we have
+			\[
+				0 \neq \sum_i \tilde{\gamma_i}\tilde{s_i} \in A/M
+			\]
+			simply because $\tilde{\gamma_\ell} = 1$. Hence
+			\[
+				\sum_i \gamma_is_i \notin M \implies \pabs{\sum_i \gamma_is_i } = 1
+			\]
+			and $\pabs{x_j} = \pabs{c_{\ell j}} \in \pabs{\Qp^\times}$ is an integer power of $p$. There is no competition among the absolute values of the distinct terms $x_j\pi^j$, so, by \cref{prop:competitivity}, we obtain
+			\[
+				\sum_{i,j} c_{ij}s_i\pi^j = \sum_j x_j\pi^j \neq 0
+			\]
+			and this proves the linear independence.\newline
+			Now we have to show that the family $(s_i\pi^j)_{i,j}$ generates the $\Qp$-vector space $K$. We recall that every finite extension of $\Qp$ is complete, since $(\Qp^n, \norm{\ }_{\infty})$ is complete for each $n \in \N$ and all norms on it are equivalent (see \cref{thm:equiv-norm-finite-dim}). To do this we'll use the Representation Theorem \ref{thm:representation-ultrametrics} for the complete field $K$ and the element $\xi = p \in M \subset A$. In this case $A/pA = A/\pi^eA$ (which is of course different from $A/M = A/\pi A$) is finite with representatives
+			\[
+				\mathcal{S} = \Set{\sum_{1 \leq i \leq f, 0 \leq j < e} c_{ij}s_i\pi^j | c_{ij} \in \{0, 1, \dots, p-1\}}.
+			\]
+			Hence every element $x \in A$ can be written as a series
+			\[
+				x = \sum_{h \geq 0}c_hp^h \quad (c_h \in \mathcal{S}).
+			\]
+			If we write explicit expressions for the coefficients
+			\[
+				c_h = \sum_{\substack{1 \leq i \leq f\\ 0 \leq j < e}} c_{ijh}s_i\pi^j \in \mathcal{S}
+			\]
+			we obtain
+			\[
+				x = \sum_{h \geq 0}\,\sum_{\substack{1 \leq i \leq f\\ 0 \leq j < e}} c_{ijh}s_i\pi^j p^h.
+			\]
+			Since $\lim_{h \to +\infty}p^h = 0$, thanks to \cref{prop:summable_families}, this family is summable and we can re-arrange its terms to obtain
+			\[
+				x = \sum_{\substack{1 \leq i \leq f\\ 0 \leq j < e}} \left( \sum_{h \geq 0} c_{ijh}p^h \right) \cdot s_i\pi^j
+			\]
+			but $c_{ij} := \sum_{h \geq 0} c_{ijh}p^h \in \Zp$ and $x = \sum_{i,j} c_{ij} s_i\pi^j$. This proves that the $ef$ elements $(s_i\pi^j)$ generates $K$: if $x \notin A$ there exists $\ell \in \N$ such that $p^\ell x \in A$ so can repeat the process above and then multiply every $c_{ij}$ by $p^{-\ell}$, obtaining $c_{ij} \in \Qp$. 
+		\end{proof}
+		\begin{defn}
+			Let $K/\Qp$ be a finite extension. $K/\Qp$ is said to be
+			\begin{itemize}
+				\item \emph{unramified} when $e = 1$, i.e. $[K:\Qp] = f$;
+				\item \emph{totally ramified} when $f=1$, i.e. $[K:\Qp] = e$.
+			\end{itemize} 
+		\end{defn}
+		We'll now study some properties of finite extensions of $\Qp$, focusing on these two particular cases. We now need an analogue of the famous Eisenstein's criterion, but on $\Zp$.
+		\begin{prop}
+			\label{prop:eisenstein}
+			Let $f(X) \in \Zp[X]$ be a polynomial satisfying
+			\begin{gather*}
+				f(X) = X^n + a_{n-1}X^{n-1} + \dots + a_0, \\
+				a_0 \in p\Zp \setminus p^2\Zp,\\
+				a_i \in p\Zp \qquad (1 \leq i \leq n-1).
+			\end{gather*}
+			Then $f$ is irreducible in $\Zp[X]$ and in $\Qp[X]$.
+		\end{prop}
+		\begin{proof}
+			By Gauss's lemma we just need to prove that $f$ is irreducible in $\Zp[X]$. Let's consider a factorization $f = g \cdot h$ in $\Zp[X]$ with
+			\[
+				g = b_lX^l + \dots + b_0, \qquad h = c_mX^m + \dots + c_0.
+			\]
+			Hence
+			\[
+				l + m = n, \qquad b_lc_m = 1, \qquad b_0c_0 = a_0.
+			\]
+			Since $a_0 \in p\Zp$ is not divisible by $p^2$ we can assume without loss of generality that $p \mid c_0$ and $p \nmid b_0$. Let's consider these polynomials in $\Zp/p\Zp[X]$: by assumption $\tilde{f} = X^n$ so its factorization $\tilde{f} = \tilde{g} \cdot \tilde{h}$ must also be a product of monomials. Hence $\tilde{g} = b_0$ is a constant and, since $b_lc_m = 1$, we obtain $m = 0$. We have proved that every factorization of $f$ in $\Zp[X]$ is trivial, hence $f$ is irreducible.
+		\end{proof}
+		This criterion can be easily generalized: if $K/\Qp$ is a finite extension of degree $n = e \cdot f$ then we can replace $\Zp$ with $A$, $p\Zp$ with $\pi A$ (where $\pi \in K$ is such that $\ord \pi = 1/e$) and $p^2\Zp$ with $\pi^2A$ (here $A$ is the maximal subring of $K$, as in the usual notation).
+		\begin{defn}
+			A monic polynomial $f(X) \in \Zp[X]$ of degree $n \geq 1$ satisfying
+			\[
+				f(X) \equiv X^n \mod p, \qquad f(0) \not\equiv 0 \mod p^2.
+			\]
+			is called an \emph{Eisenstein polynomial}.
+		\end{defn}
+		\begin{prop}
+			If $K/\Qp$ is a totally ramified finite extension and $\pi \in K$ is such that $\mathrm{ord}_p\, \pi = 1/e$ then $\pi$ is root of an Eisenstein polynomial 
+			\[
+				f(X) = X^e + a_{e-1}X^{e-1} + \dots + a_0, \qquad a_i \in \Zp
+			\]
+			and $K = \Qp(\pi)$. Conversely, if $\alpha$ is a root of an Eisenstein polynomial of degree $e$ then $\Qp(\alpha)$ is totally ramified over $\Qp$ and $[\Qp(\alpha) : \Qp] = e$.
+		\end{prop}
+		\begin{proof}
+			For the first implication let's consider the minimal polynomial of $\pi$ over $\Qp$
+			\[
+				\lambda_{\Qp}(\pi) = X^h + b_{h-1}X^{h-1} + \dots + b_1X + b_0.
+			\]
+			Its degree $h$ must be equal to $e$: obviously $h\leq e$ since $[\Qp(\pi):\Qp] \leq [K:\Qp] = e$; we'll see why it cannot be strictly less then $e$. Let's observe that its coefficients $b_i$ are the symmetric polynomials evaluated in the conjugates of $\pi$, all of which have $\pabs{\ } = \pabs{\pi} = p^{-1/e}$, so $\pabs{b_i} < 1$, which means $b_i \in p\Zp$. As for $b_0$, we have 
+			\[
+				\pabs{b_0} = \pabs{\pi}^h = p^{-h/e}
+			\]
+			and since $b_0 \in \Qp$ we must have $\pabs{b_0} \in p^\Z$ so $e | h \implies h = e$. Then $\pabs{b_0} = 1/p$ so $b_0 \in p\Zp \setminus p^2\Zp$. We have proved that $K = \Qp(\pi)$ and $\lambda_{\Qp}(\pi) \in \Zp[X]$ is an Eisenstein polynomial. \newline
+			Conversely, if $\Zp[X] \ni f(X) = X^e + a_{e-1}X^{e-1} + \dots + a_0$ is an Eisenstein polynomial, we know it is irreducible by \cref{prop:eisenstein}, so if we adjoin a root $\alpha$ to $\Qp$ we obtain an extension of degree $e = \deg f$. Since, by assumption, $\ord a_0 = 1$ we obtain $\ord \alpha = (1/e)\ord a_0 = 1/e$ hence $\Qp(\alpha)$ is totally ramified over $\Qp$.
+		\end{proof}
+		\begin{prop}
+			\label{prop:structure-finite-extension}
+			There is exactly one unramified extension $K_f^{\textrm{unram} }$ of $\Qp$ of degree $f$ and it can be obtained by adjoining a primitive $(p^f - 1)$th root of $1$. If $K$ is an extension of $\Qp$ of degree $n$, index of ramification $e$ and residue degree $f$, then $K = K_f^{\textrm{unram} }(\pi)$, where $\pi$ satisfies an Eisenstein polynomial with coefficients in $K_f^{\textrm{unram} }$.
+		\end{prop}
+		\begin{proof}
+			Let's first prove that there exists at least one unramified extension of $\Qp$ of degree $f$. Let $\overline{\alpha}$ be a generator of the cyclic group $\F_{p^f}^\times$ and let $\overline{P}(X) = X^f + \overline{a_1}X^{f-1} + \dots + \overline{a_f} \in \Fp[X]$ be its minimal polynomial. For every $i = 1, \dots, f$ let's consider $a_i \in \Zp$ which reduces to $\overline{a_i}$ mod $p$ and let $P(X) = X^f + a_1X^{f-1} + \dots + a_f \in \Zp[X]$. This polynomial is clearly irreducible in $\Zp[X]$ (otherwise its reduction $\overline{P}(X)$ could be factorized in $\Fp[X]$) so, by Gauss's lemma, $P(X)$ is irreducible in $\Qp[X]$. Let $\alpha \in \Qpa$ be a root of $P(X)$ (clearly $\alpha \notin \Qp$) and let $\tilde{K} := \Qp(\alpha)$, $\tilde{A} := \{x \in \tilde{K} \mid \pabs{x} \leq 1 \}$, $\tilde{M} := \{x \in \tilde{K} \mid \pabs{x} < 1\}$. Then $[\tilde{K} : \Qp] = f$ and the coset $\alpha + \tilde{M} \in \tilde{A}/\tilde{M}$ is a root of the irreducible polynomial $\overline{P}(X)$ over $\Fp$. Hence $[\tilde{A}/\tilde{M} : \Fp] = f$ which implies $\widetilde{K}$ is an unramified extension of $\Qp$ of degree $f$. \newline
+			Now we prove uniqueness. Let $K$ be as in the statement, let $A$ be the valuation ring of $\pabs{\ }$ in $K$ and let $M$ be the maximal ideal of $A$. Since $f$ is the residue degree of $K$ we have $A/M = \F_{p^f}$. We'll now prove that any $\beta \in \F_{p^f}^\times$ admits a \emph{Teichm{\"u}ller representative}, i.e. an $\omega(\beta) \in A$ such that it is a solution of $X^{p^f} - X = 0$ congruent to $\beta$ mod $M$. We'll focus on the case in which $\beta$ is a generator of $\F_{p^f}^\times$ (so some properties we'll find will be valid only in this case).\newline
+			Let $\overline{\alpha}$ be a generator of $\F_{p^f}^\times$ and let $\alpha_0 \in A$ be any element which reduces to $\overline{\alpha}$ mod $M$. Finally, let $\pi \in K$ be any element with $\ord \pi = 1/e$; thus $M = \pi A$. We claim that there exists $A \ni \alpha \equiv \alpha_0 \mod M$ such that $\alpha^{p^f - 1} - 1 = 0$ (now we only know that $\alpha_0^{p^f - 1} - 1 \equiv 0 \mod \pi$). The proof is an Hensel's lemma type argument. First of all we write $\alpha \equiv \alpha_0 + \alpha_1\pi \mod \pi^2$ and we want to find $\alpha_1 \in A$ such that $(\alpha_0 + \alpha_1\pi)^{p^f - 1} - 1 \equiv 0 \mod \pi^2$. Using Newton's binomial and recalling that we're operating in a ring of characteristic $p$, namely $A/\pi^2A$, we obtain
+			\[
+				0 \equiv (\alpha_0 + \alpha_1\pi)^{p^f - 1} - 1 \equiv  \alpha_0^{p^f - 1} - 1 - \alpha_1\pi\alpha_0^{p^f - 2} 	\mod \pi^2.
+			\]
+			Since $\alpha_0^{p^f - 1} \equiv 1 \mod \pi$ we can set 
+			\[
+				\alpha_1 \equiv \frac{\alpha_0^{p^f - 1} - 1}{\pi\alpha_0^{p^f - 2}} \equiv \alpha_0 \cdot \frac{\alpha_0^{p^f - 1} - 1}{\pi} \mod \pi
+			\]
+			and we obtain the desired congruence mod $\pi^2$, which represents a better approximation of the solution. Continuing in this way, just as in Hensel's lemma, we find $A \ni \alpha = \alpha_0 + \alpha_1\pi + \alpha_2\pi^2 + \dots$ such that $\alpha^{p^f - 1} = 1$. We immediately note that $\alpha$ is a primitive $(p^f - 1)$th root of $1$ because $\alpha, \alpha^2, \dots, \alpha^{p^f - 1}$ are all distinct (their reductions mod $M$ $\overline{\alpha}, \overline{\alpha}^2, \dots, \overline{\alpha}^{p^f - 1}$ are all distinct by assumption). We also observe that $[\Qp(\alpha) : \Qp] \geq f$. In-fact, let $G(X) := \lambda_{\Qp}(\alpha)$ be the minimal polynomial of $\alpha$ on $\Qp$ and consider $0 \neq \overline{G}(X) \in \Fp[X]$, its reduction mod $p$ (recall that $\pabs{\alpha} = 1$ so $G(X) \in \Zp[X]$); by assumption $\alpha + M = \overline{\alpha}$ so $G(\alpha) = 0 \implies \overline{G}(\overline{\alpha}) = 0$. By hypothesis the minimal polynomial of $\overline{\alpha}$ in $\Fp$ is $\overline{P}(X)$ so 
+			\[
+				\overline{P}(X) \mid \overline{G}(X) \implies \deg \overline{G}(X) \geq \deg \overline{P}(X) = f \implies \deg G(X) \geq f
+			\]
+			so $[\Qp(\alpha):\Qp] = \deg G(X) \geq f$. We can apply this discussion to any $\tilde{K}$ unramified extension of $\Qp$ of degree $f$ (for example the one we have built at the beginning). Hence, $\Qp(\alpha) \subseteq \tilde{K}$, where $\tilde{K} \ni \alpha$ is a primitive $(p^f-1)$th root of $1$. We have
+			\[
+				f = [\tilde{K}: \Qp] \geq [\Qp(\alpha):\Qp] \geq f
+			\]
+			so $\tilde{K} = \Qp(\alpha)$. This implies that the unramified extension of degree $f$ is unique, let's call it $K_f^{\textrm{unram}}$. \newline
+			Now let $K/\Qp$ be a generic finite extension of degree $n = ef$, as in the statement. Let $E(X)$ be the minimal polynomial of $\pi$ over $K_f^{\textrm{unram}} \leq K$. Let $\{\pi_j\}_j$ be the conjugates of $\pi$ over $K_f^{\textrm{unram}}$ (in a suitable extension of $K$). Then
+			\[
+				E(X) = \prod_j (X - \pi_j) = X^d + b_{d-1}X^{d-1} + \dots b_1X + b_0.
+			\]
+			Let $d = \deg E(X)$ and $c = b_0$ be the constant term of $E(X)$. Every $b_i$ is a symmetric polynomial evaluated in the conjugates of $\pi$: by the ultrametric inequality, since $\pabs{\pi_j} = \pabs{\pi} = p^{-1/e}$, we obtain $\pabs{b_i} < 1$ for every $i=1, \dots, d-1$. Since $b_i \in K_f^{\textrm{unram}}$ we have $\ord b_i \in \Z$ so it must be $\ord b_i \geq 1$, i.e. $p$ divides $b_i$. Instead, the constant term has order $\ord c = d \cdot \ord \pi = d/e \in \Z$; we recall that $d = [K_f^{\textrm{unram}}(\pi) : K_f^{\textrm{unram}}] \leq [K : K_f^{\textrm{unram}}] = e$ so the only possibility is that $d = e$ and $\ord c = 1$, i.e. $p$ divides $c$ but $p^2$ does not. This proves that $E(X)$ is an Eisenstein polynomial over $K_f^{\textrm{unram}}$ and $K = K_f^{\textrm{unram}}(\pi)$.
+		\end{proof}
+		We have an important ``structural'' corollary of this proposition.
+		\begin{corollary}
+			\label{corollary:teichmuller-digits}
+			If $K$ is a finite extension of $\Qp$ of degree $n = ef$ and $\pi \in K$ is chosen so that $\mathrm{ord}_p\, \pi = 1/e$, then every $\alpha \in K$ can be written in one and only one way as
+			\[
+				\sum_{i=m}^{+\infty} a_i\pi^i
+			\]
+			where $m = e \cdot \mathrm{ord}_p\, \alpha$ and every $a_i$ satisfies $a_i^{p^f} = a_i$ (the $a_i$ are called \emph{Teichm{\"u}ller digits}).
+		\end{corollary}
+		\begin{proof}
+			Let $A$ be the maximal subring of $K$ and $M$ be its maximal ideal; $\pi \in K$ is such that $\pabs{\pi} = p^{-1/e} < 1$ so $M = \pi A$ and we already know, by definition, that $A/\pi A = \F_{p^f}$. Let's choose $p^f$ representatives $0 = a_1, a_2, \dots, a_{p^f} \in A$ for $A/\pi A$ such that $a_i^{p^f} = a_i$ (we can apply an Hensel's lemma type argument). We can then apply \cref{thm:representation-ultrametrics} and conclude.
+		\end{proof}
+		Let's observe that we could apply this corollary to $\Qp$ itself but we would not obtain the same representation in power series we used: in-fact we would obtain the so called representation with Teichm{\"u}ller digits where every $a_i$ is $0$ or a $(p-1)$th root of unity (in $\Zp$). This is the more convenient way to write elements of $\Zp$ and $\Qp$: using these digits we have closed formulas for addition and multiplication, which are very hard to find if one uses digits in $\{0, \dots, p-1\}\subset \Z$, due to the problem of carrying. We'll not study these formulas, we'll only try to describe very briefly how to derive the Teichm{\"u}ller representation beginning with the old one. First, for every $\zeta \in \Fp$ we have to find a solution of $X^p - X = 0$ in $\Zp$ which is equivalent to $\zeta \mod p$: we can always find such a solution thanks to Hensel's lemma. We have defined the \emph{Teichm{\"u}ller character} $\omega\colon  \Fp^\times \to \Zp^\times$ (clearly a group morphism), which we can extend sending $0$ to $0$ to define a section of the canonical projection $\pi\colon \Zp \twoheadrightarrow \Zp/p\Zp \equiv \Fp$. Now, given $x \in \Zp$ such that
+		\[
+			x = x_0 + x_1p^1 + x_2p^2 + \dots \qquad (x_i \in \{0, \dots, p-1\})
+		\]
+		we consider, with a little abuse of notation, $\omega(x_0) \in \Zp$; since, by definition, $\omega(x_0) \equiv x_0 \mod p$ we have $x - \omega(x_0) \equiv 0 \mod p$ so
+		\[
+			x - \omega(x_0) = x_1'p + x_2'p^2 + x_3'p^3 + \dots \qquad (x_i' \in \{0, \dots, p-1\}).
+		\]
+		Then we can consider $\omega(x_1') \in \Zp$ and obtain $x - \omega(x_0) - \omega(x_1')p \equiv 0 \mod p^2$ and iterating this process we get the Teichm{\"u}ller digits of $x$.
+		
+		Getting back to the study of algebraic extensions of $\Qp$, we can conclude that the finite unramified extensions of $\Qp$ are precisely the extensions obtained by adjoining roots of $1$ of order not divisible by $p$: in-fact if $m$ and $p$ are coprime then there exists $f \in \Z$ such that $p^f - 1 = mm'$ with $m' \in \Z$ (for example we can choose $f$ equal to the order of $p$ in $(\Z/m\Z)^\times$); adjoining to $\Qp$ a primitive $(p^f - 1)$th root of $1$, let it be $\alpha$, we obtain that $\alpha^{m'}$ is a primitive $m$-th root of $1$.
+	\section{The algebraic closure of $\Qp$ and its completion $\Cp$}
+		\begin{defn}
+			The union of all the finite unramified extensions of $\Qp$ is $\Qpu$ and it's called the \emph{maximal unramified extension of $\Qp$}.
+		\end{defn}
+		Obviously $\Qpu$ is well defined: given $K_f$ and $K_{f'}$, two unramified extensions of $\Qp$ of degree $f$ and $f'$ respectively, there exists a (unique) unramified extension $K_{ff'}$ which contains both of them (because $(p^{ff'} - 1)$ is divided by $(p^{f'} - 1)$ and $(p^f - 1)$).
+		There's an obvious extension of the \padic absolute value to $\Qpu$ so we can define its valuation ring 
+		\[
+			\Zpu := \{x \in \Qpu \mid \pabs{x} \leq 1 \}.
+		\]
+		It admits a unique maximal ideal $p\Zpu = \{x \in \Qpu \mid \pabs{x} < 1 \}$. It is easily seen that the residue field $\Zpu/p\Zpu$ is $\overline{\F}_p$, the algebraic closure of $\Fp$. Every $\overline{x} \in \overline{\F}_p$ has a unique Teichm{\"u}ller representative $x \in \Zpu$ such that $x$ has image $\overline{x}$ in $\overline{\F}_p$ and $x$ is a root of $1$ (more precisely if $\overline{x} \in \F_{p^f}$, then $x^{p^f} = x$). For this reason $\Zpu$ is often called the ``lifting to characteristic $0$ of $\overline{\F}_p$''.
+		
+		\begin{prop}
+			The field $\Qp$ is not algebraically closed.
+		\end{prop}
+		\begin{proof}
+			 Using the \padic Heisenstein's criterion (\cref{prop:eisenstein}) we can find irreducible polynomials in $\Qp[X]$ of any degree, for example $X^n - p$.
+		\end{proof}
+		Although this fact was already obvious, from the proof we infer that an algebraic closure of $\Qp$ can't have finite degree over $\Qp$.
+		\begin{defn}
+			The algebraic closure of $\Qp$ is called $\Qpa$.
+		\end{defn}
+		Clearly, there's a unique extension of the \padic absolute value to $\Qpa$, since we can extend it to every finite extension of $\Qp$, so $\Qpa$ is an ultrametric field. We'll see that it is not complete.
+		
+		We now state and prove two technical lemmas we'll need in the next theorems.
+		\begin{lemma}
+			\label{exercise:3-p73}
+			Let $K/\Qp$ be a finite extension and $g(X) = X^n + b_{n-1}X^{n-1} + \dots + b_0 \in K[X]$. If $C_0 = \max_i \pabs{b_i}$ then there exists a constant $C_1$, which depends only on $C_0$, such that every root $\beta$ of $g(X)$ satisfies $\pabs{\beta} < C_1$.
+		\end{lemma}
+		\begin{proof}
+			We claim that $C_1 = 1 + \max_{0 \leq i < n} C_0^{1/i}$ is a suitable constant. Let $\beta$ be a root of $g(X)$, i.e.
+			\[
+				\beta^n + b_{n-1}\beta^{n-1} + \dots + b_1\beta + b_0 = 0.
+			\]
+			By the competitivity of the absolute value, \cref{prop:competitivity}, we know that there are two distinct terms in this sum which attain maximum absolute value. We can distinguish two cases:
+			\begin{itemize}
+				\item $\pabs{\beta^n} \leq \pabs{b_0}$: then $\pabs{\beta} \leq C_0^{1/n} < C_1$. 
+				\item $\pabs{\beta^n} \leq \pabs{b_i\beta^i}$ for some $1 \leq i < n$: then $\pabs{\beta} \leq C_0^{1/(n-i)} < C_1$.
+			\end{itemize}
+			So we can conclude that the chosen $C_1$ satisfies the request.
+		\end{proof}
+		Let's now generalize the notion of congruence mod $p^n$: if $K/\Qp$ is a finite extension and $\alpha,\beta \in K$, the writing $\alpha \equiv \beta \mod p^n$ means $\pabs{\alpha - \beta} \leq p^{-n}$. It's immediately seen that this is exactly our old definition of congruence when $K = \Qp$.
+		\begin{lemma}
+			\label{exercise:9-p57}
+			Let $\xi$ be algebraic of degree $n$ over $\Qp$. Then there exists an integer $N$ such that $\xi$ does not satisfy any congruence 
+			\[
+				a_{n-1}\xi^{n-1} + a_{n-2}\xi^{n-2} + \dots + a_1\xi + a_0 \equiv 0 \mod p^N
+			\]
+			where the $a_i$ are in $\Zp$ and there is at least one coefficient in $\Zp^\times$.
+		\end{lemma}
+		\begin{proof}
+			Let's consider the space $\Zp^n\setminus (p\Zp)^n \subset \Zp^n$: it is compact since it's a closed subset of the compact space $\Zp^n$ ($p\Zp$ is open in $\Zp$ and, by definition of product topology, also $(p\Zp)^n$ is open in $\Zp^n$). Let's consider the sets
+			\[
+				X_m := \Set{\left(a_{n-1}^{(m)}, \dots, a_0^{(m)}\right) \in \Zp^n \setminus (p\Zp)^n | a_{n-1}^{(m)}\xi^{n-1}+ \dots + a_0^{(m)} \equiv 0 \mod p^m  }
+			\]
+			for every $m \in \N$. We claim that $X_m$ is compact. To prove it, we can just show that $X_m$ is closed. Let's consider the function
+			\[
+				g\colon \Zp^n\setminus(p\Zp)^n \to \R_{\geq 0}, \quad g(x_0, \dots, x_{n-1})  := \pabs{x_{n-1}\xi^{n-1} + \dots + x_0}.
+			\]
+			Clearly it is a continuous function and it's easily seen that $X_m = g^{-1}\left([0, p^{-(m+1)}]\right)$ so $X_m$ is closed. Now, let's suppose the thesis is false, which means exactly that $X_m \neq \emptyset$ for every $m \in \N$. Obviously $X_{m+1} \subseteq X_m$ so we have a decreasing sequence of non-empty compact sets and we can consider
+			\[
+				X := \bigcap_{m \in \N} X_m.
+			\]
+			This intersection is not empty: it is well known that a decreasing intersection of non-empty compact sets is non-empty (in this case we can choose a sequence $(a_i)_i$ with $a_i \in X_i$ and by a diagonal argument we can extract a convergent subsequence with limit in $X$). Let $(b_{n-1}, \dots, b_0) \in X$, then 
+			\begin{gather*}
+				b_{n-1}\xi^{n-1} + b_{n-2}\xi^{n-2} + \dots + b_1\xi + b_0 \equiv 0 \mod p^m \qquad  \forall m \in \N \\
+				\implies 
+				b_{n-1}\xi^{n-1} + b_{n-2}\xi^{n-2} + \dots + b_1\xi + b_0 = 0.
+			\end{gather*}
+			That's a contradiction, since $\xi$ has degree $n$ over $\Qp$.
+		\end{proof}
+		We now present two useful propositions.
+		\begin{prop}[Krasner's Lemma]
+			Let $a, b \in \Qpa$ and assume that for every conjugate $a_i$ of $a$ (i.e. for every root of $\lambda_{\Qp}(a)$) the following holds
+			\[
+				\pabs{b - a} < \pabs{a_i - a}.
+			\]
+			Then $\Qp(a) \subseteq \Qp(b)$.
+		\end{prop}
+		\begin{proof}
+			Let $K = \Qp(b)$ and suppose that $a \notin K$. So $[K(a) : K] > 1$ and, since $a$ has exactly $[K(a):K]$ conjugates over $K$ ($K$ is a field of characteristic $0$ so irreducible polynomials can't have multiple roots), it follows that there is at least one $a_i \notin K$. Then we have an isomorphism $\sigma\colon K(a) \to K(a_i)$ which keeps $K$ fixed and sends $a$ to $a_i$. By \cref{corollary:galois-isometric} we know that $\pabs{\sigma(x)} = \pabs{x}$ for every $x \in K(a)$. In particular
+			\begin{gather*}
+				\pabs{b - a_i} = \pabs{\sigma(b) - \sigma(a_i)} = \pabs{b - a} \\
+				\implies \pabs{a_i - a} \leq \max\left\{\pabs{a_i - b}, \pabs{b - a} \right\} = \pabs{b - a} < \pabs{a_i - a}
+			\end{gather*}
+			which is clearly a contradiction.
+		\end{proof}
+		Let's observe that the Krasner's lemma can be easily generalized to any finite extension $K$ of $\Qp$: we just need to consider the conjugates of $a$ over $K$ and we the result becomes $K(a) \subseteq K(b)$.
+		
+		From now on, unless otherwise specified, given a normed field $(K, \norm{\ })$ we'll equip the ring $K[X]$ with the sup-norm, i.e. given $f = \sum a_iX^i$ and $g = \sum b_jX^j$ we define
+		\[
+			\norm{f - g} := \max_i \norm{a_i - b_i}.
+		\]
+		\begin{prop}
+			\label{prop:continuity-roots}
+			Let $K$ be a finite extension of $\Qp$ and $f(X) \in K[X]$ have degree $n$ and distinct roots
+			\[
+				f(X) = a_nX^n + a_{n-1}X^{n-1} + \dots + a_1X + a_0.
+			\]
+			Then for every $\epsilon > 0$ there exists $\delta > 0$ such that if $K[X] \ni g(X) = \sum b_iX^i$ has degree $n$ and $\pabs{f - g} < \delta$, then for every root $\alpha_i$ of $f(X)$ there is precisely one root $\beta_i$ of $g(X)$ such that $\pabs{\alpha_i - \beta_i} < \epsilon$.
+		\end{prop}
+		\begin{proof}
+			Let's fix an $\epsilon > 0$. For every root $\beta$ of $g(X)$ we have
+			\begin{gather*}
+				\pabs{f(\beta)} = \pabs{f(\beta) - g(\beta)} = \pabs{\sum_{i=0}^n (a_i - b_i)\beta^i} \leq \max_i\left\{\pabs{a_i - b_i}, \pabs{\beta}^i \right\} \leq \\
+				\leq \pabs{f - g} \cdot \max\left\{1, \pabs{\beta}^n \right\} < \delta C_1^n
+			\end{gather*}
+			where $\delta$ will be chosen later and $C_1$ is a suitable constant which dominates the norm of all the roots of $g(X)$. We can find such a constant which only depends on $f(X)$: in-fact for every $i$ we have
+			\[
+				\pabs{b_i} \leq \max\left\{\pabs{b_i - a_i}, \pabs{a_i} \right\} \leq \max\left\{\delta, \pabs{a_i} \right\} \leq \max_i\,\pabs{a_i}
+			\]
+			if we choose a small enough $\delta$. Then $\max_i\,\pabs{b_i} \leq \max_i\,\pabs{a_i}$ and, recalling \cref{exercise:3-p73}, we conclude that we can set $C_1 = C$, where $C$ is the constant we obtain applying the lemma to $f(X)$.
+			Let's define
+			\[
+				C_2 := \min_{1 \leq i < j \leq n} \pabs{\alpha_i - \alpha_j}.
+			\] 
+			Since by assumption the $\alpha_i$ are distinct, $C_2 > 0$. We immediately see that there can be at most one $\alpha_i$ satisfying $\pabs{\beta - \alpha_i} < C_2$: in-fact if it held for another $\alpha_j \neq \alpha_i$ we'd have $\pabs{\alpha_i - \alpha_j} < C_2$ by the ultrametric inequality. Since
+			\begin{gather*}
+				C_1^n\delta > \pabs{f(\beta)} = \pabs{a_n}\prod\pabs{\beta - \alpha_i}
+			\end{gather*}
+			it's clear that if $\delta$ is sufficiently small there exists an $\alpha_i$ such that $\pabs{\beta - \alpha_i} < C_2$. For that $\alpha_i$ we have
+			\[
+				\pabs{\beta - \alpha_i} < \frac{C_1^n\delta}{\pabs{a_n}\prod_{j \neq i} \pabs{\beta - \alpha_j}} \leq \frac{C_1^n\delta}{\pabs{a_n}C_2^{n-1}}
+			\]
+			and it's clear that we can make $\pabs{\beta - \alpha_i}$ less than $\epsilon$ choosing a sufficiently small $\delta$.
+		\end{proof}
+		Finally we prove the already mentioned non-completeness of $\Qpa$.
+		\begin{thm}
+			$\Qpa$ is not complete.
+		\end{thm}
+		\begin{proof}
+			We must show a Cauchy sequence $(a_i)_{i \in \N} \subseteq \Qpa$ which doesn't converge in $\Qpa$.
+			Let $b_i \in \Qpa$  be a primitive $(p^{i!} - 1)$th root of $1$. If $j > i$ then $(p^{i!} - 1) \mid (p^{j!} - 1)$ so $b_i^{p^{j!} - 1} = 1$. Thus if $j > i$, $b_i$ is a power of $b_j$ so $\Qp(b_i) \subset \Qp(b_j)$. Let
+			\[
+				a_i := \sum_{j=0}^i b_jp^{N_j}
+			\]
+			where $0 = N_0 < N_1 < N_2 < \dots$ is an increasing sequence of integers we'll choose later. We immediately note that the $b_j$, for $j=0, \dots,i$, are the Teichm{\"u}ller digits of the \padic expansion of $a_i$ in the unramified extension $\Qp(b_i)$, since $b_j^{p^{i!}} = b_j$. It's clear that the sequence $(a_i)_i$ is Cauchy: 
+			\[
+				\pabs{a_{i+1} - a_i} = \pabs{b_{i+1}p^{N_{i+1}}} = 1\cdot\pabs{p^{N_{i+1}}} \to 0 \qquad \text{as } i \to +\infty.
+			\]
+			We choose the integers $N_i$ by induction. We have already set $N_0 = 0$ and suppose that we have defined $N_j$ for $j \leq i$, so that we have $a_i = \sum_{j=0}^i b_jp^{N_j}$. Let $K = \Qp(b_i)$: $K$ is a Galois unramified extension of $\Qp$ of degree $i!$ and $\Qp(a_i) = K$. In-fact, if $\Qp(a_i) \subsetneq K$ there would be a non trivial $\Qp$-automorphism of $K$ which leaves $a_i$ fixed, let it be $\sigma$. By assumption $\sigma(b_i) \neq b_i$ and
+			\[
+				\sigma(a_i) = \sum_{j=0}^i \sigma(b_j)p^{N_j} \qquad (\sigma(b_j)^{p^{i!}} = \sigma(b_j) \quad \forall j=0,\dots,i).
+			\]
+			We see that $\sigma(a_i)$ can't be equal to $a_i$ because it has a different \padic expansion (see \cref{corollary:teichmuller-digits}) so it must be $K = \Qp(a_i)$ and $a_i$ is algebraic over $\Qp$ of degree $i!$. Thanks to \cref{exercise:9-p57} we can find $N_{i+1} > N_i$ such that $a_i$ does not satisfy any congruence
+			\[
+				\alpha_na_i^n + \alpha_{n-1}a_i^{n-1} + \dots + \alpha_1a_i + \alpha_0 \equiv 0 \mod p^{N_{i+1}}
+			\]
+			for $n < i!$ and $\alpha_j \in \Zp$ not all divisible by $p$. We have now completely determined our sequence $(a_i)_i$. Now, suppose that $a \in \Qpa$ is the limit of $(a_i)_i$. By definition, $a$ is algebraic over $\Qp$ so it satisfies a polynomial equation in $\Qp$
+			\[
+				\beta_na^n + \beta_{n-1}a^{n-1} + \dots + \beta_1a + \beta_0 = 0 
+			\]
+			and, multiplying by a suitable power of $p$, we can assume that $\beta_i \in \Zp$ and that there is at least a coefficient in $\Zp^\times$. Let's choose $i$ such that $i! > n$. We have
+			\begin{gather*}
+				\pabs{a_j - a_i} \leq \pabs{p^{N_{i+1}}} \quad \forall\,j > i \implies \pabs{a - a_i} = \lim_{j \to +\infty} \pabs{a_j - a_i} \leq \pabs{p^{N_{i+1}}}
+			\end{gather*}
+			so $a \equiv a_i \mod p^{N_{i+1}}$. This implies
+			\[
+				\beta_na_i^n + \beta_{n-1}a_i^{n-1} + \dots + \beta_1a_i + \beta_0 \equiv 0 \mod p^{N_{i+1}}
+			\]
+			which is a contradiction. Then $(a_i)_i$ cannot have limit in $\Qpa$ and this proves the theorem.
+		\end{proof}
+		We can then complete $\Qpa$ exactly in the same way we completed $(\Q, \pabs{\ })$ in \cref{section:construction-Qp} (this is the standard way to complete a metric space). 
+		\begin{defn}
+			The completion of $\Qpa$ is called $\Cp$.
+		\end{defn}
+		We can extend the \padic absolute value to this new field $\Cp$ just as we extended it from $\Q$ to $\Qp$: given $x \in \Cp$, we choose a representative Cauchy sequence $(x_i)_i$ in $\Qpa$ (recall that $\Cp$ is the set of equivalence classes of Cauchy sequences), and we define 
+		\[
+			\pabs{x} := \lim_{i \to +\infty} \pabs{x_i}.
+		\]
+		It can be proved that $\pabs{x}$ is well defined and that the limit exists: if $x \neq 0$ then from a sufficiently large $i$ all norms $\pabs{x_i}$ are equal. We can also extend $\ord$ to $\Cp$:
+		\[
+			\ord x := -\log_p \pabs{x}.
+		\]
+		Let $A = \{x \in \Cp \mid \pabs{x} \leq 1\}$ be the valuation ring of $\Cp$ and $M = \{x \in \Cp \mid \pabs{x} < 1\}$ its maximal ideal. 
+		\begin{defn}
+			Let $r = a/b \in \Q$ with $a \in \Z, b \in \N^\times$ and $P(X) = X^b - p^a \in \Qp[X]$. Any root of $P(X)$ in $\Qpa$ is called a \emph{fractional power} of $p$ to $r$ and can be denoted by $p^r$.
+		\end{defn}
+		Using fractional powers we can immediately prove an interesting result.
+		\begin{prop}
+			\label{prop:qpa-every-order}
+			For any $q \in \Q$ there exists $x \in \Qpa$ with $\mathrm{ord}_p\,x = q$.
+		\end{prop}
+		\begin{proof}
+			Let's write $q = a/b$ with $a \in \Z, b \in \N^{\times}$ and let $\Qpa \ni x = p^q$ be any fractional power. We claim that $\ord x = q$, i.e. $\pabs{x} = p^{-q}$. In-fact, by definition of fractional power, we have $x^b = p^a$, which implies $\pabs{x} = p^{-a/b}$.
+		\end{proof}
+		With the next proposition we'll dig deeper into the structure of $\Cp$, to understand how its elements can be represented (working with equivalence classes of Cauchy sequences is not very practical).
+		\begin{prop}
+			\label{prop:structure-Cp}
+			Any non-zero element of $\,\Cp$ is a product of a fractional power of $p$, a root of unity and an element in the open unit disc about $1$ (in $\Cp$).
+		\end{prop} 
+		\begin{proof}
+			Let's first consider the case of $x \in A^\times$, i.e. $\pabs{x} = 1$. Since $\Qpa$ is dense in $\Cp$ we can find an algebraic $x'$ such that $\pabs{x - x'} < 1$, i.e. $x - x' \in M$. By the isosceles triangle principle we obtain $\pabs{x'} = 1$ so it follows that $x'$ is integral over $\Zp$ (see \cref{prop:finite-extension-A-integral-closure-Zp}), i.e. it satisfies a monic polynomial in $\Zp[X]$. Reducing this polynomial mod $p$ we find that $x + M = x' + M$ is algebraic over $\Zp/p\Zp = \Fp$ so it lies in some $\F_{p^f}$. We can consider $\omega(x)$, the Teichm{\"u}ller representative of $x + M \in \F_{p^f}$, which is a $(p^f - 1)$th root of $1$ (i.e. it is an element of $K_f^{\textup{unram}} \subset \Qpa$ which is a solution of $X^{p^f} - X = 0$ and is congruent to $x + M$ mod $p$, see proof of \cref{prop:structure-finite-extension}). If we set $\langle x \rangle := x/\omega(x)$, then $\langle x \rangle \in 1 + M$. We have proved that any element of $A^\times$ is the product of a root of unity $\omega(x)$ and an element $\langle x \rangle$ which is in the open unit disc about $1$.\newline
+			Finally, any $x \in \Cp$ can be written as a product of a fractional power of $p$ and an element of absolute value $1$. Namely, if $\ord x = r = a/b$ (observe that $\ord(\Cp^{\times}) \subset \Q$) and $p^r \in \Qpa$ is any root of $X^b - p^a$, then $\pabs{p^r} = \pabs{p}^{a/b}$ ($p^r$ is a root of $p^{-a}X^b - 1 = 0$) so
+			\[
+				\pabs{x/p^r} = \pabs{x} \cdot \frac{1}{\pabs{p^r}} = \pabs{p}^{a/b} \cdot \pabs{p}^{-a/b} = 1
+			\]
+			and, called $x_1 := x/p^r \in A^\times$, we know that $x_1$ is a product of a root of $1$ and an element in $1 + M = B_{<1}(1, \Cp)$.
+		\end{proof}
+		Obviously, by construction, $\Cp$ is a complete field which contains $\Qpa$. It is then an immediate question if $\Cp$ is still algebraically closed and we'll see in the next theorem that it is.
+		\begin{thm}
+			$\Cp$ is algebraically closed.
+		\end{thm}
+		\begin{proof}
+			Let's consider a generic monic polynomial in $\Cp[X]$:
+			\[
+				f(X) = X^n + a_{n-1}X^{n-1} + \dots + a_1X + a_0.
+			\] 
+			We just need to show that $f$ admits a root in $\Cp$. For each $i=0,1,\dots,n-1$, let $(a_{i,j})_{j \in \N}$ be a sequence of elements in $\Qpa$ which converges to $a_i$. Let's consider the sequence $(g_j(X))_{j \in \N} \subset \Qpa[X]$ defined by
+			\[
+				g_j(X) := X^n + a_{n-1,j}X^{n-1} + \dots + a_{1,j}X + a_{0,j}.
+			\]
+			Let $\{r_{i,j}\}_{i=1}^n \subset \Qpa$ be the roots of $g_j(X)$. We claim that we can find a sequence $(i_j)_{j \in \N} \subset \N$ such that the sequence $(r_{i_j, j})_j$ is Cauchy. \newline
+			Let's proceed by induction and suppose we have $r_{i_h, h}$ and we want to find $r_{i_{h+1}, h+1}$. Let $\delta_h := \pabs{g_h - g_{h+1}} = \max_i \pabs{a_{i,h} - a_{i, h+1}}$, which clearly approaches $0$ as $j \to +\infty$, and let $A_h := \max\{1, \pabs{r_{i_h, h}}^n\}$. Now, thanks to \cref{exercise:3-p73}, we can find $C_j$, a constant depending only on $\max_i \pabs{a_{i, j}}$, which dominates the norm of each root of $g_j(X)$ and such that $A_j \leq C_j$. Since $(a_{i, j})_j$ is a convergent sequence in $\Qpa$, it is bounded in norm for every $i=0, \dots, n-1$ so we can find a uniform constant $C$ such that $C_j \leq C$ for every $j \in \N$. Then we have
+			\[
+				\prod_{i=1}^n \pabs{r_{i_h, h} - r_{i, h+1} } = \pabs{g_{h+1}(r_{i_h, h})} = \pabs{g_{h+1}(r_{i_h, h}) - g_h(r_{i_h, h})} \leq \delta_hC
+			\]
+			hence there is at least one $i$ such that $\pabs{r_{i_h, h} - r_{i, h+1}} \leq \sqrt[n]{\delta_hC}$. Let $i_{h+1}$ be such $i$. Since $\delta_j \to 0$ as $j \to +\infty$, it is clear that $(r_{i_j, j})_j$ is Cauchy in $\Qpa$. Since $\Cp$ is complete, this sequence converges and if we define
+			\[
+				r := \lim_{j \to +\infty} r_{i_j, j} \in \Cp
+			\]
+			we then have
+			\[
+				f(r) = f\left(\lim_{j \to +\infty} r_{i_j, j}\right) = \lim_{j \to +\infty} f(r_{i_j, j}) = \lim_{j \to +\infty} \lim_{m \to +\infty} g_m(r_{i_j, j})
+			\]
+			where we used that $f$ is continuous and that $g_j \xrightarrow{\norm{\ }_{\infty}} f$ (which implies punctual convergence). More precisely, since this double limit exists, we can consider the section $m = j$ to obtain
+			\[
+				\lim_{j \to +\infty} \lim_{m \to +\infty} g_m(r_{i_j, j}) = \lim_{j \to +\infty} g_j(r_{i_j, j}) = 0
+			\] 
+			so we can conclude $f(r) = 0$ and $r \in \Cp$ is a root of $f$.
+		\end{proof}
+		Finally, after all this effort, we have built $\Cp$: the smallest field which contains $\Q$ and is both algebraically closed and complete with respect to $\pabs{\ }$ (we recall that completion and algebraic closure are unique processes up to isomorphism). Let's observe some basic properties of this field:
+		\begin{enumerate}
+			\item $\pabs{\Cp} = \pabs{\Qpa} = p^\Q \cup \{0\}$;
+			\item $\card(\Cp) = \card(\R)$;
+			\item $\Cp$ is a field isomorphic to $\C$, although not in a canonical way.
+		\end{enumerate}
+		While property $1.$ is evident, the other properties aren't so obvious and we'll have faith in them, i.e. we won't prove them.
+		
+		Actually, we could have built $\Cp$ in an apparently shorter way:
+		\begin{equation*}
+			\begin{tikzcd}
+				& &  \C \\
+				\Q \arrow[r, "\textup{alg cl}"] & \Q^{\textup{alg cl}} \arrow[ur, "\abs{\ }_{\infty}"] \arrow[dr, "\pabs{\ }"'] \\
+				& & \Cp
+			\end{tikzcd}
+		\end{equation*}
+		namely by first embedding $\Q$ in $\Q^{\textup{alg cl}}$, its algebraic closure (clearly it does not depend on the chosen norm), and then completing $\Q^{\textup{alg cl}}$ with respect to the euclidean norm (we obtain $\C$) and to the \padic norm (we obtain $\Cp$). 
+		We could have chosen to follow this way, which highlights the similarity between $\C$ and $\Cp$, without even needing the intermediate field $\Qp$. The problem is that the algebraic closure of $\Q$ is a very complicate field. 
+		\begin{comment}
+		(for example it's not a local field, meaning that its )
+		\end{comment} 
+		Instead, the road we decided to follow is this longer one:
+		\begin{equation*}
+			\begin{tikzcd}
+				& \R \arrow[r, "\text{alg cl}"] & \C \\
+				\Q \arrow[ur, "\abs{\ }_{\infty}"] \arrow[dr, "\pabs{\ }"'] \\
+				& \Qp \arrow[r, "\text{alg cl}"] & \Qpa \arrow[r, "\pabs{\ }"] & \Cp
+			\end{tikzcd}
+		\end{equation*}
+		Here we can see that the ``euclidean case'' seems simpler and that's because $\C$, the algebraic closure of $\R$, has a finite degree over $\R$ (namely $[\C : \R] = 2$) so it's still complete, while $[\Qpa : \Qp] = +\infty$ and completeness is lost: we have to complete again and we obtain $\Cp$. The following general theorem holds.
+		\begin{thm}
+			Let $(K, \norm{\ })$ be an algebraically closed non-Archimedean normed field. Then the completion of $K$ is algebraically closed.
+		\end{thm}
+		\begin{proof}
+			See \cite[2]{conrad:algebraic-closure}.
+		\end{proof}

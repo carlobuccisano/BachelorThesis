@@ -1,0 +1,472 @@
+\chapter{Algebraic Approach}
+	In this chapter we present some different approaches to the construction of $\Zp$ and $\Qp$, definitely with a more algebraic flavour. 
+	\section{Definition and algebraic properties of $\Zp$}
+		\label{section:Zp}
+		\begin{defn}
+			A \padic integer is a formal series $\sum_{i \geq 0} a_ip^i$ with integral coefficients $0 \leq a_i \leq p-1$.
+		\end{defn}	
+		The set $\Zp$ contains all the so called \padic integers and is easily identified with 
+		\[
+			\prod_{i\geq0} \{0, 1, \dots, p-1\} = \{0, 1, \dots, p-1\}^\N
+		\]
+		which is clearly not countable. We have a natural embedding $\N \hookrightarrow \Zp$ just writing every number in base $p$.\newline
+		We can define addition between two \padic integer in a component-wise way with a carry system: given $a, b \in \Zp$ the first component of the sum is $a_0 + b_0$ if it's less than $p$, or $a_0 + b_0 - p$ otherwise and, in this case, we add a carry to the component of p and so on. Here's a quick example:
+		\begin{gather*}
+			1 = 1\cdot p^0 + 0\cdot p^1 + 0 \cdot p^2 + \dots \\
+			x = (p - 1)\cdot p^0 + (p-1)\cdot p^1 + (p-1)\cdot p^2 + \dots = \sum_{i\geq 0}(p-1)p^i\\
+			1 + x = 0\cdot p^0 + 0\cdot p^1 + 0\cdot p^2 + \dots = 0\\
+			\implies -1 = \sum_{i\geq 0}(p-1)p^i.
+		\end{gather*} 
+		This sum admits inverse in $\Zp$, given $a = \sum_{i\geq0} a_ip^i$ we define $b := \sigma(a) = \sum_{i\geq0}(p - 1 - a_i)p^i \in \Zp$ so $a + b + 1 = 0$, i.e. $-a = \sigma(a) + 1$. So $(\Zp, +)$ is an abelian group (easy to verify) and with an involution $\sigma\colon \Zp \to \Zp$ ($\sigma^2 = id$). \newline
+		We can also define a product on $\Zp$, multiplying the two expansions in a Cauchy way (exactly like the multiplication between polynomials) and using a system of carries to keep the digits in $\{0, 1, \dots, p-1\}$. This procedure is simply the classical multiplication of natural integers written in base $p$, pursued indefinitely. For example
+		\begin{equation*}
+			-1 = (p-1)\sum_{i\geq 0}p^i \textrm{ ,  } -(p-1)\sum_{i\geq 0}p^i = 1 \textrm{ ,  } \sum_{i\geq 0}p^i = \frac{1}{1 - p}
+		\end{equation*}
+		which shows that $1-p \in \Zp$ is invertible. Not every element of $\Zp$ admits inverse, for example $p$ is not invertible because
+		\begin{equation*}
+			p \cdot \sum_{i\geq 0}a_ip^i = a_0p + a_1p^2 + \dots \neq 1 + 0p + 0p^2 + \dots = 1.
+		\end{equation*}
+		Then $\Zp$ equipped with these two operations is a commutative ring. We can now extend $\N \hookrightarrow \Zp$ to $\Z \hookrightarrow \Zp$, which is a ring injective homomorphism so we immediately deduct that $\textrm{char}(\Zp) = 0$.
+		\begin{prop}						
+			The ring $\Zp$ is an integral domain.
+		\end{prop}
+		\begin{proof}
+			Given $a = \sum_{i \geq 0}a_ip^i \neq 0, b = \sum_{i\geq 0}b_ip^i \neq 0$ we have that $ab = \sum_{i\geq 0}c_ip^i \neq 0$: infact if $a_v, b_w$ are the first non zero coefficients of $a$ and $b$ then $p \nmid a_v, p \nmid b_w \implies p \nmid a_vb_w$ which means that $c_{v+w} = a_vb_w \neq 0$.
+		\end{proof}
+		Let us emphasize the importance of $p$ being a prime number: in the last proposition we used the fact that $\Z/p\Z$ is a domain and this is obviously false if $p$ isn't a prime. If we choose to work with $n$-adic integers, with $n$ being a composite integer, then, since $\Z/n\Z$ is not a domain, we obtain that also $\Z_n$ is not a domain, i.e. there are divisors of zero, so we can't even talk about the quotient field. 
+		\begin{example}
+			Here's an example with $n = 10$, using the definition of $\Zp$ given in \cref{thm:projective-lim}:
+			\begin{gather*}
+				u = (u_n)_n \in \lim_{\longleftarrow} \Z/10^n\Z \qquad u_n := 2^{5^n} \mod 10^n, \\
+				v = (v_n)_n \in \lim_{\longleftarrow} \Z/10^n\Z \qquad v_n := 5^{2^n} \mod 10^n.
+			\end{gather*}
+			It can be proved by induction that
+			\[
+				u_n = 2^{5^n} \equiv 2^{5^{n-1}} = u_{n-1}, \qquad v_n = 5^{2^n} \equiv 5^{2^{n-1}} = v_{n-1} \mod 10^{n-1}
+			\]
+			so our definitions are coherent. Obviously $u, v \neq 0$ but it's easily seen that $u \cdot v = 0$: infact $u_n \cdot v_n \equiv 0 \mod 10^n$ (we recall that products in the projective limit are done component-wise). More facts about $10$-adic integers can be found at \cite{michon:padic-arithmetic}.
+		\end{example}
+		We can define $\ord\colon \Zp \to \N \cup \{\infty\}$ as follows
+		\begin{equation*}
+			\ord a := 
+			\begin{cases*}
+				+\infty, & if $a = 0$; \\
+				v, & otherwise;
+			\end{cases*}
+		\end{equation*}
+		where $v$ is the minimum integer such that $a_v > 0$. It's easily seen that $\ord$ behaves exactly like a discrete valuation.\newline
+		Called $\Fp = \Z/p\Z$ the field with $p$ elements, the map $a = \sum_{i \geq0}a_ip^i \mapsto a_0 \mod p$ is a ring homomorphism $\varepsilon\colon \Zp \to \Fp$, which is obviously surjective and with kernel $p\Zp = \Set{a\in \Zp | a_0 = 0}$. Then $\Zp/p\Zp$ is isomorphic to $\Fp$ so $p\Zp$ is a maximal ideal of $\Zp$.
+		\begin{prop}
+			The group of invertible elements in $\Zp$ is $\Zp^{\times} = \Set{\sum_{i \geq 0}a_ip^i \in \Zp | a_0 \neq 0}$.
+		\end{prop}
+		\begin{proof}
+			If $a \in \Zp$ is invertible also its reduction $\varepsilon(a) \in \Fp$ must be, so we obtain
+			\[
+				\Zp^{\times} \subseteq \Set{\sum_{i \geq 0}a_ip^i \in \Zp | a_0 \neq 0 }.
+			\]
+			The other inclusion can be proved, but, for brevity, we'll show it using an equivalent definition of $\Zp$.
+		\end{proof}
+		\begin{corollary}
+			Every non-zero \padic integer $a \in \Zp$ has a canonical representation $a = p^vu$ where $v = \ord a$ and $u \in \Zp^{\times}$ is a \padic unit.
+		\end{corollary}
+		\begin{prop}
+			The ring $\Zp$ is a principal ideal domain whose ideals are $\{0\}$ and $p^k\Zp := \set{x \in \Zp | \mathrm{ord}_p\, x \geq k}$ for $k \in \N$.
+		\end{prop}
+		\begin{proof}
+			Let $I \neq 0$ be a nonzero ideal a $\Zp$. Chosen $0 \neq a \in I$ an element of minimal order, we have $a = p^ku$ with $u \in \Zp^{\times}$ so $p^k = a \cdot u^{-1} \in I$ which implies $p^k\Zp = (p^k) \subseteq I$. Conversely if $b \in I$ then $w = \ord b \geq k$ so $b = p^wu' = p^kp^{w-k}u' \in p^k\Zp$, which proves $I \subseteq p^k\Zp$.
+		\end{proof}
+		Lastly, we note that $\Zp$ is a local ring, i.e. a commutative ring with a maximal ideal $p\Zp$. 
+	\section{Topological properties of $\Zp$}
+		Now we are ready to add a topological structure to the ring of \padic integers.
+	    Since we can identify every element of $\Zp$ with the sequence of its coefficients $(a_n)_{n \in \N} \in \{0, 1, \dots, p-1\}^\N =: X_p$ it's a natural choice to assign to $\Zp$ the product topology of $X_p$, where each factor is a discrete set.\newline
+		By Tychonoff theorem we immediately get that $\Zp$ is compact and it's also easy to see that its connected components are points, i.e. it's totally disconnected. Since the discrete topology is metrizable (using the trivial metric) also $\Zp$ is metrizable, being product of a countable number of metric spaces. Given $x = (a_n)_n, y=(b_n)_n \in X_p \leftrightarrow \Zp$ we can define their distance as 
+		\begin{equation*}
+			d(x, y) := \sup_{i \geq 0} \frac{\delta_{a_i, b_i}}{p^i} = \frac{1}{p^{\ord(x - y)}}.
+		\end{equation*}
+		This is exactly the metric induced by the \padic absolute value $\pabs{\ }$ introduced above (and satisfies all of its properties)!
+		\begin{defn}
+			A topological group is a group $G$ equipped with a topology such that the map $(x, y) \mapsto xy^{-1}$ is continuous. A topological ring is a ring $A$ with a topology such that addition $(x, y) \mapsto x + y$ and multiplication $(x, y) \mapsto xy$ are continuous.
+		\end{defn}
+		\begin{prop}
+			$\Zp$ is a topological ring.
+		\end{prop}
+		\begin{proof}
+			First of all we prove that $(x, y) \mapsto x - y$ is a continuous map, i.e. $(\Zp, +)$ is a topological group. Using the \padic metric, given $a, b \in \Zp$ we have
+			\begin{gather*}
+				\pabs{x - a} \leq p^{-n}, \qquad \pabs{y - b} \leq p^{-n} \\
+				\implies \pabs{(x - y) - (a - b)} \leq \max\left\{\pabs{x-a},\pabs{y-b} \right\} \leq p^{-n}
+			\end{gather*}
+			so the map is continuous at every point $(a, b) \in \Zp \times \Zp$. Now we have to prove the continuity of multiplication. Fixed $a, b \in \Zp$ if $x = a + h, y = b + k \in \Zp$ we have
+			\begin{gather*}
+				\pabs{xy - ab} = \pabs{(a + h)(b + k) - ab} = \pabs{ak + hb + hk} \leq \\
+				\leq \max\left\{\pabs{a}, \pabs{b} \right\}\cdot \left(\pabs{h} + \pabs{k}\right) + \pabs{h}\pabs{k} \to 0, \qquad \text{as } \pabs{h},\pabs{k} \to 0,
+			\end{gather*}
+			proving the continuity of the multiplication at any point. These two conditions are equivalent to the ones given in the definition of topological ring: infact the map $(x, y) \mapsto x + y$ can be obtained by composing the map $(x, y) \mapsto (x, -y)$ (continuous thanks to product topology and continuity of multiplication) and the map $(x, y) \mapsto x - y$.
+		\end{proof}
+		\begin{defn}
+			A completion of a topological metrizable group $G$ is a pair $(\widehat{G}, j)$ where $\widehat{G}$ is a Cauchy-complete group and $j\colon G \to \widehat{G}$ is a homomorphism such that
+			\begin{itemize}
+				\item $j(G)$ is dense in $\widehat{G}$;
+				\item $j$ is a homeomorphism $G \to j(G)$;
+				\item any continuous homomorphism $f\colon G \to G'$, where $G'$ is a complete group, can be uniquely factorized as $f = g \circ j\colon  G \to \widehat{G} \to G'$ with a continuous homomorphism $g\colon \widehat{G} \to G'$.
+			\end{itemize}
+		\end{defn}
+		It's clear that if $G$ admits a completion $\widehat{G}$ then every other completion $\widehat{G}'$ is isomorphic to $\widehat{G}$ (from the definition we have a continuous bijective homomorphism $g\colon \widehat{G} \to \widehat{G}'$).
+		Our aim is now to prove that $\Zp$ is a complete space and $(\Zp, +)$ is the completion of $(\Z, +)$ equipped with the \padic metric. We'll now show (and prove) some general results on topological groups which will help us.
+		\begin{lemma}
+			Let $G$ be a topological group. $G$ is metrizable (i.e. there exists a metric which induces the topology) if and only if $G$ is Hausdorff and first countable (i.e. every point has a countable fundamental system of neighbourhoods).
+		\end{lemma}
+		\begin{proof}
+			The $\implies$ part is trivial. For the converse statement, check \cite[Chap. \RN{11}]{bourbaki:topologie}.
+		\end{proof}
+		%%% Facts %%%
+		A metrizable group $G$ always admits a metric $d$ invariant under left translations, i.e. $d(x, y) = d(gx, gy)$ for every $g \in G$. A metrizable group can always be completed.
+		%%% End of facts %%%
+		\begin{lemma}
+			\label{lemma:closure-group}
+			If $G$ is a topological group and $H$ is a subgroup of $G$ then the closure $\overline{H}$ of $H$ is a subgroup of $G$. 
+			%%% This may be useful in future but not now %%%
+			\begin{comment}
+			\begin{enumerate}[label=(\alph*)]
+				\item the closure $\overline{H}$ of $H$ is a subgroup of $G$.
+				\item $G$ is Hausdorff exactly when its neutral element is closed.
+			\end{enumerate}
+			\end{comment}
+		\end{lemma}
+		\begin{proof}
+			%\textit{(a)}
+		 Let $\phi\colon G \times G \to G$ be the continuous map $(x, y) \to xy^{-1}$. Since $H \leq G$ we have $\phi(H \times H) \subseteq H$ hence
+			\begin{equation*}
+				\phi(\overline{H} \times \overline{H}) = \phi(\overline{H \times H}) \subseteq \overline{\phi(H \times H)} \subseteq \overline{H}
+			\end{equation*}
+			which proves $\overline{H} \leq G$.
+			\begin{comment}
+			\textit{(b)} We recall that $G$ is Hausdorff exactly when its diagonal $\Delta_G$ is closed in $G \times G$. We have this chain of implications
+			\begin{center}
+				G Hausdorff $\implies$ $\{e\}$ closed $\implies$ \\
+				$\Delta_G = \phi^{-1}(e)$ closed in $G \times G$ $\implies$ G Hausdorff
+			\end{center}
+			which concludes the proof.
+			\end{comment}
+		\end{proof}
+		\begin{prop}
+			\label{prop:clopen-group}
+			Let $G$ be a topological group and $H \leq G$. If $H$ contains a neighbourhood of the neutral element of $G$ then $H$ is a clopen of $G$.
+		\end{prop}
+		\begin{proof}
+			Let $V$ be such neighbourhood; then $\forall h \in H$, $hV$ is a neighbourhood of $h$ in $G$ which is fully contained in $H$. This proves $H$ is open in $G$. Since maps like $x \mapsto gx$ are homeomorphisms for every $g$ in $G$, we have that every coset $gH$ of $H$ in $G$ is open. Now $G\backslash H = \bigcup_{g \notin H}gH$ is open, i.e. $H$ is closed in $G$.
+		\end{proof}
+		For example the subgroups $p^n\Zp$ of $(\Zp, +)$ are open and closed.
+		\begin{defn}
+			A subspace $Y$ of a topological space $X$ is \emph{locally closed} (in $X$) when each point $y \in Y$ has an open neighbourhood $V$ in $X$ such that $Y \cap V$ is closed in $V$.
+		\end{defn}
+		It can be proved that $Y \subseteq X$ is locally closed if and only if $Y$ is open in its closure $\overline{Y}$. 
+		\begin{thm}
+			Let $G$ be a topological group and $H$ a locally closed subgroup. Then $H$ is closed.
+		\end{thm}
+		\begin{proof}
+			If $H$ is locally closed then it's open in its closure $\overline{H}$. In particular, if $e$ is the neutral element of $G$ then $e \in H$ and $\exists V \subseteq H$, which is a neighbourhood of $e$ in $\overline{H}$. By \cref{lemma:closure-group}, $\overline{H} \leq G$ so, applying \cref{prop:clopen-group} with $H \leq \overline{H}$, we get that $H$ is closed in $\overline{H}$, i.e. $H = \overline{H}$, which clearly implies $H$ is closed in $G$.
+		\end{proof}
+		If we consider only Hausdorff spaces we immediately get that locally compact subsets are locally closed, because a compact set is closed in a Hausdorff space. We recall that a topological group is locally compact exactly when one of its points has a fundamental system of compact neighbourhoods (then by translation every point admits one).
+		\begin{corollary}
+			Let $H$ be a locally compact subgroup of a Hausdorff topological group $G$. Then $H$ is closed.
+		\end{corollary}
+		
+		Let $G$ be a topological metrizable group which has $\widehat{G}$ as its completion. If $G$ is locally compact then it must be closed in its completion (we identify $G$ with its image in $\widehat{G}$). But since $G$ is dense in $\widehat{G}$ we get $\widehat{G} = G$.
+		\begin{corollary}
+			\label{corollary:locally_compact_group}
+			A locally compact metrizable group is complete.
+		\end{corollary}  
+		Now we can prove the following
+		\begin{prop}
+			$\Zp$ is a compact, complete metrizable space. More precisely, the topological group $\Zp$ is the completion of $\Z$, equipped with the \padic metric.
+		\end{prop}
+		\begin{proof}
+			We have already proved that $\Zp$ is compact and metrizable. To see that it's complete we can just apply \cref{corollary:locally_compact_group}, because $\Zp$ is locally compact (from general topology we know that Hausdorff and compact implies that every point has a fundamental system of compact neighbourhoods).\newline
+			Let's consider $j\colon \Z \hookrightarrow \Zp$ the natural embedding: it is a continuous homomorphism ($\Z$ with the \padic metric has the topology induced by $\Zp$) and $j(\Z)$ is dense in $\Zp$. Given $\Zp \ni x = \sum_{i \geq 0} a_ip^i$ if 
+			\begin{gather*}
+				x_n := \sum_{0 \leq i < n} a_ip^i \in \N
+			\end{gather*}
+			then $(x_n)_n \subseteq \Z$ is a Cauchy sequence converging to $x$. To verify the universal property, given a continuous homomorphism $f\colon \Z \to X$, where $X$ is a complete group, we can define $\tilde{f}\colon  \Zp \to X$ as follows: given $x \in \Zp$ and $(x_n)_n \subseteq \Z$ a sequence convergent to $x$ then
+			\begin{gather*}
+				\tilde{f}(x) := \lim_{n \to +\infty} f(x_n)
+			\end{gather*}
+			where the limit is taken in $X$. This is well defined: if $(y_n)_n \subseteq \Z$ is another sequence convergent to $x$ we have that $\pabs{x_n - y_n} \to 0$ as $n \to +\infty$ so
+			\begin{gather*}
+				\lim_{n \to +\infty} \left( f(x_n) - f(y_n) \right) = \lim_{n \to +\infty} f(x_n - y_n) = f\left(\lim_{n \to +\infty} (x_n - y_n)\right) = f(0) = 0
+			\end{gather*}
+			where we exploited the fact that $f$ is continuous and a homomorphism. The fact that $\tilde{f}$ is a continuous homomorphism is easy to prove.
+		\end{proof}
+		\begin{corollary}
+			The addition and multiplication of \padic integers are the only continuous operations on $\Zp$ extending the classic addition and multiplication on $\Z$.
+		\end{corollary}
+	\section{$\Zp$ as a projective limit}
+		We now want to give another definition of $\Zp$, using projective limits.
+		\begin{defn}
+			A sequence $(E_n, \varphi_n)_{n \in \N}$ of sets and maps $\varphi_n\colon E_{n+1} \to E_n$ is called a \textit{projective system}. \newline
+			A set $E$ together with maps $\psi_n\colon E \to E_n$ such that $\psi_n = \varphi_n \circ \psi_{n+1}$ $\forall n \in \N$ is called a \textit{projective limit} of the sequence $(E_n, \varphi_n)_n$ if the following holds: for each set $X$ and maps $f_n\colon X \to E_n$ satisfying $f_n = \varphi_n \circ f_{n+1}$ $\forall n \in \N$ there is a unique $f\colon X \to E$ such that $f_n = \psi_n \circ f$ for every $n \in \N$ (universal factorization property).
+		\end{defn}
+		The maps $\varphi_n\colon E_{n+1} \to E_n$ are called transition maps and the whole system, which is often called \textit{inverse system}, can be represented by
+		\begin{gather*}
+			E_0 \xleftarrow{\varphi_0} E_1 \xleftarrow{\varphi_1} E_2 \xleftarrow{\varphi_2} \dots \xleftarrow{\varphi_{n}} E_{n+1} \longleftarrow \dots
+		\end{gather*}
+		and denoting $E$ as $\lim\limits_{\longleftarrow}E_n$, the complete scheme would look like this:
+		\begin{equation*}
+			\begin{tikzcd}[row sep = large, column sep = huge]
+				& & & &  \lim\limits_{\longleftarrow}E_n  \arrow[dlll, "\psi_n"']  \arrow[dll, "\psi_{n+1}"]	\\
+				\dots & \arrow[l] E_n & \arrow[l, "\varphi_n"] E_{n+1} & \arrow[l] \dots \\
+				 & & & &  X \arrow[ulll, "f_n"]  \arrow[ull, "f_{n+1}"'] \arrow[uu, dashed, "f"]
+			\end{tikzcd}
+		\end{equation*}
+		\begin{thm}
+			For every projective system $(E_n, \varphi_n)_{n \in \N}$ there exists a projective limit $E = \lim\limits_{\longleftarrow} E_n \subset \prod_n E_n$ with maps $\psi_n\colon E \to E_n$ given by (restriction of) projections.\newline
+			Moreover, given $(E', \psi'_n)$ another projective limit of the system, there's a unique bijection $f\colon E' \to E$ such that $\psi'_n = \psi_n \circ f$.
+		\end{thm}
+		\begin{proof}
+			First we prove existence. Let 
+			\begin{gather*}
+				E := \{(x_n)_n : \varphi_n(x_{n+1}) = x_n \text{   } \forall n \geq 0 \} \subset \prod_{n \geq 0} E_n
+			\end{gather*}
+			be the set of \textit{coherent sequences} (with respect to the transition maps $\varphi_n$). If $p_n\colon \prod_{i \geq 0}E_i \to E_n$ is the canonical projection then we have
+			\begin{gather*}
+				\varphi_n(p_{n+1}(x)) = p_n(x) \qquad \forall x \in E.
+			\end{gather*}
+			So, if we define $\psi_n := \left.p_n\right|_E\colon E \to E_n$ we have $\varphi_n \circ \psi_{n+1} = \psi_n$. We'll now show that $(E, \psi_n)$ is a projective limit of the system. If $(E', \psi'_n)$ is another set equipped with maps satisfying $\varphi_n \circ \psi'_{n+1} = \psi'_n$ (for every $n\geq 0$) then we need to prove that there's a unique factorization of $\psi'_n$ by $\psi_n$. We can define a vector map
+			\begin{gather*}
+				(\psi'_n)\colon E' \to \prod_{n \geq 0}E_n, \qquad y \mapsto (\psi'_n(y))_n.
+			\end{gather*} 
+			Since $\varphi_n(\psi'_{n+1}(y)) = \psi'_n(y)$, the image of this map is fully contained in $E$ (i.e. $(\psi'_n(y))_n$ is a coherent sequence). Thus there's a unique map $f\colon E' \to E$ such that $\psi'_n = \psi_n \circ f$, and it's exactly the map $(\psi'_n)$ considered with $E$ as target (uniqueness is easy to see, recalling that $\psi_n$ is just the restrictions to $E$ of the canonical projection $p_n$).\newline
+			Now we have to prove uniqueness. If $(E, \psi_n)$ and $(E', \psi'_n)$ are both projective limits then, by the universal factorization property, there's a unique map $f'\colon E \to E'$ with $\psi_n = \psi'_n \circ f'$. Using the same $f\colon E' \to E$ defined before and substituting in $\psi'_n = \psi_n \circ f$ we obtain
+			\begin{gather*}
+				\psi'_n = \psi_n \circ f = \psi'_n \circ f' \circ f
+			\end{gather*}
+			which means that $f' \circ f$ is a factorization of $\text{id}_{E'}$ (identity map). Since $(E', \psi'_n)$ has also, by definition of projective limit, the unique factorization property we must have $f' \circ f = \text{id}_{E'}$. Similarly we can prove $f \circ f' = \text{id}_E$, so $f$ is the searched bijection.
+		\end{proof}
+		The projective limit can be defined for a lot of structures, like topological spaces, groups or vector spaces. For example, given $(G_n, \varphi_n)_n$ a projective system of groups and homomorphisms $\varphi_n\colon G_{n+1} \to G_n$, the projective limit $G=\lim\limits_{\longleftarrow}G_n$ is a group and the projections $\psi_n\colon G \to G_n$ are group homomorphisms. Likewise, a projective system of topological spaces and continuous maps will have a projective limit which is itself a topological space, equipped with continuous projections.
+		
+		We can now give another definition of $\Zp$. Let's consider the ring $\Z$ and the decreasing sequence $(p^n\Z)_n$ of ideals. The inclusion $p^{n+1}\Z \subset p^n\Z$ gives us the canonical transition homomorphism
+		\begin{gather*}
+			\varphi_n\colon \Z/p^{n+1}\Z \to \Z/p^n\Z, \qquad x + p^{n+1}\Z \mapsto x + p^n\Z.
+		\end{gather*}
+		If we consider $\Z/p^n\Z$ as a topological ring (equipped with discrete topology) then we have the following theorem.
+		\begin{thm}
+			\label{thm:projective-lim}
+			The map $\Phi\colon \Zp \to \lim\limits_{\longleftarrow}\Z/p^n\Z$ which associates to the \padic integer $x = \sum_{i \geq 0} a_ip^i$ the sequence of its partial sums $x_n = \sum_{i < n}a_ip^i \mod p^n$ is an isomorphism of topological rings.
+		\end{thm}
+		\begin{proof}
+			The map is well defined. In-fact, since the transition maps $\varphi_n$ are given by
+			\begin{gather*}
+				\sum_{i \leq n}a_ip^i \mod p^{n+1} \quad \mapsto \quad \sum_{i < n}a_ip^i \mod p^n
+			\end{gather*}
+			the set of coherent sequences in $\prod \Z/p^n\Z$ is exactly the set of partial sums of a \padic expansion. From the relations
+			\begin{gather*}
+				x_1 = a_0 \text{, } \quad x_2 = a_0 + a_1p \text{, } \quad x_3 = a_0 + a_1p + a_2p^2 \text{, \dots} \\
+				a_0 = x_1 \text{, } \quad a_1 = \frac{x_2 - x_1}{p} \text{, } \quad a_2 = \frac{x_3 - x_2}{p^2} \text{, \dots}
+			\end{gather*}
+			we infer that $\Phi$ is bijective. It's easily proved that it is a ring homomorphism (sum and product are done component-wise on $\lim\limits_{\longleftarrow}\Z/p^n\Z$), so $\Phi$ is a ring isomorphism. Finally, this map is continuous since for every $n \in \N$, if $\pi\colon \prod_i \Z/p^i\Z \to \Z/p^n\Z$ is the canonical projection, we have
+			\begin{gather*}
+				\begin{aligned}
+					\Zp \xrightarrow{\Phi} \lim\limits_{\longleftarrow}\Z/p^k\Z \xhookrightarrow{} \prod_k \Z/p^k\Z \xrightarrow{\pi} \Z/p^n\Z, \qquad
+					\sum_{i \geq 0}a_ip^i \mapsto \sum_{i < n} a_ip^i \mod p^n
+				\end{aligned}
+			\end{gather*}
+			which is continuous (we recall how product topology is defined). Now $\Phi$ is a continuous invertible map between two compact spaces so it's a homeomorphism.
+		\end{proof}
+		So we can also think $\Zp$ as the projective limit of $\Z/p^n\Z$, with canonical projection maps. Let us observe that we can choose any system of representatives $\mathcal{S}$ for $\Z/p\Z$ and write any \padic integer as $x = \sum s_ip^i$ with $s_i \in \mathcal{S}$. For example, if $p$ is odd we can choose to use $\mathcal{S} = \{-\frac{p-1}{2}, \dots, 0, \dots, \frac{p-1}{2}\}$. Although we are only working with $\Zp$, where $p$ is a prime number, this theorem also gives us a factorization of $\Z_n$, for each $n \in \N$. In-fact, since the projective limit of a cartesian product is exactly the cartesian product of the projective limits of the factors, if $m = p_1^{\alpha_1} \dotsm p_r^{\alpha_r}$ we have 
+		\begin{gather*}
+			\Z/m^n\Z = \Z/p_1^{\alpha_1\cdot n}\Z \times \dotsm \times \Z/p_r^{\alpha_r\cdot n}\Z \\
+			\implies \Z_m = \lim_{\longleftarrow} \left( \Z/p_1^{\alpha_1\cdot n}\Z \times \dotsm \times \Z/p_r^{\alpha_r\cdot n}\Z \right) = \prod_{i = 1}^r \lim_{\longleftarrow} \Z/p_i^{\alpha_i\cdot n}\Z = \prod_{i=1}^r \Z_{p_i^{\alpha_i}}.
+		\end{gather*}
+		In particular, for the already seen example $m=10$, we obtain $\Z_{10} = \Z_2 \times \Z_5$.
+		
+		Lastly, we can give another description of $\Zp$ using formal power series $\Z\llbracket X \rrbracket$. We recall that on $\Z\llbracket X \rrbracket$ sum is defined component-wise (obviously here there's no carry system, unlike in $\Zp$) and product is done in a Cauchy way (there's a natural inclusion $\Z[X] \xhookrightarrow{} \Z\ser{X}$).
+		\begin{thm}
+			The map
+			\begin{gather*}
+				 \Phi\colon \Z\llbracket X \rrbracket \to \Zp   \qquad \sum a_iX^i \mapsto \sum a_ip^i
+			\end{gather*}
+			is a ring homomorphism, which defines a canonical isomorphism
+			\begin{gather*}
+				\frac{\Z\ser{X}}{(X - p)} \xrightarrow{\sim} \Zp
+			\end{gather*}
+			where $(X - p)$ is the principal ideal of $\Z\llbracket X \rrbracket$ generated by $X - p$.
+		\end{thm}
+		\begin{proof}
+			To prove this theorem we exploit the universal factorization property of $\lim\limits_{\longleftarrow}\Z/p^n\Z$, i.e. $\Zp$.  Let's consider this sequence of maps
+			\begin{gather*}
+				\Phi_n\colon \Z\llbracket X \rrbracket \to \Z/p^n\Z \text{,} \qquad \sum a_iX^i \mapsto \sum_{i < n}a_ip^i \mod p^n.
+			\end{gather*}
+			They're actually ring homomorphisms; the condition $\Phi_n(x + y) = \Phi_n(x) + \Phi_n(y)$ is immediate, to check $\Phi_n(x\cdot y) = \Phi_n(x)\cdot \Phi_n(y)$ we write
+			\begin{gather*}
+				\Phi_n\left( \sum_ia_iX^i \cdot \sum_jb_jX^j \right) = \Phi_n\left(\sum_k c_kX^k\right) = \sum_{k < n} c_kp^k \mod p^n = \\ = \sum_{k < 2n} c_kp^k \mod p^n = \left(\sum_{i < n}a_ip^i\right) \cdot \left(\sum_{j < n}b_jp^j\right) \mod p^n =\\
+				= 	\Phi_n\left(\sum_ia_iX^i \right) \cdot \Phi_n\left(\sum_jb_jX^j \right).
+			\end{gather*}
+			It's immediate that these maps are all compatible with the transition homomorphisms 
+			\[
+				\varphi_n\colon \Z/p^{n+1}\Z \to \Z/p^n\Z, \qquad x + p^{n+1}\Z \mapsto x + p^n\Z
+			\]
+			and so we infer there exists a unique homomorphism
+			\begin{gather*}
+				\Phi\colon \Z\llbracket X \rrbracket \to \lim\limits_{\longleftarrow}\Z/p^n\Z = \Zp
+			\end{gather*}
+			compatible with the $\Phi_n$ (i.e. such that $\psi_n \circ \Phi = \Phi_n$, where $\psi_n\colon \lim\limits_{\longleftarrow}\Z/p^k\Z \to \Z/p^n\Z$ is the canonical projection). This map is surjective: if $x = \sum a_ip^i$ is a \padic integer then $\Phi\left(\sum a_iX^i \right) = x$. Thanks to the first theorem of isomorphism for ring homomorphisms now we just need to prove $\ker \Phi = (X - p)$ (then we'll have $\Z\llbracket X \rrbracket/\ker \Phi = \Z\llbracket X \rrbracket/(X - p) \simeq \Ima \Phi = \Zp$).
+			In other words we need to show that if the formal power series $\sum_{i \geq 0} a_iX^i$ is such that $\sum_{i < n} a_ip^i \in p^n\Z$ for every $n \geq 1$, then it is divisible by $X - p$. For $n = 1$ the condition is $a_0 \equiv 0 \mod p$ so we find $\alpha_0 \in \Z$ such that $a_0 = p\alpha_0$. For $n = 2$ we get
+			\begin{gather*}
+				a_0 + a_1p  = \alpha_0p + a_1p \equiv 0 \mod p^2 \implies \alpha_0 + a_1 \equiv 0 \mod p
+			\end{gather*}
+			so we find $\alpha_1 \in \Z$ such that $\alpha_0 + a_1 = p\alpha_1$ so $a_1 = p\alpha_1 - \alpha_0$. For a general $n \geq 1$ the condition is
+			\begin{gather*}
+				a_0 + a_1p + \dots + a_np^n = p^n\alpha_{n-1} + a_np^n \equiv 0 \mod p^{n+1}
+			\end{gather*}
+			and it furnishes an integer $\alpha_n$ such that $\alpha_{n-1} + a_n = p\alpha_n$, which can be written as $a_n = p\alpha_n - \alpha_{n-1}$. These relations between the coefficients $a_n$ and $\alpha_n$ are exactly the ones expressed by
+			\begin{gather*}
+				\sum a_iX^i = -(X - p) \cdot \sum \alpha_i X^i
+			\end{gather*}
+			which concludes our proof.
+		\end{proof}
+	\section{The field $\Qp$}
+		\label{section:Qp}
+		We have proved that $\Zp$ is an integral domain hence we can define the field
+		\begin{equation*}
+			\Qp = \textrm{Frac}(\Zp).
+		\end{equation*}
+		To understand its structure, we recall that any \padic integer can be written as $x = p^mu$ where $u \in \Zp^\times$. Then, $1/x = p^{-m}u^{-1}$, with $u^{-1} \in \Zp$. So we can write
+		\begin{equation*}
+			\Qp = \Zp[1/p] = \bigcup_{m \geq 0} p^{-m}\Zp.
+		\end{equation*}
+		Since a non-zero element of $\Qp$ admits a unique such writing, $\Qp^\times = \coprod_{m \in \Z} p^m\Zp^\times$. Similarly to Laurent expansions of meromorphic functions around a pole, we can write every non-zero element of $\Qp$ as
+		\begin{equation*}
+			x = p^m \cdot \sum_{i \geq 0} a_ip^i = \sum_{i \geq m} a_{i-m}p^i, \qquad m \in \Z, a_0 \neq 0.
+		\end{equation*}
+		
+		We can extend the function $\ord$ to $\Qp$ as follows:
+		\begin{equation*}
+			\ord x = 
+			\begin{cases}
+				m, & \text{if $x = p^mu, u \in \Zp^{\times}$;} \\
+				+\infty, & \text{otherwise;} \\
+			\end{cases}.
+		\end{equation*}
+		Given $x = 	a/b$ with $a \in \Zp, b \in \Zp^\times$ it's easy to see that $\ord x = \ord a - \ord b$ and, writing every number as above, we immediately get $\ord xy = \ord x + \ord y$ (this holds also when $xy = 0$, with the usual convention $m + \infty = \infty + m = \infty$), i.e. $\ord\colon \Qp^\times \to \Z$ is a group homomorphism. Finally we see that $\ord (x + y) \geq \min\{\ord x, \ord y\}$, with the equality holding when $\ord x \neq \ord y$. These properties tell us exactly that $\ord$ is a discrete valuation on the field $\Qp$, and that $\Zp$ is the ring of valuation of $\left(\Qp, \ord\right)$ because $x \in \Zp$ if and only if $\ord x \geq 0$ and $\ord 1/x = - \ord x$.
+		
+		We recall that
+		\[
+		\Z_{(p)} = \Set{\frac{a}{b} | a,b \in \Z, p \nmid b, b \neq 0}.
+		\] 
+		The relations between $\Zp$ and $\Qp$ are similar to the ones between $\Z_{(p)}$ and $\Q$. In-fact we have
+		\begin{equation*}
+			\Q = \bigcup_{m \geq 0} p^{-m}\Z_{(p)} \text{, } \qquad  \Q^\times = \coprod_{p \in \Z}p^m\Z_{(p)}^\times
+		\end{equation*}
+		where $\Z_{(p)}^\times$ consists of all the fractions with both numerator and denominator prime to $p$.
+		
+		We can see that the definition of $\Qp$ introduced here represents exactly the same object described in chapter 1. So we can introduce the \padic absolute value, and its induced metric, in the exact same way and all properties proved before will be valid. So $\Qp$ is a metric field equipped with a discrete valuation, which implies that $\Qp$ is a topological field (i.e. a topological ring where the inverse map $\Qp^\times \to \Qp^\times: x \mapsto x^{-1}$ is continuous).
+		\begin{prop}
+			The field $\Qp$ is a locally compact field of characteristic $0$ which induces on $\Zp$ the \padic topology. It can be identified with the completion of $\Zp[1/p]$ or of $\Q$, for the \padic metric.
+		\end{prop}
+		\begin{proof}
+			We have already observed that $\Zp = B_{\leq 1}(0) = \{x \in \Qp \mid \pabs{x} \leq 1\}$ and, for every $k \geq 0$ the ideal $p^k\Zp$ is exactly $B_{\leq p^{-k}}(0)$. Since $\Zp$ is a compact neighbourhood of $0$, the topological field $\Qp$ is locally compact ($x + \Zp$ is a compact neighbourhood of $x$). From \cref{corollary:locally_compact_group} we obtain that $\Qp$ is complete. We now show that $\Z[1/p]$ is dense in $\Qp$; given
+			\begin{gather*}
+				x = \sum_{i \geq v}^{+\infty} x_ip^i \qquad (v = \ord x \in \Z)
+			\end{gather*}
+			we immediately find that the sequence of truncated sums $x_n = \sum_{v \leq i < n} x_ip^i$ is a Cauchy sequence in $\Z[1/p] \subset \Q$ which converges to $x$. Finally, we have already seen that $\Qp$ is a field of characteristic $0$, since we have an immersion $\Z \hookrightarrow \Qp$.
+		\end{proof}
+		Here we have proved that $\Qp$ is a complete field, a fact we already knew, in a very different way than before, by just using algebraic properties of topological groups.
+		
+		Given a non-zero element $\Qp \ni x = \sum_{i \geq m}x_ip^i$ we can define
+		\begin{gather*}
+			[x] := \sum_{i \geq 0}x_ip^i \in \Zp \text{ : \emph{integral part} of $x$ }; \\
+			\langle x \rangle := \sum_{i < 0} x_ip^i \in \Z[1/p] = \{ap^v \mid a,v \in \Z \} \subset \Q \text{ : \emph{fractional part} of $x$}.
+		\end{gather*}
+		Hence we obtain the decomposition $\Qp = \Zp + \Z[1/p]$, which is not canonical, because it depends on the choice of the representatives of $\Z/p\Z$ chosen for digits (here we have always chosen to use $\mathcal{S} = \{0, 1, \dots, p-1\}$). This sum is not a direct sum since $\Zp \cap \Z[1/p] = \Z$, so there's not a unique factorization of any $x \in \Qp$. If we consider the map $\Z \to \Zp \oplus \Z[1/p]: m \mapsto (m, -m)$ and the addition homomorphism $\Zp \oplus \Z[1/p] \to \Zp + \Z[1/p] = \Qp: (a, b) \mapsto a+b$ we obtain the short exact sequence:
+		\begin{equation*}
+			\Z \hookrightarrow \Zp \oplus \Z[1/p] \twoheadrightarrow \Qp
+		\end{equation*}
+		where the image of the first map is exactly the kernel of the second one.
+	\section{Hensel's Lemma}
+		In this section we present the important Hensel's lemma, a principle which gives us a method to find roots of polynomials in $\Zp[X]$. 
+		\begin{prop}
+			Let $P(X) \in \Zp[X]$. The following properties are equivalent:
+			\begin{enumerate}[label=(\roman*)]
+				\item $P=0$ admits a solution in $\Zp$;
+				\item for each $n \geq 0$, $P=0$ admits a solution in $\Z/p^n\Z$.
+			\end{enumerate}
+		\end{prop}
+		\begin{proof}
+			The part \textit{(i)} $\implies$ \textit{(ii)} is trivial: if $x = \sum_{i \geq 0} a_ip^i \in \Zp$ is a root of $P$ then $x_n = \sum_{i < n}a_ip^i$ is in $\Z/p^n\Z$ and $P(x_n) = P(x) \mod p^n$.\\
+			To prove the converse, let's consider the non-empty finite sets
+			\[
+				X_n = \{x \in \Z/p^n\Z \mid P(x) = 0 \mod p^n \}.
+			\]
+			It's immediate that if $x \in X_{n+1}$ then $\tilde{x} = x \mod p^n$ is in $X_n$, because $P(\tilde{x}) = P(x) \mod p^n$. So reduction mod $p^n$ furnishes a map $\phi_n\colon X_{n+1} \to X_n$. We can consider the projective system $(X_n, \phi_n)_{n \in \N}$: it admits a projective limit $X = \lim\limits_{\longleftarrow} X_n \subset \Zp$. It's now clear that if $x \in X$ then $P(x) = 0$ in $\Zp$. Since the projective limit of non-empty sets is not empty (it immediately follows from the fact that projective limit of non-empty compact space is non-empty, \cite[30]{robert:padic-analysis}), we can conclude.
+		\end{proof}
+		We recall the elementary fact that if $A$ is a commutative ring and $P \in A[X]$ then
+		\[
+			P(X + h) = P(X) + h \cdot P'(X) + h^2 \cdot Q(X, h)
+		\]
+		where $Q$ is a polynomial in $A[X, Y]$ (we'll refer to this as the Taylor expansion of $P$, for obvious reasons). We're now ready to prove this proposition. For brevity, we'll write $v(\zeta) := \ord \zeta$, for $\zeta \in \Qp$.
+		\begin{prop}
+			\label{prop:newton-algorithm}
+			Let $P \in \Zp[X]$ and $x \in \Zp$ be such that $P(x) \equiv 0 \mod p^n$. If $k = v(P'(x)) < n/2$, then $\widehat{x} := x - P(x)/P'(x)$ satisfies
+			\begin{enumerate}[label=(\roman*)]
+				\item $P(\widehat{x}) \equiv 0 \mod p^{n+1}$;
+				\item $\widehat{x} \equiv x \mod p^{n-k}$;
+				\item $v(P'(\widehat{x})) = v(P'(x))$.
+			\end{enumerate}
+		\end{prop}
+		\begin{proof}
+			Let's write $P(x) = p^ny$ for $y \in \Zp$ and $P'(x) = p^ku$ with $u \in \Zp^\times$. Then 
+			\[
+				\widehat{x} - x = -\frac{P(x)}{P'(x)} = - p^{n-k}yu^{-1} \in p^{n-k}\Zp
+			\]
+			which proves \textit{(ii)}. To prove \textit{(i)} we observe
+			\[
+				P(\widehat{x}) = P(x + (\widehat{x} - x)) = P(x) -\frac{P(x)}{P'(x)} P'(x) + (\widehat{x} - x)^2 \cdot t 
+			\]
+			where $t \in \Zp$. Then
+			\[
+				P(\widehat{x}) = p^{2(n-k)}y^2u^{-2}t^2 \in p^{n+1}\Zp \subseteq p^{2(n -k)}\Zp
+			\]
+			since $n - k > n/2$. Now it only remains to compute the order of $P'(\widehat{x})$. Let's use Taylor expansion:
+			\[
+				P'(\widehat{x}) = P'(x) + (\widehat{x} - x)\cdot s = p^ku + p^{n-k}zs = p^k(u + p^{n-2k}zs) = p^kw \quad (z, s \in \Zp).
+			\]
+			Since $n - 2k > 0$ and $u$ is a unit of $\Zp$, we get
+			\[
+				w = u + p^{n-2k}zs \in u + p^{n-2k}\Zp \subset \Zp^\times
+			\]
+			which proves $v(P'(\widehat{x})) = k$.
+		\end{proof}
+		We can finally prove the Hensel's Lemma.
+		\begin{thm}[Hensel's Lemma]
+			\label{thm:hensel-lemma}
+			Let $P$ be a polynomial in $\Zp[X]$ and $x \in \Zp$ such that $P(x) \equiv 0 \mod p^n$. If $k = v(P'(x)) < n/2$ then there exists a unique root $\xi$ of $P$ in $\Zp$ such that $\xi \equiv x \mod p^{n-k}$ and $v(P'(\xi)) = v(P'(x))$.
+		\end{thm}
+		\begin{proof}
+			Let's first prove the existence of such $\xi$. Let $x_0 = x$; we want to find $x_1 \in \Zp$ such that
+			\[
+				x_1 \equiv x_0 \mod p^{n-k}, \quad  P(x_1) \equiv 0 \mod p^{n+1}, \quad v(P'(x_1)) = k.
+			\]
+			By \cref{prop:newton-algorithm} we can build such an $x_1$, which represents an ``improved'' root of $P$. Similarly, we can find $x_2 \in \Zp$ such that
+			\[
+				x_2 \equiv x_1 \mod p^{n-k+1}, \quad P(x_2) \equiv 0 \mod p^{n+2}, \quad v(P'(x_2)) = k.
+			\]
+			Iterating this process we get a coherent sequence $(x_m)_{m\in \N} \subset \Zp$: more specifically, letting $h = n-k$, we obtain
+			\begin{gather*}
+				x_m \equiv \sum_{i=0}^{h+m} a_ip^i \mod p^{h+m+1} \text{, } \quad  P(x_m) \equiv 0 \mod p^{n+m} \\
+				x_{m+1} \equiv \sum_{i=0}^{h+m} a_ip^i + a_{h+m+1}p^{h+m+1} \mod p^{h+m+2} \text{, } \quad P(x_{m+1}) \equiv 0 \mod p^{n+m+1} \\
+			\end{gather*}
+			so it's clear that this sequence has \padic limit $\xi = \sum_{i \geq 0} a_ip^i$ satisfying $P(\xi) = 0$ in $\Zp$, $\xi \equiv x \mod p^{n-k}$ and $v(P'(\xi)) = k$. \\
+			Now we prove uniqueness. Let $\xi$ and $\eta$ be two roots of $P$ in $\Zp$ satisfying the above constraints. Then
+			\[
+				0 = P(\eta) = P(\xi) + (\eta - \xi)P'(\xi) + (\eta - \xi)^2a \quad (a \in \Zp)
+			\]
+			so, since $\eta - \xi \in p^{n-k+1}\Zp$, we have
+			\[
+				0 = (\eta - \xi)(P'(\xi) + (\eta - \xi)a).
+			\]
+			Clearly, since $v(P'(\xi)) = k$ and $v((\eta - \xi)a) \geq n-k+1 > k$, the term $(P'(\xi) + (\eta - \xi)a)$ can't vanish so we must have $\eta = \xi$.
+		\end{proof}
+	 	The Hensel's Lemma is a very important tool in \padic analysis, so we'll write again a weak version of it.
+	 	\begin{corollary}[Weak Hensel's Lemma]
+	 		Let $P$ a polynomial in $\Zp[X]$ and $a_0 \in \Zp$ such that $P(a_0) \equiv 0 \mod p$ and $P'(a_0) \not\equiv 0 \mod p$. Then there is a unique $a \in \Zp$ such that $P(a) = 0$ and $a \equiv a_0 \mod p$.
+	 	\end{corollary}

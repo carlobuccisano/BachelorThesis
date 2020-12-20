@@ -1,0 +1,464 @@
+\chapter{Analytic Approach}
+	\section{Basic concepts}
+		Here we'll define some basic concepts about norms and metrics. 
+		\begin{defn}
+			Let $X$ be a non-empty set, a function $d\colon  X \times X \to \R_{\geq 0}$ is a \textit{metric} if, for every $x, y, z \in X$, we have:
+			\begin{enumerate}
+				\item $d(x, y) = 0 \iff x = y$;
+				\item $d(x, y) = d(y, x)$;
+				\item $d(x, y) \leq d(x, z) + d(z, y)$.
+			\end{enumerate}
+		\end{defn}
+		\begin{defn}
+			\label{defn:field-norm}
+			Let $F$ be a field, a function $\norm{\ }\colon F \to \R_{\geq 0}$ is a \textit{field norm}\footnote{Although usually the term ``field norm'' has a different definition in field theory, we choose to use this terminology, to distinguish between norms on fields and norms on vectorial spaces.}(or an \textit{absolute value}) if, for every $x, y \in F$, we have:
+			\begin{enumerate}
+				\item $\norm{x} = 0 \iff x = 0$;
+				\item $\norm{x \cdot y} = \norm{x} \cdot \norm{y}$;
+				\item $\norm{x + y} \leq \norm{x} + \norm{y}$.
+			\end{enumerate}
+		\end{defn}
+		\begin{defn}
+			Let $V$ be a vector space over the field $F$, which has its norm $\norm{\ }_F$. A function $\norm{\ }\colon V \to \R_{\geq 0}$ is a \textit{norm} if, for every $v, w \in V, \alpha \in F$, we have:
+			\begin{enumerate}
+				\item $\norm{v} = 0 \iff v = 0$;
+				\item $\norm{\alpha \cdot v} = \norm{\alpha}_F \cdot \norm{v}$;
+				\item $\norm{v + w} \leq \norm{v} + \norm{w}$.
+			\end{enumerate}
+		\end{defn}
+		Beginning from a (field) norm $\norm{\ }$ there's a natural metric defined as $d(x, y) = \norm{x - y}$.
+	\section{Metrics on $\Q$}
+		The metric we normally equip $\Q$ with is the euclidean one, which comes from the usual absolute value $\abs{\ }$ (denoted also by $\abs{\ }_\infty$). 
+		\begin{defn}
+			Let $p$ a fixed prime. We can define a function $\ord\colon \Z \to \N \cup \{+\infty \}$ as follows: 
+			\begin{equation*}
+				\ord a := 
+				\begin{cases*}
+					+\infty, & \text{if $a = 0$;} \\
+					n_a, & \text{otherwise;}
+				\end{cases*} 
+			\end{equation*}
+			where $n_a \in \N$ is such that $p^{n_a} | a$ and $p^{n_a + 1} \nmid a$. It's easy to prove that $\ord ab = \ord a + \ord b$ (using the usual convention $\infty + n = n + \infty =+\infty$).
+		\end{defn}
+		We can extend this function to $\Q$:
+		\begin{equation*}
+			\ord \left( \frac{a}{b} \right) := 
+			\begin{cases*}
+				+\infty, & \text{if $\frac{a}{b} = 0$;} \\
+				\ord a - \ord b, & \text{otherwise;}
+			\end{cases*}.
+		\end{equation*}
+		This is of course well defined: $\ord \left( \tfrac{ac}{bc} \right) = \ord ac - \ord bc = \ord a - \ord b = \ord \left( \tfrac{a}{b} \right)$. 
+		\begin{prop}
+	 		$\emph{ord}_p\colon  \Q \to \Z \cup \{+\infty\}$ is a discrete valuation.
+		\end{prop}
+		\begin{proof}
+			We have to prove the following properties:
+			\begin{itemize}
+				\item $\ord x = +\infty \iff x = 0$;
+				\item $\ord xy = \ord x + \ord y$;
+				\item $\ord (x + y) \geq \min \{\ord x, \ord y \}$.
+			\end{itemize}
+			The first two properties are quite easy, to see why the third one is true it's sufficient to write 
+			\[
+				x = \frac{a}{b} = p ^ {\ord x} \cdot \frac{a'}{b'}, \qquad y = \frac{c}{d} = p^{\ord y} \cdot \frac{c'}{d'}
+			\]
+			with $a', b', c', d'$ coprime with $p$. Then
+			\begin{equation*}
+				x + y = p^{\min \{\ord x,\,\ord y \}} \cdot q \qquad (q \in \Q).
+			\end{equation*}
+			Applying property $2.$ from \cref{defn:field-norm} we obtain
+			\begin{gather*} 
+				\ord(x + y) = \ord \left(p^{\min \{\ord x,\,\ord y \}} \cdot q\right) \geq \min \{\ord x, \ord y \}.\qedhere
+			\end{gather*}
+		\end{proof}
+		
+		Using these functions we can define a field norm $\pabs{\ }\colon \Q \to \Q$ as follows:
+		\begin{equation*}
+			\pabs{x} = 
+			\begin{cases*}
+				p ^ {-\ord x}, & if $x \neq 0$; \\
+				0, & otherwise;
+			\end{cases*}.
+		\end{equation*}
+		\begin{prop}
+			\label{prop:padic-nonarchimedean}
+			$\pabs{\ }$ is a field norm on $\Q$.
+		\end{prop}
+		\begin{proof}
+			Property $1.$ is obvious. \newline
+			To prove $2.$, given $x, y \in \Q^{\times}$ we know that $\ord xy = \ord x + \ord y$ so 
+			\begin{gather*}
+				\pabs{xy} = p^{- \ord xy} = p^{-\ord x - \ord y} = p^{-\ord x} \cdot p^{-\ord y} = \pabs{x} \cdot \pabs{y}.
+			\end{gather*}
+			To prove $3.$ let $x, y \in \Q^{\times}$; $\ord(x + y) \geq \min \{\ord x, \ord y\}$ so
+			\begin{gather*}
+				\pabs{x + y} = p^{-\ord(x + y)} \leq p^{- \min \{\ord x,\, \ord y \} } = p ^ {\max \{-\ord x,\,-\ord y\} } \\
+				= \max \left\{p ^ {-\ord x}, p^{-\ord y} \right\} = \max \left\{\pabs{x}, \pabs{y} \right\} \leq \pabs{x} + \pabs{y}.
+			\end{gather*}
+			We actually proved a stronger inequality than $3.$, which is one of the key ingredients of \padic analysis.
+		\end{proof}
+		\begin{defn}
+			A norm on $X$ is called \textit{non-Archimedean} if $\norm{x + y} \leq \max \left\{\norm{x}, \norm{y} \right\}$ holds for every $x, y \in X$. 
+		\end{defn}
+		If $\norm{\ }$ is a non-Archimedean norm on $X$, it's immediate to see that
+		\begin{gather*}
+			\norm{n\cdot x} \leq \norm{x} \text{ for every $n \in \N, x \in X$ }
+		\end{gather*}
+		which explains the name. We have already proved that $\pabs{\ }$ is a non-Archimedean norm on $\Q$ in \cref{prop:padic-nonarchimedean}.
+		\begin{prop}
+			If $\norm{\ }$ is a non-Archimedean norm on $X$ then
+			\[
+				\norm{x} \neq \norm{y} \implies \norm{x + y} = \max \left\{\norm{x}, \norm{y} \right\}.
+			\] 
+		\end{prop}
+		\begin{proof}
+			We can assume that $\norm{x} < \norm{y}$. Then
+			\begin{gather*}
+				\norm{y} = \norm{(x + y) - x} \leq \max \left\{\norm{x+y}, \norm{x}\right\} \leq \norm{y}
+			\end{gather*}
+			but since $\norm{x} < \norm{y}$ we must have $\norm{x+y} = \norm{y}$.
+		\end{proof}
+		\begin{defn}
+			If $(X, d)$ is a metric space, a sequence $(a_n)_{n \in \N}$ is a \textit{Cauchy sequence} if $\forall \varepsilon > 0$ $\exists n_0 \in \N$ such that $n, m > n_0 \implies d(a_n, a_m) < \varepsilon$.
+		\end{defn}
+		\begin{defn}
+			Two metrics $d_1, d_2$ on $X$ are \textit{equivalent} if every Cauchy sequence for $d_1$ is Cauchy for $d_2$ and vice-versa. Two norms are equivalent if they induce equivalent metrics.
+		\end{defn}
+		Now we present a technical lemma we're going to need.
+		\begin{lemma}
+			\label{lemma:equivalent-norm}
+			If $\alpha \in (0, 1]$ the function on $\Q$ defined by $x \mapsto \abs{x}^\alpha$ is a norm equivalent to $\abs{\ }_\infty$.
+		\end{lemma}
+		\begin{proof}
+			First of all we show $\abs{\ }^\alpha$ is actually a norm; property $1.$ and $2.$ are easily verified. To prove $3.$ we have to show that $\abs{x + y}^\alpha \leq \abs{x}^\alpha + \abs{y}^\alpha$ for every $x, y \in \Q^{\times}$. We can assume $0 < x < y$ and, dividing both sides by $\abs{y}^\alpha$, we just need to prove $(1 + t)^\alpha \leq 1 + t^\alpha$ for $t \in [0, 1]$. This easily follows studying the first derivative of $[0, 1] \ni t \mapsto 1 + t^\alpha - (1 + t)^\alpha$ (always non negative if $0 \leq \alpha \leq 1$).\newline
+			The equivalence of the two norms is easy to see if we use the above definition: let $(a_n)_n$ be Cauchy for $\abs{\ }$; fixed $\varepsilon > 0$ we can find $n_0 \in \N$ such that $n, m > n_0 \implies \abs{a_n - a_m} < \varepsilon ^ \frac{1}{\alpha}$ i.e. $\abs{a_n - a_m}^\alpha < \varepsilon$ $\forall n, m > n_0$ so $(a_n)_n$ is also Cauchy for $\abs{\ }^\alpha$ (and vice-versa).
+		\end{proof}
+		Generalizing a little bit the previous lemma we can prove that if $\norm{\ }_1$ and $\norm{\ }_2$ are two field norms on $F$ which satisfy $\norm{x}_1 = \norm{x}_2^\alpha$ $\forall x \in F$ for a fixed $\alpha > 0$ then they're equivalent. For example, instead of defining $\pabs{\ }$ using $p ^ {- \ord a}$, we could have used $\rho \in (0, 1)$ in place of $1/p$ and we would have obtained an equivalent norm because $p^ {-\ord a} = \left(\rho ^ {\ord a}\right)^{-\log_\rho p}$.
+		\begin{defn}
+			The norm $\norm{\ }$ such that $\norm{x} = 1 - \delta_0^x$ is called \textit{trivial}.
+		\end{defn}
+		Finally we can prove the main theorem of this section.
+		\begin{thm}[Ostrowski]
+			Every non-trivial norm $\norm{\ }$ on $\Q$ is equivalent to $\pabs{\ }$ for some prime $p \in \N$ or for $p = \infty$.
+		\end{thm}
+		\begin{proof}
+			We distinguish two cases.\newline
+			\textit{Case} (1). There exists a positive integer $n$ such that $\norm{n} > 1$. Let $n_0$ be the minimum among those (for every field norm $\norm{\pm 1} = 1$ so $n_0 > 1$). Since $\norm{n_0} > 1$ there exists $\alpha = \log_{n_0}\norm{n_0} > 0$ such that $\norm{n_0} = n_0^\alpha$. Now if $n \in \N^{\times}$ then, using base $n_0$, we can write
+			\begin{equation*}
+				n = a_0 + a_1n + \dots + a_sn_0^s, \qquad a_i \in \{0, 1, \dots, n_0-1\}, a_s \neq 0.
+			\end{equation*}
+			Then, since norms are subadditive and multiplicative
+			\begin{gather*}
+				\norm{n} \leq \norm{a_0} + \norm{a_1n_0} + \dots + \norm{a_sn_0^s} = \\
+				= \norm{a_0} + \norm{a_1}n_0^\alpha + \dots + \norm{a_s}n_0^{s\alpha}.
+			\end{gather*}
+			Being $n_0$ the minimum positive integer with $\norm{n_0} > 1$ we have $\norm{a_i} \leq 1$ so
+			\begin{gather*}
+				\norm{n} \leq 1 + n_0^\alpha + \dots + n_0^{s\alpha} \leq n_0^{s\alpha}(1 + n_0^{-\alpha} + \dots + n_0^{-s\alpha}) \leq 
+	 			n^\alpha \left[\sum_{i=0}^{\infty} n_0^{-i\alpha} \right].
+			\end{gather*}
+			The last inequality is true because $n \geq n_0^s$. The series at the right side is a geometric one which converges to a certain $C < +\infty$ (since $0 < \frac{1}{n_0} < 1$). Now we have obtained
+			\begin{equation*}
+				\norm{n} \leq Cn^\alpha.
+			\end{equation*}
+			Using $n^N$, for some large $N \in \N$, in place of $N$ in the last inequality, and then extracting $N$th roots, leads us to
+			\begin{equation*}
+				\norm{n} \leq \sqrt[N]{C}n^\alpha.
+			\end{equation*}
+			Letting $N \to +\infty$ we get $\norm{n} \leq n^\alpha$ (obviously this is valid for every $n \in \N$). To get the other verse of the inequality, using $n$ written as above, we have $n_0^{s+1} > n \geq n_0^s$. Using reverse triangular inequality and the one we obtained above, we get
+			\begin{equation*}
+				\norm{n} \geq \norm{n_0^{s+1}} - \norm{n_0^{s+1} - n} \geq n_0^{(s+1)\alpha} - \left(n_0^{s+1} - n\right)^\alpha.
+			\end{equation*}
+			Since $n > n_0^s$
+			\begin{equation*}
+				\norm{n} \geq n_0^{(s+1)\alpha} - \left(n_0^{s+1} - n_0^s\right)^\alpha = n_0^{(s+1)\alpha} \left[1 - \left(1 - \frac{1}{n_0} \right) ^ \alpha \right] \geq C'n^\alpha
+			\end{equation*}
+			with $C' := \left[1 - \left(1 - \frac{1}{n_0} \right) ^ \alpha \right]$ that doesn't depend on $n$. As before, using $n^N$ and taking $N$th roots and letting $N \to +\infty$ gives $\norm{n} \geq n^\alpha$.
+			So we proved that $\norm{n} = n^\alpha$ for every $n \in \N$. Using property $2.$ of norms and $\norm{-1} = 1$ we get $\norm{q} = \abs{q}^\alpha$ for every $q \in \Q$. Now, using \cref{lemma:equivalent-norm}, we conclude that $\norm{\ }$ is equivalent to $\abs{\ }_\infty$.\newline
+			\textit{Case} (2). For every $n \in \N$, $\norm{n} \leq 1$. Since $\norm{\ }$ is non-trivial by hypothesis we can find the minimum $\N \ni n_0 > 1$ such that $\norm{n_0} < 1$. Easily $n_0$ is a prime number: if not, $n_0 = a \cdot b$ with $1 < a,b < n_0$ and $1 > \norm{n_0} = \norm{ab} = \norm{a}\norm{b}$ so at least one from $\norm{a}$ and $\norm{b}$ must be strictly less than $1$, absurd because $a, b < n_0$ and $n_0$ is the minimum positive integer with this property. \newline
+			Let $p = n_0$ and we claim that if $q$ is a different prime from $p$ $\norm{q} = 1$. If this is not true then $\norm{q} < 1$ and we can find some large $N \in \N$ such that $\norm{p^N}, \norm{q^N} < 1/2$. Since $p^N$ and $q^N$ are coprime, from Bézout identity there are $n, m \in \Z$ such that $np^N + mq^N = 1$, but this leads to a contradiction:
+			\begin{equation*}
+				1 = \norm{1} = \norm{np^N + mq^N} \leq \norm{n}\norm{p^N} + \norm{m}\norm{q^N} \leq \norm{p^N} + \norm{q^N} < \frac{1}{2} + \frac{1}{2} < 1.
+			\end{equation*}
+			Now, given $n \in N$ we can factorize it in a unique way into prime divisors $n = p_1^{b_1} \cdots p_r^{b_r}$. At most one from the $p_i$-s is equal to $p$ so if, wlog, $p_1 = p$ then $b_1 = \ord n$ and $\norm{p_i} = 1$ if $i>1$ so
+			\begin{equation*}
+				\norm{n} = \norm{p_1^{b_1} \cdot \dots \cdot p_r^{b_r}} = \norm{p_1}^{b_1}\cdot \dots \cdot \norm{p_r}^{b_r} = \norm{p}^{\ord n}.
+			\end{equation*}
+			Letting $\rho := \norm{p} \in (0, 1)$ we obtain $\norm{a} = \rho ^ {\ord a}$ for $a \in \N^{\times}$. Using property $2.$ of norms we can show this holds also if $a \in \Q^{\times}$. We conclude that $\norm{\ }$ is equivalent to $\pabs{\ }$, using the general version of \cref{lemma:equivalent-norm}.
+		\end{proof}
+		The standard topology of $\Q$, induced by the euclidean metric, is very different from the \padic topology, induced by the \padic ultrametric. With the former, $\Z \subset \Q$ is a discrete set while, in \padic environment, $\Z$ isn't discrete: $0$ is an accumulation point, $\lim_{n \to +\infty}p^n = 0$. There are also some interesting algebraic properties, which we haven't in the standard topology, for example the one described in the following lemma.
+		\begin{lemma}
+			For every $r > 0$ the set $B_{<r}(0) \cap \Z = \{x \in \Z \mid \pabs{x} < r\}$ is an ideal of the ring $\Z$, in the \padic topology.
+		\end{lemma}
+		\begin{proof}
+			It's clear that we can only consider the case $r = p^k$ with $k \in \Z$. If $k \geq 0$ the property is trivial since $\Z \subseteq B_{\leq 1}(0) = \{x \in \Q \mid \pabs{x} \leq 1 \}$. Let's consider $x, y \in \Z \cap B_{< p^k}(0)$, i.e. $\pabs{x}, \pabs{y} < p^k$. We must show that $\pabs{x - y} < p^k$ and that for every $z \in \Z$ we have $z \cdot x \in B_{<p^k}(0) \cap \Z$. For the first property we have
+			\begin{gather*}
+				\pabs{x - y} \leq \max \left\{\pabs{x}, \pabs{-y} \right\} = \max \left\{\pabs{x}, \pabs{y} \right\} < p^k
+			\end{gather*}
+			and for the second one, recalling that $\Z \ni z \implies \pabs{z} \leq 1$, we have
+			\begin{gather*}
+				\pabs{z \cdot x} = \pabs{z} \cdot \pabs{x} \leq \pabs{x} < p^k. \qedhere
+			\end{gather*}
+		\end{proof}
+	
+		These non-Archimedean norms $\pabs{\ }$ have some very strange properties, far from our intuition (which is based on euclidean norms). We'll explore them in detail in \cref{section:ultrametrics}.
+	\section{Construction of $\Qp$}
+		\label{section:construction-Qp}
+		\begin{defn}
+			A metric space $(X, d)$ is \textit{complete} if every Cauchy sequence in $X$ converges to some element in $X$.
+		\end{defn}
+		\begin{defn}
+			If $(X, d)$ is a metric space, $(\overline{X}, \overline{d})$ is its completion if it is a complete metric space which contains $X$ as a dense subspace and satisfies this universal property: if $Y$ is a complete metric space and $f\colon X \to Y$ is uniformly continuous then there exists a unique $f'\colon \overline{X} \to Y$ such that $f'$ is uniformly continuous and $f'|_X = f$.
+		\end{defn}
+		It's clear from the definition that the completion of a space is unique up to isometry.
+		\begin{prop}
+			\label{prop:Q-not-complete}
+			$(\Q, \pabs{\ })$ is not complete.
+		\end{prop}
+		\begin{proof}
+			This proof will heavily rely on the definition of $\Zp$ proposed in \cref{section:Zp}, and on Hensel's lemma (\cref{thm:hensel-lemma}). Obviously we don't need any result depending on this statement to  build $\Zp$ and prove the Hensel's lemma (in other words: this proof does not create any logical loop).\newline
+	 		We have to show that there exists a Cauchy sequence in $(\Q, \pabs{\ })$ which has no limit in $\Q$. To do this, we'll use a polynomial $P(X) \in \Z[X] \subset \Zp[X]$ which has no roots in $\Q$ but admits a root in $\Z/p\Z$. We'll then use Hensel's lemma to obtain $\xi \in \Zp$ such that $P(\xi) = 0$. We'll then have a Cauchy sequence in $\Z \subset \Q$ (we can consider truncated sums of $\xi$) which converges to $\xi \notin \Q$. Let's distinguish four cases.
+	 		\begin{itemize}
+	 			\item $p = 2$: \newline
+	 				  Let's consider the polynomial $P(X) = X^3 - 7 \in \Z[X]$: obviously there are no rational roots of $P$ but $x_0 = 1$ is such that $P(x_0) \equiv 0 \mod 2$. We immediately see that $P'(X) = 3X^2$ so $2 \nmid 3 = P'(1)$ and, applying Hensel's lemma, we infer there is a unique $\xi \in \Z_2$ such that $P(\xi) = 0$. 
+	 			\item $p = 3$: \newline
+		 			  Let's consider the polynomial $P(X) = X^2 - 7 \in \Z[X]$: obviously there are no rational roots of $P$ but $x_0 = 1$ is such that $P(x_0) \equiv 0 \mod 3$. We immediately see that $P'(1) = 2 \not\equiv 0 \mod 3$ and, applying Hensel's lemma, we infer there is a unique $\xi \in \Z_3$ such that $P(\xi) = 0$. 
+	 			\item $p \equiv 1 \mod 4$: \newline
+	 				  Let's consider the polynomial $P(X) = X^2 - (p+1) \in \Z[X]$. We observe that $P$ has no rational roots; writing $p+1 = 4k + 2$ we immediately see that $p+1$ is not a perfect square, because $2 \mid p+1$ but $4 \nmid p+1$. Clearly, $p+1$ can't either be a square of some rational number: if it were, then we would have
+	 				  \[
+	 				      p+1 = \left( \frac{a}{b} \right) ^2 \implies b^2\cdot (p+1) = a^2
+	 				  \]
+	 				  which is an absurd, since $p+1$ is not a perfect square. So $P$ has no roots in $\Q$, but we easily see that $P(1) \equiv 0 \mod p$ and $P'(1) = 2 \not\equiv 0 \mod p$. Applying Hensel's lemma we find $\xi \in \Zp$ such that $P(\xi) = 0$.
+	 			\item $p \equiv 3 \mod 4$: \newline
+	 				  Let's consider $\left(\frac{p-1}{2}\right)^2 \equiv 4^{-1} \mod p$ and let $t \in \{0, \dots, p-1\}$ such that $4t \equiv 1 \mod p$. Obviously $0 \neq t$ is a quadratic residue in $\Z/p\Z$; we claim that $\sqrt{t} \notin \Q$. We just need to show that $t$ is not a perfect square (then we can use the same reasoning of the previous point). First of all, with a little abuse of notation, we observe that 
+	 				  \[
+	 				  	  \Fp^2 = \Set{ x^2 | 0 \leq x \leq \frac{p-1}{2}, x \in \N}.
+	 				  \]
+	 				  Since the only perfect squares less than $p$ are exactly $\Set{x^2 | 0 \leq x \leq \lfloor{\sqrt{p}}\rfloor, x \in \N}$ and $\frac{p-1}{2} \geq \sqrt{p}$ for $p \geq 7$, we infer that $t$ cannot be a perfect square. \newline
+	 				  Now we can consider the polynomial $P(X) = X^2 - t \in \Z[X]$: we know that it has no rational root but $x_0 = -2^{-1}$ is a root of $P$ in $\Z/p\Z$, by construction. Obviously $P'(X) = 2X$ so $P'(x_0) = 2x_0 \not\equiv 0 \mod p$. Then we can apply Hensel's lemma and obtain $\xi \in \Zp$ such that $P(\xi) = 0$.\qedhere 
+	 		\end{itemize}
+		\end{proof}
+		Actually, if $p \neq 2$, there is an easier way to prove $(\Q, \pabs{\ })$ is not complete, using the Cauchy sequence $(a^{p^n})_{n \in \N}$, where $a \in \{1, \dots, p-2\}$. The proof can be found at 
+		\cite[3]{thorne:teichmuller}. Anyway the proof we gave is indeed a nice application of the Hensel's lemma.
+		
+		The goal of this section is to build $\Qp$, the completion field of $(\Q, \pabs{\ })$ with $p$ a fixed prime. The building process is analogue to the construction of $\R$, the completion of $(\Q, \abs{\ }_\infty)$ and it's actually the ``standard'' way to complete a metric space. This process is actually necessary, because $(\Q, \pabs{\ })$ is not complete, so it's a very unfriendly setting to perform analysis. 
+		\begin{defn}
+			Let $\mathcal{S} := \Set{ (a_n)_{n \in \N} \subseteq \Q | (a_n)_{n \in \N} \text{ Cauchy for } \pabs{\ }}$. Then 
+			\begin{equation*}
+				\Qp := \nicefrac{\mathcal{S}}{\sim}
+			\end{equation*}
+			where $\sim$ is a relation on $\mathcal{S}$: $(a_n)_n \sim (b_n)_n$ if $\pabs{a_i - b_i} \to 0$ as $i \to +\infty$.
+		\end{defn}
+		\begin{prop}
+			$\Qp$ is well defined and there's a natural sum and product on $\Qp$ which makes $(\Qp, +, \cdot)$ a field.
+		\end{prop}
+		\begin{proof}
+			$\Qp$ is well defined, in the sense that $\sim$ is an equivalence relation on $\mathcal{S}$ (easy to verify). First of all we can immerge $\Q$ in $\mathcal{S}$ (and then in $\Qp$) sending $x$ to $\{x\}$, the constant sequence (it's immediate that $\{x'\} \sim \{x\} \iff x = x'$ so this is really an immersion). From now on we'll do a little abuse of notation, not to result too pedantic: $0$ will denote both $\{0\}$ (the constant sequence) and $[\{0\}]$ (its equivalence class), context will clarify which is the right meaning. \newline
+			% Sum and product
+			There's a natural extension of the classical sum and product on $\Q$ to $\Qp$, which makes it a field. Let $a, b \in \Qp$, we define $a + b := [(a_n + b_n)_n]$ where $(a_n)_n, (b_n)_n$ are two representatives of $a$ and $b$ respectively. It is easy to see that this is well defined: the sum of two Cauchy is still a Cauchy and $a + b$ doesn't depend on the choice of the representatives. Similarly the product of $a \cdot b := [(a_n \cdot b_n)_n]$ is well defined: product of two Cauchy is Cauchy and given $(a'_n)_n \sim (a_n)_n$ and $(b'_n)_n \sim (b_n)_n$ we have
+			\begin{gather*}
+				0 \leq \lim_{i \to +\infty} \pabs{a_ib_i - a'_ib'_i} = \lim_{i \to +\infty} \pabs{a_i(b_i - b'_i) + b'_i(a_i - a'_i)} \leq  \\
+				\leq \lim_{i \to +\infty} \pabs{a_i}\pabs{b_i -b'_i} + \lim_{i \to +\infty} \pabs{b'_i}\pabs{a_i - a'_i} = 0
+			\end{gather*}
+			where we used that if $(a_n)_n$ is Cauchy then it is bounded in norm. Then the definition doesn't depend on the choice of the representatives (the first claim above can be proved in the exact same way).\newline
+			It's easy to see $(\Qp, +)$ is a group, because $0$ is the neutral element and additive inverses are defined in the trivial way. To see that also $(\Qp^\times, \cdot)$ is a group let's first note that every sequence $(a_n)_n$ is equivalent to $(a'_n)_n$ where $a'_i = p^i$ if $a_i = 0$ and $a'_i = a_i$ otherwise. Associativity holds and the neutral element is $1 = [\{1\}] \neq 0$. The only non-trivial property to prove is the existence of multiplicative inverses: if $a \neq 0$ then if $a = [(a_n)_n]$ (where $(a_n)_n$ is chosen without zeros) then $1/a = [(1/a_n)_n]$. We have to show that $(1/a_n)_n$ is Cauchy: let $N \in \N$ large enough such that $\exists \varepsilon > 0$ and $\pabs{a_n} > \varepsilon$ $\forall n > N$ (see proof of \cref{prop:padic-is-norm}) and that $n, m > N \implies \pabs{a_n - a_m} < \varepsilon^3$; if $n, m > N$ we obtain
+			\begin{equation*}
+				\pabs{\frac{1}{a_n} - \frac{1}{a_m}} = \pabs{\frac{a_m - a_n}{a_na_m}} = \frac{1}{\pabs{a_na_m}}\pabs{a_m - a_n} \leq \frac{1}{\varepsilon^2} \varepsilon^3 = \varepsilon.
+			\end{equation*}
+			Using the same exact technique we can prove that $1/a$ is well defined, i.e. if $(a_n)_n$ and $(a'_n)_n$ are both non-zero representatives of $a$ then $(1/a_n)_n \sim (1/a'_n)_n$. Obviously this product is abelian. It is also easy to prove that distributivity holds, i.e. given $a, b, c \in \Qp$ $a \cdot (b + c) = a\cdot b + a \cdot c$ (it's sufficient to note that $a \cdot (b + c) = [(a_n \cdot (b_n + c_n))_n] = [(a_n \cdot b_n + a_n \cdot c_n)_n]$). So we have finally proved that $(\Qp, +, \cdot)$ is a field, containing $\Q$ as a subfield (the immersion defined at the beginning is in-fact a ring morphism between $\Q$ and $\Qp$, representing the natural identification of $\Q$ in $\Qp$).
+		\end{proof}
+		
+		
+		% Norm Extension
+		We have then to extend the norm $\pabs{\ }$ to $\Qp$: if $a \in \Qp$ then $\pabs{a} := \lim_{i \to +\infty} \pabs{a_i}$ where $(a_n)_n$ is any representative of $a$.
+		\begin{prop}
+			\label{prop:padic-is-norm}
+			$\pabs{\ }$ is a norm on $\Qp$.
+		\end{prop}
+		\begin{proof}
+			First of all we prove that, chosen a representative $(a_n)_n$ of $a$, $\exists \lim_{i \to +\infty} \pabs{a_i}$. We have two cases:
+			\begin{enumerate}
+				\item if $a = 0$, by definition, $\lim_{i \to +\infty}\pabs{a_i} = 0$;
+				\item if $a \neq 0$ then $(a_n)_n \nsim 0$ so $\exists \varepsilon > 0$ and for every $N \in \N$ there exists $i_N > N$ such that $\pabs{a_{i_N}} > \varepsilon$. Since $(a_n)_n$ is Cauchy, choosing $N$ large enough such that $\pabs{a_i - a_j} < \varepsilon$ $\forall i,j > N$ we have that $\pabs{a_i - a_{i_N}} < \varepsilon$ $\forall i>N$. Using the isosceles triangle principle we get $\pabs{a_i} = \pabs{a_{i_N}}$ for every $i > N$, so trivially the limit exists.
+			\end{enumerate}
+			Now we prove that this is well defined, i.e. $\pabs{a}$ doesn't depend on the choice of the representative of $a$. Let $(a_n)_n, (b_n)_n$ two representatives of $a$, then $(a_n)_n \sim (b_n)_n$ which means $\lim_{i \to +\infty} \pabs{a_i - b_i} = 0$. Now by the reverse triangular inequality
+			\begin{equation*}
+				0 \leq \lim_{i \to +\infty} \abs{\pabs{a_i} - \pabs{b_i} } \leq \lim_{i \to +\infty} \pabs{a_i - b_i} = 0 \implies \lim_{i \to +\infty} \pabs{a_i} = \lim_{i \to +\infty} \pabs{b_i}.
+			\end{equation*}
+			The property $1.$ of norms is proved in the case  above. Property $2.$ and $3.$ immediately follows from the ones of $\pabs{\ }$ on $\Q$ and basic limit rules.
+		\end{proof}
+		\begin{prop}
+			$(\Qp, \pabs{\ })$ is complete.
+		\end{prop}
+		\begin{proof}
+			We have to prove that if $(a_n)_n$ is a Cauchy sequence in $\Qp$ for $\pabs{\ }$ then there exists $a \in \Qp$ such that $a = \lim_{i \to +\infty} a_i$. Let $a_n = [(a_{n,m})_{m \in \N}]$ where $(a_{n,m})_m$ is a Cauchy sequence in $\Q$. Let $N_j \in \N$ such that $\forall$ $n, m > N_j$ $\pabs{a_{j, m} - a_{j, n}} < 1/j$. Now, choosing $k_j > \max \{N_j, k_{j-1} \}$, we claim that $[(a_{n, k_n})_n] \in \Qp$ is the limit of the sequence at the beginning. First of all we prove that $(a_{n, k_n})_n$ is a Cauchy sequence in $\Q$: 
+			\begin{gather*}
+				\pabs{a_{n, k_n} - a_{m, k_m}} = \pabs{ a_{n, k_n} - a_{n, j} + a_{n, j} - a_{m, j} + a_{m, j} - a_{m, k_m} } \leq  \\
+				\leq \max \left\{\pabs{a_{n, k_n} - a_{n, j} }, \pabs{a_{n, j} - a_{m, j}}, \pabs{a_{m, j} - a_{m, k_m} } \right\}.
+			\end{gather*} 
+			Choosing a large enough $j \in \N$ we obtain $\pabs{a_{n, k_n} - a_{n, j} } < 1/n$ and $\pabs{a_{m, j} - a_{m, k_m} } < 1/m$. Since $(a_n)_n \subseteq \Qp$ is a Cauchy sequence, for every $\varepsilon > 0$ $\exists N \in N$ such that $n, m > N \implies \pabs{a_n - a_m} < \varepsilon$, meaning $\lim_{j \to +\infty} \pabs{a_{n, j} - a_{m, j}} < \varepsilon$. From here we can see that $\exists N' \in \N$ such that $j > N' \implies \pabs{a_{n, j} - a_{m, j} } < \varepsilon$ so we can also control the other term above. We proved that $(a_{n, k_n})_n$ is a Cauchy sequence. \newline
+			Now we show that its equivalence class, let it be $a \in \Qp$, is actually the limit of $(a_n)_n$, i.e. 
+			\[
+				0 = \lim_{n \to +\infty} \pabs{a_n - a} = \lim_{n \to +\infty} \left( \lim_{j \to +\infty} \pabs{a_{n, j} - a_{j, k_j} } \right).
+			\]
+			Fixed $\varepsilon > 0$ we know that $\exists N \in \N$ such that $n, m > N \implies \pabs{a_{n, k_n} - a_{m, k_m} } < \varepsilon$. Choosing $\N \ni n > \max \{N, 1/\varepsilon \}$ we have
+			\begin{equation*}
+				\pabs{a_{n, j} - a_{j, k_j} } \leq \max \left\{\pabs{a_{n, j} - a_{n, k_n}}, \pabs{a_{n, k_n} - a_{j, k_j} } \right\}.
+			\end{equation*}
+			If $j > \max\{k_n, N\}$ then $\pabs{a_{n, j} - a_{n, k_n}} < 1/n < \varepsilon$ and $\pabs{a_{n, k_n} - a_{j, k_j} } < \varepsilon$ so 
+			\[
+				\lim_{j \to +\infty} \pabs{a_{n, j} - a_{j, k_j} } \leq \varepsilon.
+			\]
+			Thesis easily follows from the fact that $\varepsilon$ is arbitrary.
+		\end{proof}
+		\begin{prop}
+			\label{prop:Q-dense-in-Qp}
+			$\Q$ is dense in $\Qp$.
+		\end{prop}
+		\begin{proof}
+			Chosen $a = [(a_n)_n] \in \Qp$ and $\varepsilon > 0$ we know that $\exists N \in \N$ such that $n > m > N \implies \pabs{a_n - a_m} < \varepsilon$. Now, fixed $n \in \N$ we have that $a_n \in \Q$ is identified with $a' = \{a_n\} \in \Qp$, the equivalence class of the constant sequence $(a_n, a_n, a_n, \dots)$. Now $\pabs{a - a'} = \lim_{j \to +\infty} \pabs{a_j - a_n}$ which is clearly no bigger than $\varepsilon$ (we can consider $j > N$).
+		\end{proof}
+		Up to now we have proved that $(\Qp, \pabs{\ })$ is actually the completion of $(\Q, \pabs{\ })$. Obviously we're not going to work using this abstract construction, thanks to the following result.\newline
+		First we'll need a technical lemma.
+		\begin{lemma}
+			\label{lemma:integer-representation-Qp}
+			If $x \in \Q$ and $\pabs{x} \leq 1$ then $\forall i \in \N$ $\exists \alpha \in \Z$ such that $\pabs{\alpha - x} \leq p^{-i}$. The integer $\alpha$ can be chosen in $\{0, 1, \dots, p^i-1\}$.
+		\end{lemma}
+		\begin{proof}
+			Let $x = a/b$ written in lowest terms. The fact that $\pabs{x} \leq 1$ means exactly $p \nmid b$ so, since $p$ is a prime number, $p^i$ and $b$ are coprime; thanks to Bézout identity $\exists m, n \in \Z$ $mb + np^i = 1$. Letting $\Z \ni \alpha := am$ we get
+			\begin{equation*}
+				\pabs{\alpha - x} = \pabs{am - \frac{a}{b}} = \pabs{\frac{a}{b}}\pabs{mb - 1} \leq \pabs{mb - 1} = \pabs{np^i} = \frac{\pabs{n}}{p^i} \leq \frac{1}{p^i}
+			\end{equation*}
+			since $\pabs{x} = \pabs{a/b} \leq 1$ and $\pabs{n} \leq 1$ if $n \in \Z$. Adding the right multiple of $p^i$ to $\alpha$ we can get an integer between $0$ and $p^i - 1$ still satisfying the above inequality.
+		\end{proof}
+		\begin{thm}
+			\label{thm:representation-Qp}
+			Every $a \in \Qp$ with $\pabs{a} \leq 1$ has exactly one representative $(a_i)_{i \in \N}$ such that for every $i \in \N$:
+			\begin{enumerate}
+				\item $a_i \in \{0, 1, \dots, p^{i+1}-1\}$;
+				\item $a_i \equiv a_{i+1} \mod p^{i+1}$.
+			\end{enumerate}
+		\end{thm}
+		\begin{proof}
+			We first prove uniqueness: let $(a'_i)_i$ a different sequence satisfying \textit{1}. and \textit{2.} If $a_{i_0} \neq a'_{i_0}$ then $a_{i_0} \not\equiv a'_{i_0} \mod p^{i_0 + 1}$ since they are both between $0$ and $p^{i_0 + 1}$. Now if $i \geq i_0$ we have
+			\[
+				a_i \equiv a_{i_0} \not\equiv a'_{i_0} \equiv a'_i \mod p^{i_0 + 1} \implies \pabs{a_i - a'_i} > \frac{1}{p^{i_0 + 1}},
+			\]
+			meaning $(a'_i)_i \nsim (a_i)_i$.\newline
+			Now we prove existence. Let $(b_i)_i$ be any of the representatives of $a$ and let $N(j) \in \N$ such that $n, m \geq N(j) \implies \pabs{b_n - b_m} \leq p^{-j-1}$ for every $j \in \N$. We can choose the sequence $(N(j))_{j \in \N} \subseteq \N$ strictly increasing with $j$, in particular with $N(j) > \max \{j, N(j-1)\}$. We immediately note that if $i \geq N(0)$ then $\pabs{b_i} \leq 1$ because for every $j \geq N(0)$
+			\begin{equation*}
+				\pabs{b_i} \leq \max\left\{\pabs{b_j}, \pabs{b_i - b_j} \right\} \leq \max\left\{\pabs{b_j}, \frac{1}{p}\right\}
+			\end{equation*}
+			and $\lim_{j \to +\infty} \pabs{b_j} = \pabs{a} \leq 1$. Using \cref{lemma:integer-representation-Qp} we can find $a_j \in \Z$ such that $0 \leq a_j < p^{j+1}$ and $\pabs{a_j - b_{N(j)} } \leq 1/p^{j+1}$, because $\pabs{b_{N(j)}} \leq 1$. We'll show that $(a_n)_n$ is the desired sequence. Obviously it's Cauchy because
+			\begin{equation*}
+				\pabs{a_n - a_m} \leq \max\left\{\pabs{a_n - b_{N(n)} }, \pabs{b_{N(n)} - b_{N(m)}}, \pabs{b_{N(m)} - a_m}  \right\}
+			\end{equation*}
+			and, choosing $n, m$ large enough, we can control all those three terms. Property \textit{1}. is already verified by construction so we have only to prove that $a_{j+1} \equiv a_j \mod p^{j+1}$ and that $(a_n)_n \sim (b_n)_n$. The former follows from
+			\begin{gather*}
+				\pabs{a_{j+1} - a_j} \leq \max\left\{ \pabs{a_{j+1} - b_{N(j+1)} }, \pabs{b_{N(j+1)} - b_{N(j)}}, \pabs{b_{N(j)} - a_j} \right\} \leq \\
+				\leq \max\left\{\frac{1}{p^{j+2}}, \frac{1}{p^{j+1}}, \frac{1}{p^{j+1}} \right\} \leq \frac{1}{p^{j+1}}.
+			\end{gather*}
+			To prove the latter, for every $j$, if $i > N(j)$ we have
+			\begin{gather*}
+				\pabs{a_i - b_i} \leq \max\left\{\pabs{a_i - a_j}, \pabs{a_j - b_{N(j)}}, \pabs{b_{N(j)} - b_i} \right\} \leq \\
+				\leq \max\left\{\frac{1}{p^{j+1}},  \frac{1}{p^{j+1}}, \frac{1}{p^{j+1}} \right\} = \frac{1}{p^{j+1}}
+			\end{gather*}
+			because $a_i \equiv a_{i+1} \equiv a_{i+2} \equiv \dots \equiv a_j \mod p^{i+1}$. So $\lim_{j \to +\infty} \pabs{a_j - b_j} = 0$, i.e. $(a_i)_i \sim (b_i)_i$.
+		\end{proof}
+		So we have a ``canonical'' representative for every $a \in \Qp$ with $\pabs{a} \leq 1$, let it be $(a_n)_n$. Since $a_i \in \{0, 1, \dots, p^{i+1} - 1\}$ we can write it using base $p$, i.e.,
+		\begin{equation*}
+			a_i = b_0 + b_1p + b_2p^2 + \dots + b_ip^i
+		\end{equation*}
+		where $b_i \in \{0, 1, \dots, p-1\}$. Property \textit{2}. of \cref{thm:representation-Qp} tells us exactly that
+		\begin{equation*}
+			a_{i+1} = b_0 + b_1p + b_2p^2 + \dots + b_ip^i + b_{i+1}p^{i+1}
+		\end{equation*}
+		i.e. the first $i+1$ digits (from $b_0$ to $b_i$) are the same, because $\pabs{a_{i+1} - a_i} \leq 1/p^{i+1}$. So we can write, just as a notation,
+		\begin{equation*}
+			a = \sum_{i=0}^{+\infty} b_ip^i = b_0 + b_1p + b_2p^2 + \dots
+		\end{equation*}
+		the so called \padic expansion of $a$. It's easy to see that $\pabs{a} = p^{-k}$ where $k$ is the minimum integer such that $b_k \neq 0$ ($k = +\infty$ if $a=0$). This notation makes sense only if $\pabs{a} \leq 1$ but it can be used for every element of $\Qp$ with a little refinement: let $a' \in \Qp$ with $\pabs{a'} = p^m > 1$ ($m \in \N^{\times}$); then $\pabs{p^{m}a'} = \pabs{p^m}\pabs{a'} = 1$ so we can expand it like before
+		\begin{equation*}
+			p^ma' = \sum_{i=0}^{+\infty} b_ip^i
+		\end{equation*}
+		and multiplying both sides by $p^{-m}$ we obtain
+		\begin{equation*}
+			a' = p^{-m} \sum_{i=0}^{+\infty} b_ip^i = \sum_{i=0}^{+\infty} b_ip^{i-m} = \frac{b_0}{p^m} + \frac{b_1}{p^{m-1}} + \dots + \frac{b_{m-1}}{p} + b_m + b_{m+1}p + \dots
+		\end{equation*}
+		which can be thought as a \padic expansion with a finite number of decimal digits. So we have a unique canonical way to write every element of $\Qp$, which is way more practical than the abstract description. For example it is now easy to actually perform arithmetic operations: sum, difference, multiplication and division can be done applying the exact same algorithm that we use to perform them between integers, except that now we have to proceed with infinite digits (and actions like ``carrying'' or ``borrowing'' work from left to right). 
+		\begin{defn}
+			Given $a, b \in \Qp$ and $n \in \N^{\times}$ we say that $a \equiv b \mod p^n$ if $\pabs{a - b} \leq 1/p^n$.
+		\end{defn}
+		It's easy to check that if $a, b \in \Z$ this definition is exactly the old-fashioned congruence.
+		\begin{defn}
+			$\Zp := \Set{x \in \Qp | \pabs{x} \leq 1}$ is called the set of \emph{\padic integers}.
+		\end{defn}
+		It's easy to verify that $\Zp$ is a subring of $\Qp$ (immediate from properties of $\pabs{\ }$). Its invertible elements are exactly
+		\[
+			\Zp^{\times} = \Set{x \in \Zp | \frac{1}{x}\in \Zp} = \Set{x \in \Zp | x \not \equiv 0 \mod p} = \Set{x \in \Zp | \pabs{x} = 1}.
+		\]
+		We can now justify our initial notations, which is actually a ``real'' equality and not just a way to write things, thanks to the following lemma.
+		\begin{lemma}
+			Let $(c_i)_i \subseteq \Qp$ such that $\lim_{i \to +\infty} c_i = 0$. Then the series
+			\begin{equation*}
+				\sum_{i=0}^{+\infty} c_i
+			\end{equation*}
+			converges in $\Qp$.
+		\end{lemma}
+		\begin{proof}
+			We need to show that the sequence of partial sums converge, i.e. $(S_n)_n \subseteq \Qp$ has limit, where $S_n := c_0 + c_1 + \dots + c_n$. Since $\Qp$ is complete it's sufficient to prove $(S_n)_n$ is Cauchy. Fixed $\varepsilon > 0$ $\exists N \in \N$ such that $i > N \implies \pabs{c_i} < \varepsilon$; so if $n, m > N$ we have 
+			\begin{equation*}
+				\pabs{S_n - S_m} = \pabs{c_{n+1} + \dots + c_m} \leq \max\left\{\pabs{c_{n+1}}, \dots, \pabs{c_m} \right\} < \varepsilon
+			\end{equation*}
+			so $(S_n)_n$ is Cauchy.
+		\end{proof}
+		We can use this lemma with $c_i = b_ip^{i-m}$, for $m \in \N$ and $b_i \in \{0, 1, \dots, p^i - 1\}$, because $\pabs{c_i} = \pabs{b_i}\pabs{p^{i-m}} \leq 1 \cdot p^{m - i} \to 0$ as $i \to +\infty$. We conclude that every \padic expansion
+		\[
+			\sum_{i=0}^{+\infty} b_ip^{i-m}
+		\]
+		actually converges to some element in $\Qp$ (and, clearly, our notation is coherent). This lemma is also a much cleaner results on series: they converge if and only if the general term approaches zero, unlike in $(\R, \abs{\ }_\infty)$ where there are divergent series like $1 + \frac{1}{2} + \frac{1}{3} + \dots = \sum_{n=1}^{+\infty} 1/n$. There is a very nice result about \padic expansions: while the writing of rational numbers using base 10 is not unique ($0.99999\ldots = 1$), in $\Qp$ \padic expansions are unique, i.e. if two expansions have different digits they converge to totally different numbers.
+		\begin{lemma}
+			\label{lemma:Q-in-Qp}
+			Given $a = p^k \sum_{i=0}^{+\infty} a_ip^i \in \Qp$, its \padic expansion is periodic, i.e. $\exists r, N \in \N$ such that $a_i = a_{i+r}$ for every $i > N$, if and only if $a \in \Q$.
+		\end{lemma}
+		\begin{proof}
+	 	To see that every periodic \padic number is rational we can write
+			\begin{equation*}
+			a = \sum_{i=-k}^{+\infty} a_ip^i = (a_{-k}p^{-k} + \dots + a_{m-1}p^{m-1}) + p^m\sum_{i=0}^{+\infty} (b_0 + b_1p + \dots + b_{n-1}p^{n-1})p^{in}
+			\end{equation*}
+			with the obvious meaning: $\Q \ni q := a_{-k}p^{-k} + \dots + a_{m-1}p^{m-1}$ is the anti-period and $(b_0, \dots, b_{n-1})$ is the period. It is an easy calculation to verify that if $\alpha \in \N^{\times}$
+			\begin{equation*}
+			\sum_{i=0}^{+\infty} p^{i\alpha} = \frac{1}{1 - p^\alpha}.
+			\end{equation*}
+			Using this identity we get
+			\begin{equation*}
+				a = q + (b_0 + b_1p + \dots + b_{n-1}p^{n-1})\cdot p^m \cdot \sum_{i=0}^{+\infty} p^{in} = q + (b_0 + b_1p + \dots + b_{n-1}p^{n-1})\cdot\frac{p^m}{1 - p^n}
+			\end{equation*}
+			which is clearly in $\Q$.\newline
+			To prove that every $q \in \Q$ has a periodic \padic expansion we'll need a little more work. First of all let's note that if $a \in \Qp$ admits a periodic representation also $-a$ admits one: given
+			\begin{equation*}
+				a = \sum_{i=-k}^{+\infty} a_ip^i = (a_{-k}p^{-k} + \dots + a_{m-1}p^{m-1}) + p^m\sum_{i=0}^{+\infty} (b_0 + b_1p + \dots + b_{n-1}p^{n-1})p^{in}
+			\end{equation*}
+			we have 
+			\begin{gather*}
+				-a = (p - a_{-k})p^{-k} + (p - 1 - a_{-k+1})p^{-k+1} +  \dots + (p - 1 - a_{m-1})p^{m-1} +\\
+				+ p^m\sum_{i=0}^{+\infty} \left[(p - 1 - b_0) + (p - 1 - b_1)p + \dots + (p - 1 - b_{n-1})p^{n-1}\right]p^{in}
+			\end{gather*}
+			i.e. the period is $(p-1-b_0, p-1-b_1, \dots, p-1-b_n)$ (the relation above is true if $a$ admits a non zero anti-period, but it's almost the same if it does not).\newline
+			Now let $\Q \ni a/b = p^k\cdot(t/s)$ with $p \nmid ts$. We'll show that $t/s$ admits a periodic expansion (then we can conclude immediately). Since $p$ is prime $p \nmid ts \implies p \nmid s$ so $p$ and $s$ are coprime and, thanks to Euler's theorem, $1 - p^{\phi(s)} = \alpha s$ with $\alpha \in \Z_{\leq0}$ (where $\phi$ is the Euler's totient function). So we have
+			\begin{equation*}
+				\frac{t}{s} = \frac{\alpha t}{1 - p^{\phi(s)} } = \alpha t \cdot \left(\frac{1}{1 - p^{\phi(s)}} \right).
+			\end{equation*}
+			Now it's sufficient to prove that $\abs{\alpha t}/(1 - p^{\phi(s)})$ is periodic (because sign doesn't matter). As said before we know that $(1 - p^{\phi(s)})^{-1} = \sum_{i=0}^{+\infty} p ^ {\phi(s)i}$ and that $\abs{\alpha t} \in \N$ has a finite \padic expansion (i.e. definitively zero). It's easy to see that also their product is periodic.
+		\end{proof}
+		Using this characterization of $\Q$ in $\Qp$ we can give another proof (a posteriori) of the non-completeness of $(\Q, \pabs{\ })$. Obviously, this proof is much easier than the proof of \cref{prop:Q-not-complete}, because it already uses the structure of $\Qp$.
+		\begin{prop}
+			$(\Q, \pabs{\ })$ is not complete.
+		\end{prop}
+		\begin{proof}
+			Using the density of $\Q$ in $\Qp$, proved in \cref{prop:Q-dense-in-Qp}, we just need to find some element $e \in \Qp \setminus \Q$, because then we'll have a Cauchy sequence in $(\Q, \pabs{\ })$ which doesn't converge to any rational. Thanks to \cref{lemma:Q-in-Qp} we know that every element of $\Q$ corresponds to a periodic expansion in $\Qp$ and vice-versa, so $e$ can be every infinite \padic expansion which is not periodic, like for example
+			\begin{equation*}
+				e = 1 + p^2 + p^4 + p^8 + \dots = \sum_{i=0}^{+\infty} p^{2^i}.\qedhere
+			\end{equation*}
+		\end{proof}

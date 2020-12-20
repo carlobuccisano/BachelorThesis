@@ -1,0 +1,784 @@
+\chapter{\padic power series}
+	\section{Elementary functions}
+		In many of the following reasonings we'll use the next proposition, which will give us the possibility to manipulate formal power series, knowing their behaviour in some neighbourhood of $0$.
+		\begin{prop}
+			\label{prop:formal-series}
+			Let $f(X_1, \dots, X_n) \in \C\llbracket X_1, \dots, X_n \rrbracket$ be a power series and  let $\epsilon > 0$ such that $f$ is absolutely convergent on $[-\epsilon, \epsilon]^n$ and $f(x_1, \dots, x_n) = 0$ for every $x_i \in [-\epsilon, \epsilon]$. Then $f \equiv 0$, i.e. all terms of $f$ vanishes.
+		\end{prop}
+		\begin{proof}
+			We prove the proposition by induction on $n$.
+			\begin{itemize}
+				\item $n=1$: let 
+				\[
+					f(X) = \sum_{i=0}^{+\infty} a_iX^i.
+				\]
+				Obviously $f(0) = a_0 = 0$ so we can write $f(X) = X \cdot(a_1 + a_2X + \dots) =: X \cdot f_1(X)$. Now $f_1(X) \in \C\llbracket X \rrbracket$ vanishes for every $x \in [-\epsilon, \epsilon] \setminus \{0\}$. It is well known from complex analysis that a formal power series in $\C$ defines a holomorphic function where it converges (so, in particular, it's continuous). We then obtain that $f_1$ is continuous so $f_1(0) = 0$, i.e. $a_1 = 0$. Then we can write $f(X) = X^2 \cdot (a_2 + a_3X + \dots) =: X^2 \cdot f_2(X)$, where $f_2(x) = 0$ for every $x \in [-\epsilon, \epsilon] \setminus \{0\}$. Iterating this process we obtain $a_n = 0$ for each $n \in \N$ so $f \equiv 0$.
+				\item $n>1$: let's assume that the thesis holds for every $i < n$ and let's prove it for $n$. For brevity, let $Y = (X_1, \dots, X_{n-1})$. Since $f$ is absolutely convergent we can write 
+				\[
+					f(Y, X_n) = \sum_{i=0}^{+\infty} g_i(Y)X_n^i, \qquad g_i(Y) \in \C\llbracket Y \rrbracket.
+				\]
+				For $x_n = 0$ we have $f(y, 0) = g_0(y) = 0$ for $y \in [-\epsilon, \epsilon]^{n-1}$. Then, by induction, $g_0 \equiv 0$ so
+				\[
+					f(Y, X_n) = X_n \cdot (g_1(Y) + g_2(Y)X_n + \dots) =: X_n \cdot f_1(Y, X_n)
+				\]
+				and by hypothesis $f_1(y, x_n) = 0$ for every $y \in [-\epsilon, \epsilon]^{n-1}, x_n \in [-\epsilon, \epsilon] \setminus \{0\}$. Clearly, fixed $y \in [-\epsilon, \epsilon]^{n-1}$, the function $X \mapsto f_1(y, X)$ is a continuous function so $f_1(y, 0) = \lim_{x \to 0} f_1(y, x) = 0$. We have obtained $0 \equiv f_1(Y, 0) = g_1(Y)$ so, by inductive hypothesis, $g_1(Y) \equiv 0$ and we can write
+				\[
+					f(Y, X_n) = X_n^2 \cdot (g_2(Y) + g_3(Y)X_n + \dots) =: X_n^2 \cdot f_2(Y, X_n)
+				\]
+				where $f_2(y, x_n) = 0$ if $y \in [-\epsilon, \epsilon]^{n-1}, x_n \in [-\epsilon, \epsilon] \setminus \{0\}$. Iterating this process we obtain $g_n(Y) \equiv 0$ for every $n \in \N$, i.e. $f \equiv 0$.
+			\end{itemize}
+		\end{proof}
+		Another important lemma about \padic power series is the Dwork's lemma. It expresses an important phenomenon in \padic analysis: if we know $F(X^p)/(F(X)^p)$ then we also know something about $F$. This ratio represents how far off $F$ is from commuting with the $p$-power map, which is a very important map also in different contexts (e.g. Frobenius morphism for characteristic $p$ fields).
+		\begin{lemma}[Dwork's lemma]
+			\label{lemma:dwork}
+			Let $F(X) \in 1 + X\Qp\ser{X}$. Then $F(X) \in 1 + X\Zp\ser{X}$ if and only if $\tfrac{F(X^p)}{F(X)^p} \in 1 + pX\Zp\ser{X}$.
+		\end{lemma}
+		\begin{proof}
+			If $F(X) \in 1 + X\Zp\ser{X}$ then, since $(a + b)^p \equiv a^p + b^p \mod p$ and $a^p \equiv a \mod p$ if $a \in \Zp$, we have
+			\[
+			F(X)^p = F(X^p) + pG(X) \qquad \exists G(X) \in X\Zp\ser{X}.
+			\]
+			Then
+			\[
+			\frac{F(X^p)}{F(X)^p} = 1 - p\cdot\frac{G(X)}{F(X)^p} \in 1 + pX\Zp\ser{X},
+			\]
+			because $F(X)^p \in 1 + X\Zp\ser{X}$ so it can be inverted.\newline
+			For the other implication let
+			$F(X) = \sum a_iX^i$; by hypothesis we know that $\exists G(X) = \sum b_iX^i$ such that $G(X) \in 1 + pX\Zp\ser{X}$ and 
+			\[
+			F(X^p) = F(X)^p\cdot G(X)
+			\]
+			We'll prove by induction that $a_i \in \Zp$. By assumption $F(X) \in 1 + X\Qp\ser{X}$ so $a_0 = 1$. Let's now suppose that $a_i \in \Zp$ for every $i < n$. Looking at the coefficients of $X^n$ on both sides of the above equation we obtain
+			\begin{gather*}
+				\text{coefficient of $X^n$ in } \left(\sum_{i=0}^n a_iX^i\right)^p\cdot\left(1 + \sum_{i=1}^n b_iX^i\right) = 
+				\begin{cases}
+					a_{n/p}, & \text{if $p$ divides $n$;}\\
+					0, & \text{otherwise;}
+				\end{cases}.
+			\end{gather*}
+			Expanding the expression for the coefficient of $X^n$ on the left and subtracting $a_{n/p}$ (recall that $a_{n/p}^p \equiv a_{n/p} \mod p$) we notice that the resulting expression consists of $pa_n$ added to some terms in $p\Zp$ so we can conclude that $pa_n \in p\Zp$, i.e. $a_n \in \Zp$. (To see why this is true it can be convenient to recall the formula $(x_1 + \dots + x_n)^m = \sum_{i_1 + \dots + i_n = m} \binom{m}{i_1, \dots, i_n} x_1^{i_1}\dots x_n^{i_n}$).
+		\end{proof}
+	
+		We'll also prove here a technical lemma, which we will use to study the \padic logarithm.
+		\begin{lemma}
+			\label{exercise:7-p.74}
+			Let $a$ be a primitive $m$-th root of $1$ in $\Qpa$. Then
+			\begin{enumerate}[label=(\roman*)]
+				\item if $m = p^n$ for some $n \in \N$ then $\pabs{a-1} = p^{-1/\phi(p^n)}$;
+				\item otherwise, $\pabs{a-1} = 1$.
+			\end{enumerate}
+		\end{lemma}
+		\begin{proof}
+			Let $\Phi_n(X) \in \Zp[X]$ be the $n$-th cyclotomic polynomial. \newline
+			\textit{(i)} To prove this case we'll do an induction on $n$. The case $n=0$ is trivial, since $a = 1$. If $n=1$ then $a$ is a primitive $p$-th root of $1$, i.e. $a^p = 1, a \neq 1$, so $\Phi_p(a) = 0$. By Eisenstein criterion (\cref{prop:eisenstein}) it is easy to prove that $\Phi_p(X)$ is irreducible over $\Qp$. We consider then 
+			\[
+				f(X) := \Phi_p(X + 1) = \frac{(X + 1)^p - 1}{X} =  X^{p-1} + \binom{p}{p-1} X^{p-2} + \dots + \binom{p}{2}X + p.
+			\]
+			Clearly $f(X) \in \Qp[X]$ is irreducible and $f(a - 1) = 0$ so, recalling how we extended $\pabs{\ }$ to $\Qpa$, we have
+			\[
+				\pabs{a - 1} = \pabs{p}^{1/(p-1)} = p^{-1/(p-1)}
+			\]
+			which concludes the proof of the case $n=1$. Now, suppose we know the thesis holds for $m=p^i, i < n$ and let's prove it also holds for $m=p^n$. If we consider the extension $K = \Qp(a)$ with the usual notation ($A$ is the maximal subring and $M$ is its maximal ideal), it is easy to note that $\pabs{a} = 1$ and
+			\[
+				a^{p^n} = 1 \implies a^{p^n} \equiv 1 \mod M
+			\]
+			and since $A/M$ is a finite field of characteristic $p$ we obtain
+			\[
+				a \equiv 1 \mod M
+			\]
+			which means exactly $a = 1 + b$ for some $b \in K, \pabs{b} < 1$. We recall the easy facts
+			\[
+				\deg \Phi_{p^n}(X) = \phi(p^n) = p^n - p^{n-1}, \qquad \Phi_{p^n}(X) = \Phi_p \left(X^{p^{n-1}}\right)
+			\]
+			which imply $\Phi_{p^n}(1) = \Phi_p(1) = p$. Since $a$ is a primitive $p^n$-th root of $1$, every other primitive $p^n$-th root of $1$ is $a^j$, with $p \nmid j$, so
+			\[
+				\Phi_{p^n}(X) = \prod_{1 \leq j < p^n, p \nmid j} (X - a^j).
+			\]
+			Evaluating at $X = 1$ we obtain
+			\[
+				\pabs{p} = \prod_{1 \leq j < p^n, p \nmid j} \pabs{1 - a^j}.
+			\]
+			Using the fact $a \equiv 1 \mod M$ we can see that
+			\[
+				\frac{1 - a^j}{1 - a} = 1 + a + \dots + a^{j-1} \equiv j \mod M
+			\]
+			and if $p \nmid j$ we obtain
+			\[
+				\pabs{\frac{1 - a^j}{1 - a}} = 1
+			\]
+			so $\pabs{1 - a^j} = \pabs{1 - a}$, which implies $\pabs{1 - a} = \pabs{p}^{1/\phi(p^n)}$.\newline
+			\textit{(ii)} First of all let's consider the basic case $p \nmid m$. Then, $a -1$ is a root of the polynomial
+			\[
+				f(X) = \Phi_m(X+1) = X^{m-1} + \dots + m = g_1(X) \dotsm g_r(X)
+			\]
+			where $g_i(X) \in \Qp[X]$ is an irreducible factor of $f$, and we can assume that every $g_i(X)$ is monic and has coefficients in $\Zp$. By hypothesis $\pabs{m} = 1$ and if $b_i$ is the constant term of $g_i(X)$ we have
+			\[
+				\pabs{b_1b_2\dotsm b_r} = \pabs{m} = 1, b_i \in \Zp  \implies \pabs{b_i} = 1 \quad \forall \, i=1,\dots,r.
+			\]
+			Since $f(a-1)=0$ there is at least one $g_i(X)$ such that $g_i(a - 1)=0$ so $\lambda_{\Qp}(a - 1) = g_i(X)$. Then
+			\[
+				\pabs{a-1}^{\deg g_i(X)} = \pabs{b_i} = 1 \implies \pabs{a-1} = 1.
+			\]
+			Now let $m = p^nq$ with $p \nmid q$ (clearly $q \in \N_{>1}$) and suppose the thesis holds for every $m \in \N$ such that $m$ is not a power of $p$ and $p^n \nmid m$. Then, if $a$ is a primitive $m$-th root of $1$, $a^p$ is a primitive $(p^{n-1}q)$-th root of $1$ and, by inductive hypothesis, we know
+			\[
+				\pabs{a - 1}\cdot\pabs{a^{p-1} + a^{p-2} + \dots + a + 1} = \pabs{a^p - 1} = 1.
+			\]
+			Since $\pabs{a} = 1$ we have
+			\begin{gather*}
+				\pabs{a-1} \leq 1, \qquad \pabs{a^{p-1} + \dots + 1} \leq 1 \\
+				\implies \pabs{a-1} = 1
+			\end{gather*}
+			which proves the statement.
+		\end{proof}
+		We recall that in an ultrametric space, like $(\Cp, \pabs{\ })$, a sequence is Cauchy if and only if the difference between adjacent terms tends to $0$, and if the space is also complete, an infinite series converges if and only if its general term tends to $0$ (see \cref{lemma:cauchy-sequence-ultrametric} and \cref{prop:summable_families}). Now we are ready to define analytic functions on $\Cp$ and prove some of their basic properties.
+		\begin{defn}
+			A function $f$ is an \emph{analytic function} if
+			\[
+				f(X) = \sum_{n=0}^{+\infty} a_nX^n, \qquad a_n \in \Cp.
+			\]
+			We can define $f(x)$ for every $x \in \Cp$ such that the series converges, i.e. $\pabs{a_nx^n} \to 0$ as $n \to +\infty$. 
+		\end{defn}
+		Like in complex analysis, given an analytic function $f$, we can define its \emph{radius of convergence}. Surprisingly we have the exact same formula as in classic analysis.
+		\begin{prop}
+			Let $f(X) = \sum_{n=0}^{+\infty} a_nX^n$ be an analytic function. We can define its radius of convergence as
+			\[
+				r := \frac{1}{\limsup \pabs{a_n}^{1/n}},
+			\]
+			with the usual meaning: $f$ converges if $\pabs{x} < r$ and diverges if $\pabs{x} > r$.
+		\end{prop}
+		\begin{proof}
+			We recall the definition of $\limsup$: $1/r$ is the least real number such that for any $C > 1/r$ there are only finitely many $\pabs{a_n}^{1/n} > C$. \newline
+			Let's first consider the case $\pabs{x} < r$: we can write $\pabs{x} = (1 - \epsilon)r$ for some $\epsilon > 0$. We have
+			\[
+				\pabs{a_nx^n} = \left(r\pabs{a_n}^{1/n}\right)^n\cdot (1 - \epsilon)^n
+			\]
+			and, if $n$ is big enough, by definition of $r$ we have
+			\[
+				\pabs{a_n}^{1/n} \leq \frac{1}{r - \frac{1}{2}\epsilon r}.
+			\] 
+			Then
+			\[
+				\lim_{n \to +\infty} \pabs{a_nx^n} \leq \lim_{n \to +\infty} \left( \frac{(1 - \epsilon)r}{(1 - \frac{1}{2}\epsilon)r} \right)^n = \lim_{n \to +\infty} \left( \frac{1 - \epsilon}{1 - \frac{1}{2}\epsilon} \right)^n = 0,
+			\]
+			which gives us the desired convergence. \newline
+			Let's now prove that if $\pabs{x} > r$ (and $r < +\infty$) the series diverges. Let's choose an element $\pabs{x} > r$ and an $\epsilon > 0$ such that $\pabs{x} \geq (1 + \epsilon)r$. By definition of $\limsup$ we can find a subsequence $(a_{n_k})_k$ such that $\pabs{a_{n_k}}^{1/n_k} \geq 1/(r + \tfrac{1}{2}\epsilon r)$. Then
+			\[
+				\lim_{k \to +\infty} \pabs{a_{n_k}x^{n_k}} \geq \lim_{k \to +\infty} \left( \frac{1 + \epsilon}{1 +\frac{1}{2} \epsilon} \right) ^ {n_k} = +\infty,
+			\]
+			which implies that $f$ cannot converge. \newline
+			Finally, if $r = +\infty$, i.e. $\lim_{n \to +\infty} \pabs{a_n}^{1/n} = 0$, chosen an element $x \in \Cp^\times$ ($x = 0$ is trivial) we have that, if $n$ is big enough, $\pabs{a_n} \leq 1/(2^n\pabs{x}^n)$ so
+			\[
+				\lim_{n \to +\infty} \pabs{a_nx^n} \leq \lim_{n \to +\infty} 2^{-n} = 0
+			\]
+			and $f$ converges everywhere.
+		\end{proof}
+		This proposition tells us nothing about the case $\pabs{x} = r$. In classical analysis there isn't a simple answer: for example the well known function 
+		\[
+			\log(1 + X) = \sum_{n=1}^{+\infty} (-1)^{n+1} \frac{X^n}{n}
+		\]
+		has radius of convergence $r = 1$ on $\C$. When $\abs{x} = 1$ this series can diverge (for example if $x = -1$ we obtain the divergent series $- \sum 1/n$) or converge (if $x = 1$ we obtain $\sum (-1)^{n+1}/n$, which converges by Leibniz criterion). This happens because, over $\R$, there are conditionally convergent series that aren't absolutely convergent. In \padic analysis this cannot happen because convergence only depends on $\pabs{x}$: a given analytic function behaves exactly in the same way for every $\pabs{x} = r$. We will study more deeply this formal series in $\Cp$ when we'll talk about \padic logarithm.\newline
+		Let's prove two basic facts about analytic functions. For brevity we'll adopt the notation $D_a(r) := B_{\leq r}(a)$ and $D_a(r^-) := B_{<r}(a)$, where we consider the balls in $\Cp$. We'll also omit the subscript $a$ if $a=0$, for example $D(r) = D_0(r) = B_{\leq r}(0)$.
+		\begin{prop}
+			\label{prop:convergence-power-series-Zp}
+			Every $f(X) \in \Zp \llbracket X \rrbracket$ converges in $D(1^-)$.
+		\end{prop}
+		\begin{proof}
+			Let $f(X) = \sum_{n=0}^{+\infty} a_nX^n \in \Zp \llbracket X \rrbracket$ and let $x \in D(1^-)$. Then 
+			\begin{gather*}
+				\pabs{x} < 1, \pabs{a_n} \leq 1 \,\forall\, n\in\N \\
+				\implies \lim_{n \to +\infty} \pabs{a_nx^n} \leq \lim_{n \to +\infty} \pabs{x}^n = 0. \qedhere
+			\end{gather*}
+		\end{proof}
+		\begin{prop}
+			\label{prop:continuity-analitic-function}
+			Every $f(X) = \sum_{n=0}^{+\infty} a_nX^n \in \Cp \llbracket X \rrbracket$ which converges in a disc $D = D(r)$, or $D(r^-)$, is continuous on $D$.
+		\end{prop}
+		\begin{proof}
+			Let's first prove continuity in $0$. Let $x \in D$ such that $\pabs{x} < \delta < r$ ($\delta > 0$ will be chosen later); then, by continuity of absolute value, we have
+			\[
+				\pabs{f(x) - f(0)} = \pabs{\sum_{n=1}^{+\infty} a_nx^n} \leq \max_{n \in \N^{\times}} \,\pabs{a_nx^n} \leq \max_{ n \in \N^{\times}} \, \left( \pabs{a_n}\cdot\delta^n\right).
+			\]
+			Clearly, since $f$ converges on $D$, we must have $1/r' > \limsup \pabs{a_n}^{1/n}$ where $\delta < r' < r$ so, for a large enough $N$, $\pabs{a_n} < r'^{-n}$ if $n > N$. Let's introduce
+			\[
+				C(\delta) := \max_{1 \leq n \leq N}\,\left(\pabs{a_n} \cdot \delta^n \right);
+			\]
+			it's obvious that $C(\delta) \to 0^+$ as $\delta \to 0^+$. Instead, if $n > N$, we have
+			\[
+				\pabs{a_n}\cdot\delta^n \leq \left( \frac{\delta}{r'}\right)^n \leq \left( \frac{\delta}{r'}\right)^N,
+			\]
+			since $\delta/r' < 1$.
+		  	Then
+			\[
+				\pabs{f(x) - f(0)} \leq \max\left\{C(\delta), \left(\frac{\delta}{r'}\right)^N\right\}
+			\]
+			and we can make the right member as small as we want by choosing smaller $\delta$. This proves continuity in $0$. \newline
+			Let's now prove continuity in $0 \neq x \in D$ and consider $y \in D$ such that $\pabs{x - y} < \delta$, where $\delta < \pabs{x}$ will be chosen later, as before. Then, by the isosceles triangle principle, $\pabs{x} = \pabs{y}$. We have
+			\begin{gather*}
+				\pabs{f(x) - f(y)} = \pabs{\sum_{n=1}^{+\infty} (a_nx^n - a_ny^n)} \leq \max_{n \in \N^{\times}}\,\left(\pabs{a_n}\cdot\pabs{x^n - y^n}\right)  \leq \\
+				\leq \max_{n \in \N^{\times}}\,\left(\pabs{a_n}\cdot\pabs{(x - y)(x^{n-1} + x^{n-2}y + \dots + xy^{n-2} + y^{n-1})} \right)
+			\end{gather*}
+			but $\pabs{x^{n-1} + x^{n-2}y + \dots + xy^{n-2} + y^{n-1}} \leq \max_{1 \leq i \leq n}\, \pabs{x^{n-i}y^{i-1}} = \pabs{x}^{n-1}$ hence
+			\[
+				\pabs{f(x) - f(y)} \leq \max_{n \in \N^{\times}}\,\left(\pabs{x - y}\cdot\pabs{a_n}\pabs{x}^{n-1} \right) < \frac{\delta}{\pabs{x}} \cdot \max_{n \in \N^{\times}}\,\left(\pabs{a_n}\cdot\pabs{x}^n \right).
+			\]
+			We know that $\lim_{n \to +\infty} \pabs{a_n}\pabs{x}^n = 0$ so as $\delta \to 0^+$ we have $\pabs{f(x) - f(y)} \to 0$, which proves the statement.
+		\end{proof}
+		\begin{defn}
+			The (partial) function $\log_p(1 + X)\colon \Cp \to \Cp$ defined by
+			\[
+				\log_p(1 + x) := \sum_{n=1}^{+\infty} (-1)^{n+1} \frac{x^n}{n}
+			\]
+			is the \emph{\padic logarithm}.
+		\end{defn}
+		\begin{prop}
+			The function $\log_p(1 + X)$ converges on $D(1^-)$ and diverges elsewhere.
+		\end{prop}
+		\begin{proof}
+			It's immediate to verify that the series converges if $\pabs{x} < 1$ and diverges if $\pabs{x} \geq 1$. In-fact $\pabs{a_n} = p^{\ord n}$ so $\lim_{n \to +\infty} \pabs{a_n}^{1/n} = \lim_{n \to +\infty} p^{(\ord n)/n} = 1$ and we obtain the desired radius of convergence. Lastly, if $\pabs{x} = 1$, we have $\pabs{a_nx^n} = p^{\ord n} \geq 1$ so the series diverges.
+		\end{proof}
+		From now on, unless otherwise specified, we'll use $\log_p$ meaning the \padic logarithm we have just defined. Let's now prove the basic property of logarithms, which also holds in \padic environment.
+		\begin{prop}
+			\label{prop:padic-logarithm-product-sum}
+			The logarithm of a product is the sum of the logarithms. More precisely, if $x, y \in D(1^-)$ then $\log_p \left[ (1 + x)(1+y)\right] = \log_p(1 + x) + \log_p(1 + y)$.
+		\end{prop}
+		\begin{proof}
+			First of all let's observe that $x, y \in D(1^-) \implies x + y + xy \in D(1^-)$, so we can compute the logarithms. By definition
+			\[
+				\log_p\left[(1 + x)(1 + y)\right] = \sum_{n=1}^{+\infty} (-1)^{n+1} \frac{(x + y + xy)^n}{n}.
+			\]
+			If we work in $\R$ with the usual metric we already know that $\log\left[ (1+x)(1+y)\right] = \log(1 + x) + \log(1+y)$ and, using the Taylor expansion of $\log$, we have
+			\[
+				\sum_{n = 1}^{+\infty} (-1)^{n+1} \frac{x^n}{n} + \sum_{n = 1}^{+\infty} (-1)^{n+1} \frac{y^n}{n} = \sum_{n = 1}^{+\infty} (-1)^{n+1} \frac{(x + y + xy)^n}{n}
+			\]
+			for every $x, y \in \left[-\tfrac{1}{2}, \tfrac{1}{2}\right]$. Thanks to \cref{prop:formal-series} we infer that this relation also holds in the ring of formal power series in two variables $\Q\llbracket X,Y \rrbracket$. Then, using the fact that if a series converges in $\Cp$ its terms can be rearranged in any order without changing the sum, we can write
+			\begin{gather*}
+				\log_p\left[(1 + x)(1 + y)\right] = \sum_{n = 1}^{+\infty} (-1)^{n+1} \frac{(x + y + xy)^n}{n} =\\
+				= \sum_{n = 1}^{+\infty} (-1)^{n+1} \frac{x^n}{n} + \sum_{n = 1}^{+\infty} (-1)^{n+1} \frac{y^n}{n} = \log_p(1 + x) + \log_p(1 + y)
+			\end{gather*}
+			which concludes the proof.
+		\end{proof}
+		\begin{corollary}
+			\label{corollary:log-root-of-1}
+			If $1 + x \in \Cp$ is a root of $1$ and $\pabs{x} < 1$, then $\log_p(1 + x) = 0$. In particular if $1+x$ is a $p^m$-th root of $1$ then $\log_p(1 + x) = 0$.
+		\end{corollary}
+		\begin{proof}
+			Let's first observe that we can actually compute the logarithm of $1 + x$ since by hypothesis $\pabs{x} < 1$ (if $1+x$ is a $p^m$-th root of $1$ then automatically $\pabs{x} < 1$ by \cref{exercise:7-p.74}). Now we have
+			\[
+				k\cdot\log_p(1 + x) = \log_p\left[(1 + x)^k\right] = \log_p(1) = 0,
+			\]
+			which concludes the proof.
+		\end{proof}
+		We have obtained a function, defined on a particular disc of $\Cp$, using the Taylor expansion of the classical $\log(1 + X)$. Now we would like to define the exponential function, beginning from the classical $\exp(x) = \sum_{n=0}^{+\infty} x^n/n!$, and study its relation with the logarithm.
+		\begin{defn}
+			The (partial) function $\exp_p(X)\colon \Cp \to \Cp$ defined by
+			\[
+				\exp_p(x) := \sum_{n=0}^{+\infty} \frac{x^n}{n!}
+			\]
+			is the \emph{\padic exponential}.
+		\end{defn}
+ 		Looking at this series we immediately see that, unlike in the classical case where the $n!$ in the denominator makes sure the series converges for every $x \in \C$, there can be some problems. In-fact if $n!$ is divisible by a high power of $p$, its reciprocal will have a big absolute value. More precisely, we can compute exactly $\pabs{1/n!} = p^{\ord(n!)}$.
+		\begin{lemma}
+			\label{exercise:14-p.7}
+			Given $n \in \N$,
+			\[
+				\emph{ord}_p (n!) = \frac{n-S_n}{p-1}
+			\] 
+			where $S_n$ is the sum of digits in $n$ to base $p$.
+		\end{lemma}
+		\begin{proof}
+			Let's write $n$ in base $p$:
+			\[
+				n = a_0 + a_1p + \dots + a_rp^r, \qquad a_i \in \{0, \dots, p-1\},\, a_r \neq 0.
+			\]
+			Then $S_n = a_0 + a_1 + \dots + a_n$. By definition, $\ord(n!)$ is the maximum $t$ such that $p^t \mid (n!)$. We can use this little formula to compute it:
+			\[
+				\ord(n!) = \sum_{k=1}^{+\infty} \left[\frac{n}{p^k} \right] = \sum_{k=1}^r \left[\frac{n}{p^k} \right]
+			\]
+			where $[x]$ is the integer part of $x \in \R$, i.e. the only integer such that $[x] \leq x < [x]+1$. Using the representation of $n$ in base $p$ we have that $\left[n / p^k \right] = 0$ if $k > r$ and, otherwise,
+			\[
+				\left[\frac{n}{p^k} \right] = \frac{n - a_0 - \dots - a_{k-1}p^{k-1}}{p^k}
+			\]
+			so if we add them together we obtain
+			\[
+				\sum_{k=1}^r \left[\frac{n}{p^k} \right] = \sum_{k=1}^r \frac{n - \sum_{j=0}^{k-1} a_jp^j}{p^k}.
+			\] 
+			With a little bit of computation, recalling that $1 + p + \dots + p^{k-1} = \frac{p^k - 1}{p-1}$, we obtain the desired formula.
+		\end{proof}
+		\begin{prop}
+			The function $\exp_p(X)$ converges on $D(r_p^-)$ and diverges elsewhere, where $r_p := p^{-1/(p-1)}$.
+		\end{prop}
+		\begin{proof}
+			Using \cref{exercise:14-p.7} we obtain
+			\[
+			\pabs{1/n!} = p^{\frac{n - S_n}{p - 1} }
+			\]
+			and, recalling the formula for the radius of convergence $r = 1/(\limsup \pabs{a_n}^{1/n})$, we can write
+			\[
+			\ord r = -\ord \left( \limsup p^{-(\ord a_n)/n} \right) = -\ord \left( p^{-\liminf (\ord a_n)/n} \right) = \liminf \left( \frac{\ord a_n}{n} \right)
+			\]
+			so, in our case where $a_n = 1/n!$, we obtain 
+			\[
+			\ord r = \liminf \left(-\frac{n - S_n}{n(p-1)} \right).
+			\]
+			We can use the easy upper bound $S_n \leq (p-1) \cdot \ord n$ to prove 
+			\[
+				\lim_{n \to +\infty} \frac{S_n - n}{n(p-1)} = -\frac{1}{p-1}
+			\]
+			so the exponential series $\sum_{n=0}^{+\infty} x^n/n$ converges if $\pabs{x} < p^{-1/(p-1)} = r_p$ and diverges if $\pabs{x} > p^{-1/(p-1)} = r_p$. If $\pabs{x} = r_p$, i.e. $\ord x = 1/(p-1)$, we have
+			\[
+				\ord (a_nx^n) = -\frac{n-S_n}{p-1} + \frac{n}{p-1} = \frac{S_n}{p-1}
+			\]
+			and, choosing $n = p^m$ so $S_n = 1$, we have $\pabs{a_{p^m}x^{p^m}} = p^{-1/(p-1)} > 0$; we have found a subsequence of $(\pabs{a_nx^n})_n$ which does not converge to zero so we conclude that if $\pabs{x} =r_p$ the exponential series diverges.
+		\end{proof}
+		We immediately note that $D(r_p^-) \subsetneq D(1^-)$, i.e. $\exp_p$ converges in a smaller disc than $\log_p$. We now prove that, like in the classical case, the \padic exponential transforms sums into products.
+		\begin{prop}
+			If $x, y \in D(r_p^-)$ then $\exp_p(x + y) = \exp_p(x) \cdot \exp_p(y)$.
+		\end{prop}
+		\begin{proof}
+			Let's first observe that $x, y \in D(r_p^-) \implies x + y \in D(r_p^-)$ so we can compute $\exp_p(x + y)$. The rest of the proof is completely analogue to the proof of \cref{prop:padic-logarithm-product-sum}, using the fact that $\exp(x + y) = \exp(x) \cdot \exp(y)$ if $x, y \in \R$ (which then can be translated to a relation between power series by \cref{prop:formal-series}).
+		\end{proof}
+		Finally we have all the tools we need to prove the relation between \padic exponential and logarithm. 
+		\begin{prop}
+			\label{prop:exp-and-log-inverse}
+			The functions $\log_p$, defined by $x \mapsto \log_p(1 + (x-1))$, and $\exp_p$ give mutually inverse isomorphisms between the multiplicative group $(D_1(r_p^-), \cdot)$ and the additive group $(D(r_p^-), +)$. 
+		\end{prop}
+		\begin{proof}
+			First of all let's observe that $\exp_p\colon D(r_p^-) \to D_1(r_p^-)$ and $\log_p\colon D_1(r_p^-) \to D(r_p^-)$ so that the proposition actually makes sense. To prove that $\exp_p(x) \in 1 + D(r_p^-) \subset 1 + D(1^-)$ let's note that
+			\[
+				x \in D(r_p^-) \implies \ord\left(\frac{x^n}{n!}\right) = n\cdot\ord(x) - \ord(n!) > \frac{n}{p-1} - \frac{n - S_n}{p-1} = \frac{S_n}{p-1} \geq \frac{1}{p-1}
+			\]
+			so we have
+			\begin{gather*}
+				\ord(\exp_p(x) - 1) = \ord\left( \sum_{n=1}^{+\infty} \frac{x^n}{n!} \right) \geq \min_{n \geq 1} \left\{\ord\left(\frac{x^n}{n!}\right) \right\} > \frac{1}{p-1} \\
+				\implies \exp_p(x) \in 1 + D(r_p^-).
+			\end{gather*}
+			Instead, to prove that $\log_p(1 + x) \in D(r_p^-)$ if $x \in D(r_p^-)$ let's observe that
+			\[
+				\ord\left(\frac{x^n}{n}\right) - \frac{1}{p-1} > \frac{n}{p-1} - \ord(n) - \frac{1}{p-1} = \frac{n-1}{p-1} - \ord(n) =: f(n).
+			\]
+			We claim that $f$ has its minima at $n=1$ and $n=p$, where it's zero. To see why this is true let's first observe that we can just consider the case where $n = p^k$ for $k \in \N$ since if $n' = p^km$ with $p \nmid m$ we have $f(n') \geq f(n)$. It is then an easy calculation to verify that $f(p^{k+1}) \geq f(p^k)$ for $k \in \N$. Thus we have
+			\[
+				\ord(\log_p(1 + x)) = \ord\left(\sum_{n=1}^{+\infty} (-1)^{n+1}\frac{x^n}{n}\right) \geq \min_{n > 0} \left\{ \ord\left(\frac{x^n}{n}\right) \right\} > \frac{1}{p-1}
+			\]
+			which means precisely $\log_p(1 + x) \in D(r_p^-)$. \newline
+			We have already proved in some previous propositions that $\exp_p\colon (D(r_p^-),+) \to (D_1(r_p^-), \cdot)$ and $\log_p\colon (D_1(r_p^-), \cdot) \to (D(r_p^-), +)$ are group morphisms so now we have only to prove that they are mutually inverse.\newline
+			To see that $\log_p \circ \exp_p\colon D(r_p^-) \to D(r_p^-)$ is the identity function we compute
+			\[
+				\log_p(\exp_p(x)) = \sum_{n=1}^{+\infty} (-1)^{n+1}\frac{(\exp_p(x) - 1)^n}{n} = \sum_{n=1}^{+\infty} (-1)^{n+1}\frac{\left(\sum_{m=1}^{+\infty} \frac{x^m}{m!}\right)^n}{n}.
+			\]
+			Since if $x \in \R$ we have $\log(\exp(x)) = x$ we infer, by \cref{prop:formal-series}, that the following formal identity  holds in $\Q\llbracket X\rrbracket$:
+			\[
+				\sum_{n=1}^{+\infty} (-1)^{n+1}\frac{\left(\sum_{m=1}^{+\infty} \frac{X^m}{m!}\right)^n}{n} = X
+			\]
+			which implies $\log_p(\exp_p(x)) = x$ for $x \in D(r_p^-)$. The same exact reasoning can be also used to prove $\exp_p(\log_p(1 + x)) = 1 + x$ for $x \in D(r_p^-)$.
+		\end{proof}
+		This proposition implies, in particular, that $\log_p$ is injective on $D_1(r_p^-)$. It is easy to see that this is the biggest disc where this is true: in-fact if $\zeta \in \Cp$ is a primitive $p$-th root of $1$ then, by \cref{exercise:7-p.74}, $\pabs{\zeta - 1} = p^{-1/(p-1)} = r_p$ and $\log_p(\zeta) = 0 = \log_p(1)$.
+		\begin{defn}
+			The (partial) functions $\sin_p\colon \Cp \to \Cp$ and $\cos_p\colon \Cp \to \Cp$ defined by 
+			\begin{gather*}
+				\sin_p(x) := \sum_{n=0}^{+\infty} (-1)^n \frac{x^{2n+1}}{(2n+1)!}\\
+				\cos_p(x) := \sum_{n=0}^{+\infty} (-1)^n \frac{x^{2n}}{(2n)!}
+			\end{gather*}
+			are the \padic sine and the \padic cosine.
+		\end{defn}
+		It's easy to prove that $\sin_p$ and $\cos_p$ are defined on $D(r_p^-)$.
+		
+		Another important function in classical analysis is the binomial expansion 
+		\[
+			B_a(x) = \sum_{n=0}^{+\infty} \binom{a}{k} x^n
+		\]
+		where $x, a \in \C$ and we used the generalized binomial coefficient defined by:
+		\begin{gather*}
+			\binom{a}{k} :=
+			\begin{cases*}
+				1, & \text{if $k = 0$} \\
+				\frac{a(a-1)\dots (a - k + 1)}{k!}, & \text{otherwise} \\
+			\end{cases*}.
+		\end{gather*}
+	 	This is exactly the MacLaurin series of $f(x) = (1 + x)^a$. Using ratio test it can be proved that for any $a \in \C$ this series converges if $\abs{x} < 1$ and, unless $a \in \N$, diverges if $\abs{x} > 1$. Its behaviour when $\abs{x} = 1$ is a little more complicated and depends on the value of $a$. We'll now try to define an analogue function in the \padic environment.
+		\begin{defn}
+			Fixed $a \in \Cp$, the (partial) function $B_{a, p}(X)\colon \Cp \to \Cp$ defined by
+			\[
+				B_{a,p}(X) := \sum_{n=0}^{+\infty} \binom{a}{n}X^n = 1 + \sum_{n=1}^{+\infty} \frac{a(a-1)\dots (a - n + 1)}{n!}X^n
+			\]
+			is the \padic binomial expansion 
+		\end{defn}
+		We'll now try to study where it converges (it will be more complicated than the previous functions, since this is actually the first series with coefficient in $\Cp$, and not in $\Q$).
+		\begin{prop}
+			\label{prop:convergence-binomial}
+			If $\pabs{a} > 1$ then the region of convergence of $B_{a, p}(X)$ is $D((r_p/\pabs{a})^-)$.  Instead, if $\pabs{a} \leq 1$ the binomial expansion surely converges on $D(r_p^-)$ (although the region of convergence can be bigger). Finally, if $a \in \Zp$ then $B_{a, p}(X) \in \Zp\llbracket X \rrbracket$ so it surely converges on $D(1^-)$.
+		\end{prop}
+		\begin{proof}
+			Let's suppose $\pabs{a} > 1$. Then, by the isosceles triangle principle, if $i \in \Z$ then $\pabs{a - i} = \pabs{a}$ and we obtain that the $n$-th term of the series has norm $\pabs{ax}^n/\pabs{n!}$. Thus, with a little computation, we obtain that the radius of convergence is $r = p^{-1/(p-1)}/\pabs{a} = r_p/\pabs{a}$. Similarly to the exponential case it's easy to prove that the region of convergence if $D((r_p/\pabs{a})^-)$.\newline
+			If $\pabs{a} \leq 1$ it is more difficult to find the exact region of convergence; anyway if $i \in \Z$ we have $\pabs{a - i} \leq \max\{\pabs{a}, \pabs{i}\} \leq 1$ so $\pabs{\binom{a}{n}x^n} \leq \pabs{x^n/n!}$. Then $B_{a,p}(X)$ surely converges on $D(r_p^-)$.\newline
+			To prove that if $a \in \Zp$ then $B_{a,p}(X) \in \Zp\llbracket X \rrbracket$ we just need to show that $\binom{a}{n} \in \Zp$ for every $n \in \N$ (we already know $\binom{a}{n} \in \Qp$). Let's fix $n$ and choose $a_0 \in \Z$ such that $a_0 > n$ and $\ord(a - a_0) > N$, where $N$ will be chosen later (to choose $a_0$ we can just truncate the \padic expansion of $a \in \Zp$ at some index greater than $N$). Now $\binom{a_0}{n} \in \Z \subset \Zp$ and it suffices to show that $\pabs{\binom{a_0}{n} - \binom{a}{n}} \leq 1$ for a suitable $N$ (then we can conclude using the ultrametric inequality). This easily follows from the continuity of the polynomial $X(X-1)\dots(X - n + 1)$ (special case of \cref{prop:continuity-analitic-function}). Then $B_{a, p}(X) \in \Zp\llbracket X \rrbracket$ if $a \in \Zp$ so, by \cref{prop:convergence-power-series-Zp}, it converges in $D(1^-)$.
+		\end{proof}
+		We can now prove the main property of the binomial expansion, and justify the shorthand $B_{a,p}(X) = (1 + X)^a$, at least for $a \in \Q$.
+		\begin{prop}
+			If $a \in \Q^\times$ and $x \in \Cp$ is in the region of convergence of $B_{a,p}(X)$, then $\left[B_{a, p}(x)\right]^{1/a} = 1 + x$.
+		\end{prop}
+		\begin{proof}
+			Let's first consider $a = 1/m$ with $m \in \Z^\times$. The idea behind the proof is the usual one: if $x \in \R$ and $\abs{x} < 1$ we have $B_{1/m}(x) = (1 + x)^{1/m}$ so $B_{1/m}(x)^m = 1 + x$ which, by \cref{prop:formal-series}, gives us the formal identity between the two power series in $\Q\llbracket X \rrbracket$ (observe that $m < 0$ doesn't create problems since $B_{1/m}(X)$ is an invertible element of $\Q\llbracket X \rrbracket$) that we then translate into an equality between \padic analytic functions (observe the trivial fact $a \in \Q \implies B_{a, p}(X) \in \Q\llbracket X \rrbracket$). We must pay attention only to the last step, i.e. we can substitute only $x$ in the region of convergence of $B_{1/m, p}(X)$ so, for example, if $p \mid m$ we can use $x \in D((r_p\pabs{m})^-)$ and if $p \nmid m$ we can choose $x \in D(r_p^-)$. We have proved that $B_{1/m, p}(x)^m = 1 + x$ for every $x$ where $B_{1/m, p}(X)$ converges. \newline
+			Now let $a = n/m$ with $n, m \in \Z^\times$. It is easy to prove, using the same technique as before, that $B_{n/m, p}(X) = B_{1/m, p}(X) ^ n$. Then we can write
+			\[
+				B_{n/m, p}(X)^{m/n} = B_{1/m, p}(X)^m = 1 + X,
+			\]
+			which proves the thesis.
+		\end{proof}
+		We can use the \padic binomial expansion to study an interesting example of how the same convergent series in $(\Q, \abs{\ })$ and in $(\Qp, \pabs{\ })$ can have different sums.
+		\begin{example}
+			Let's consider the following power series:
+			\begin{gather*}
+				B_{1/2}\left(\frac{7}{9}\right) = \sum_{n=0}^{+\infty} \binom{1/2}{n} \left(\frac{7}{9}\right)^n \qquad \in \Q\llbracket X \rrbracket, \\
+				B_{1/2, 7}\left(\frac{7}{9}\right) = \sum_{n=0}^{+\infty} \binom{1/2}{n} \left(\frac{7}{9}\right)^n \qquad \in \Q_7 \llbracket X \rrbracket.
+			\end{gather*} 
+			They are exactly the same power series but they converge to different numbers, both of which are of course square roots of $\tfrac{16}{9}$ (clearly its square roots are the same both in $\Q$ and in $\Q_7$). In the first case, working in $(\Q, 	\abs{\ })$, we have 
+			\[
+				B_{1/2}\left(\frac{7}{9}\right) = \left(1 + \frac{7}{9}\right)^{1/2} = \frac{4}{3} > 0.
+			\]
+			Instead, in the second case, we have 
+			\[
+				B_{1/2, 7}\left(\frac{7}{9}\right) = \left(1 + \frac{7}{9}\right)^{1/2} = -\frac{4}{3} < 0.
+			\]
+			In-fact, $\textrm{ord}_7\left(\tfrac{7}{9}\right) = 1$ so for $n \geq 1$ we have
+			\[
+				\abs{\frac{1/2(1/2 - 1)\dots(1/2 - n + 1)}{n!}\cdot \left(\frac{7}{9}\right)^n}_7 \leq \frac{7^{-n}}{\abs{n!}_7} = 7^{\frac{-5n - S_n}{6}} < 1
+			\]
+			so it must be $B_{1/2, 7}\left(\tfrac{7}{9}\right) \equiv 1 \mod 7$. Now it's easy to see that $-\tfrac{4}{3} \equiv 1 \mod 7$ and $\tfrac{4}{3} \equiv -1 \mod 7$. We conclude that necessarily $B_{1/2, 7}\left(\tfrac{7}{9}\right) = -\tfrac{4}{3}$.
+		\end{example}
+	 	This example also warns us about the danger of using the notation $B_{a, p}(X) = (1 + X)^a$, which comes certainly handy sometimes but we have to remember that it can yield different results than the ones we would expect on $\R$.
+	 \section{The Iwasawa logarithm and Artin-Hasse exponential}
+	 	\begin{defn}
+	 		Let $X \subseteq \Cp$ be a set with no isolated points. A function $f\colon X \to \Cp$ is \emph{differentiable} at $a \in X$ if
+	 		\[
+	 			\exists \lim_{X \ni x \to a} \frac{f(x) - f(a)}{x - a} =: f'(a) \in \Cp.
+	 		\]
+	 		Equivalently, $f$ is differentiable at $a \in X$ if 
+	 		\[
+	 			f(x) = f(a) + (x - a)f'(a) + (x - a)\phi(x), \qquad \lim_{X \ni x \to a} \phi(x) = 0.
+	 		\]
+	 	\end{defn}
+ 		We also introduce a stronger notion of differentiability for \padic functions, which will give us some analogue theorems to the classical case.
+ 		\begin{defn}
+ 			Let $X \subseteq \Cp$ be a set with no isolated points. A function $f\colon X \to \Cp$ is \emph{strictly differentiable} at $a \in X$ (and we write $f \in S^1(a)$) if the difference quotients
+ 			\[
+ 				\Phi f(x, y) := \frac{f(x) - f(y)}{x - y}
+ 			\]
+ 			tends to $\Cp \ni \ell = f'(a)$ as $X \times X \setminus \Delta_X \ni (x, y) \to (a, a)$. 
+ 			Here we used the notation $\Delta_X = \{(x, x) : x \in X \} \subset X \times X$.
+ 			We say $f \in S^1(X)$ if $f \in S^1(a)$ for every $a \in X$.
+ 		\end{defn}
+ 		In the classical case this definition is not very useful: in-fact if $I \subset \R$ is an open interval and $f \in \mathcal{C}^1(I, \R)$ then $f$ is strictly differentiable at every point of $I$. In the next example we'll see this is not the case in \padic analysis.
+ 		\begin{example}
+ 			Let's consider the sequence of disjoint open balls $(B_n)_{n \geq 1}$ defined by
+ 			\[
+ 				B_n := \{x \in \Zp: \pabs{x - p^n} < \pabs{p^{2n}} \} \subseteq \{x \in \Zp: \pabs{x} = \pabs{p^n}\}
+ 			\]
+ 			and let $f\colon \Zp \to \Cp$ defined by
+ 			\begin{gather*}
+ 				f(x) :=
+ 				\begin{cases}
+	 				p^{2n}, & \text{if $x \in B_n$;} \\
+	 				0, & \text{otherwise};\\
+ 				\end{cases}.
+ 			\end{gather*}
+ 			The function $f$ is constant on each open ball $B_n$, hence $f$ is locally constant outside the origin. Then $f$ is differentiable at every $\Zp \ni x \neq 0$ and $f'(x) = 0$. At the origin
+ 			\[
+ 				\lim_{\Zp \ni x \to 0} \frac{f(x) - f(0)}{x} = \lim_{\Zp \ni x \to 0} \frac{f(x)}{x} = 0
+ 			\]
+ 			so $f'(0) = 0$ (to see why it is true, let $x = up^n, u \in \Zp^\times$; then $f(x) = p^{2n}$ and so $\tfrac{f(x)}{x} = u^{-1}p^n$). Then $f'\colon \Zp \to \Cp$ is identically $0$ so it is obviously continuous (i.e. $f \in \mathcal{C}^1$) but $f$ is not strictly differentiable at $0$. In-fact, let's consider $\Phi f(x, y)$ where $x = x_n = p^n$ and $y = y_n = p^n - p^{2n}$:
+ 			\[
+ 				\Phi f(x_n, y_n) = \frac{f(x_n) - f(y_n)}{x_n - y_n} = \frac{p^{2n} - 0}{p^{2n}} = 1 
+ 			\]
+ 			so, if we consider this particular path $(x_n, y_n) \to (0,0)$ as $n \to +\infty$ we obtain 
+ 			\[
+ 				0 = f'(0) \neq \lim_{n \to +\infty} \Phi f(x_n, y_n) = 1,
+ 			\]
+ 			which implies $f$ is not strictly differentiable at $0$ (we have used that $\pabs{y_n} = \pabs{p^n}$ and $y_n \notin B_n$).
+ 		\end{example}
+ 		We'll now prove a proposition which we're very familiar with in classical analysis.
+ 		\begin{prop}
+ 			If $f\colon X \to \Cp$ is strictly differentiable at $a \in X$ and $f'(a) \neq 0$, then there is a neighbourhood $V$ of $a \in X$ in which $f$ is injective.
+ 		\end{prop}
+ 		\begin{proof}
+ 			Since $f \in S^1(a)$ and $\pabs{f'(a)} > 0$ we can find a neighbourhood $V$ of $a$ such that
+ 			\[
+ 				\pabs{\Phi f(x, y) - f'(a)} < \pabs{f'(a)} \qquad \text{for $(x, y) \in V \times V \setminus \Delta_V$}.
+ 			\]
+ 			Then, by the isosceles triangle principle, we must have $\pabs{\Phi f(x, y)} = \pabs{f'(a)}$ which means exactly
+ 			\[
+ 				\pabs{f(x) - f(y)} = \pabs{f'(a)}\pabs{x - y} \qquad \text{for $(x, y) \in V \times V$}. \qedhere
+ 			\]
+ 		\end{proof}
+ 		Let's now focus on analytic functions; they are, like in the classical case, everywhere strictly differentiable any number of times (i.e. they're in $\bigcap_{k > 0} S^k$). We'll only prove it for $k=1$.
+ 		\begin{thm}
+ 			\label{thm:derivative-power-series}
+ 			Let $f(X) = \sum_{n \geq 0} a_nX^n$ be an analytic function which converges on $D = D(r^-)$. Then $f \in S^1(D)$ and $f'$ is given by
+ 			\[
+ 				f'(X) = \sum_{n=1}^{+\infty} na_nX^{n-1}. 			
+ 			\]
+ 		\end{thm}
+ 		\begin{proof}
+ 			It's immediate to note that the radius of convergence of $f'$ is greater or equal to $r$, the radius of convergence of $f$, since $\pabs{n} \leq 1$ for every $n \in \N$. First of all let's fix $x \in D$ and prove that 
+ 			\[
+ 				\lim_{h \to 0}\, \pabs{\frac{f(x+h) - f(x)}{h} - f'(x)} = 0.
+ 			\]
+ 			We can re-write this limit as 
+ 			\[
+ 				\lim_{h \to 0}\,\pabs{\sum_{n = 2}^{+\infty} a_n \cdot \left( \frac{(x+h)^n - x^n}{h} - nx^{n-1} \right) } = 0;
+ 			\]
+ 			and using the binomial theorem on $(x + h)^n$ we can then write
+ 			\[
+ 				\lim_{h \to 0}\,\pabs{\sum_{n = 2}^{+\infty} a_n \cdot \left( \sum_{i=0}^{n-2} \binom{n}{i} x^ih^{n-1-i} \right) } = 0.
+ 			\]
+ 			Let's now distinguish two cases: $x = 0$ and $x \neq 0$. \newline
+ 			If $x = 0$ then we must prove $\lim_{h \to 0}\,\pabs{\sum_{n = 2}^{+\infty} a_n \cdot h^{n-1} } = 0$,	which easily follows from 
+ 			\[
+ 				\lim_{h \to 0}\,\pabs{\sum_{n = 2}^{+\infty} a_n \cdot h^{n-1} }  \leq \lim_{h \to 0}\,\left( \pabs{h} \cdot \max_{n \geq 2} \left\{\pabs{a_nh^{n-2}} \right\} \right)= 0,
+ 			\]
+ 			where we considered $0 < \pabs{h} < r$ and exploited the fact that $\lim_{n \to +\infty} \pabs{a_nh^{n-2}} = 0$ so the maximum in the limit above is bounded.\newline
+ 			Now, assuming $x \neq 0$ and $0 < \pabs{h} < \pabs{x}$, it's easy to see that
+ 			\[
+ 				\pabs{\sum_{i=0}^{n-2} \binom{n}{i} x^ih^{n-1-i}} \leq \pabs{h}^{n-1} \cdot \max_{0 \leq i \leq n-2}\left\{\pabs{x^ih^{-i}}\right\} \leq \pabs{h}^{n-1}\cdot \left(\frac{\pabs{x}}{\pabs{h}}\right)^{n-2} = \pabs{h}\cdot \pabs{x}^{n-2}.
+ 			\]
+ 			Then we have
+ 			\[
+ 				\pabs{\sum_{n = 2}^{+\infty} a_n \cdot \left( \sum_{i=0}^{n-2} \binom{n}{i} x^ih^{n-1-i} \right) } \leq \pabs{h}\cdot\max_{n \geq 2}\left\{\pabs{a_nx^{n-2}}\right\},
+ 			\]
+ 			and since $\lim_{n\to +\infty} \pabs{a_nx^{n-2}} = 0$ the maximum above is bounded so
+ 			\[
+ 				\lim_{h \to 0}\,\pabs{\sum_{n = 2}^{+\infty} a_n \cdot \left( \sum_{i=0}^{n-2} \binom{n}{i} x^ih^{n-1-i} \right) } \leq \lim_{h \to 0} \left( \pabs{h}\cdot\max_{n \geq 2}\left\{\pabs{a_nx^{n-2}}\right\}\right) = 0.
+ 			\]
+ 			We have proved that $f$ is differentiable everywhere and $f'$ is its derivative. \newline
+ 			We won't prove here that $f$ is actually strictly differentiable: a proof of this statement for a particular case (where $r \geq 1$, i.e. $\lim_{n\to+\infty}\pabs{a_n}=0$) can be found at \cite[239]{robert:padic-analysis}.
+ 		\end{proof}
+ 		\begin{example}
+ 			We can now prove one well known result of classical analysis: the derivative of $e^x$ is $e^x$. More precisely, if $x \in D(r_p^-)$ then $\frac{\mathrm{d}}{\mathrm{d}x}\exp_p(x) = \exp_p(x)$. It easily follows applying \cref{thm:derivative-power-series}:
+ 			\[
+ 				\frac{\mathrm{d}}{\mathrm{d}x}\exp_p(x) = \frac{\mathrm{d}}{\mathrm{d}x}\left( \sum_{n=0}^{+\infty} \frac{x^n}{n!} \right) = \sum_{n=1}^{+\infty} \frac{x^{n-1}}{(n-1)!} = \exp_p(x).
+ 			\]
+ 		\end{example}
+ 		\begin{defn}
+ 			Let $f\colon \Cp \to \Cp$ be a (partial) function. If for every $x$ in its domain there exists a neighbourhood where $f$ is a power series, we say that $f$ is \emph{locally analytic}.
+ 		\end{defn}
+ 		We present now two \padic locally analytic functions: the \emph{Iwasawa logarithm} and the \emph{Artin-Hasse} exponential.
+ 		\begin{prop}
+ 			There exists a unique function $\Log_p\colon \Cp^\times \to \Cp$ such that:
+ 			\begin{enumerate}[label=(\arabic*)]
+ 				\item $\Log_p$ agrees with $\log_p$ in $D_1(1^-)$, i.e.,
+ 				\[
+ 					\Log_p(x) = \sum_{n=1}^{+\infty} (-1)^{n+1}\frac{(x-1)^n}{n} \qquad \text{for $\pabs{x-1} < 1$};
+ 				\]
+ 				\item $\Log_p(xy) = \Log_p(x) + \Log_p(y)$ for all $x, y \in \Cp^\times$;
+ 				\item $\Log_p(p) = 0$.
+ 			\end{enumerate}
+ 		\end{prop}
+ 		\begin{proof}
+ 			We recall from \cref{prop:structure-Cp} that any non-zero $x \in \Cp$ can be written as $x = p^r\omega(x_1)\langle x_1\rangle$, where $p^r$ is a root of the equation $X^b - p^a = 0$ where $r=\tfrac{a}{b}=\ord(x)$, $\omega(x_1)$ is a root of $1$ and $\pabs{\langle x_1 \rangle - 1} < 1$. If such an extension of the logarithm exists, then, by \textit{(2)} and \textit{(3)}, it must be
+ 			\[
+ 				\Log_p(x) = \Log_p(p^r) + \Log_p(\omega(x_1)) + \Log_p(\langle x_1 \rangle) = 0 + 0 + \Log_p(\langle x_1 \rangle) = \log_p(\langle x_1 \rangle),
+ 			\]
+ 			since $\langle x_1 \rangle \in D_1(1^-)$. Then there is at most one extension of the logarithm and it is the one defined by
+ 			\[
+ 				\Log_p(x) := \log_p(\langle x_1 \rangle).
+ 			\] 
+ 			First of all we have to show that this is well defined: in-fact we could have chosen another root of $X^b - p^a= 0$ and we would have obtained a different factorization of the same element. Let's suppose that 
+ 			\[
+ 				x = p^r\cdot\omega(x_1)\cdot\langle x_1\rangle = \frac{p^r}{\zeta}\cdot\omega\left(x_1\overline{\zeta}\right)\cdot\left\langle x_1\overline{\zeta}\right\rangle,
+ 			\]
+ 			where $\zeta \in \Cp$ is a $b$-th root of unity and $\overline{\zeta} = \zeta + M \in A/M$ (we recall that $A = D(1), M = D(1^-)$ in $\Cp$). We have to prove then that $\log_p(\langle x_1\rangle) = \log_p(\left\langle x_1\overline{\zeta}\right\rangle)$. Let's first recall how the Teichm{\"u}ller representatives are defined: if $\overline{\Fp}$ is the algebraic closure of $\Fp$ then $\omega\colon \overline{\Fp} \to \Zpu$ is a section of the projection $\pi\colon \Zpu \twoheadrightarrow \Zpu/p\Zpu = \overline{\Fp}$ such that $\omega(x)^{p^f - 1} = 1$ if $x \in \F_{p^f}^\times$ and $\omega(0)=0$ (it is immediate that since $\omega$ can be defined on every finite field of characteristic $p$, see the proof of \cref{prop:structure-finite-extension}, it can be extended to $\overline{\Fp}$). It's easy to see that $\omega\colon \overline{\Fp}^\times \to \left(\Zpu\right)^\times$ is a group morphism, i.e. $\omega(xy) = \omega(x) \cdot \omega(y)$: in-fact if $x, y \in \F_{p^f}$ then $\omega(xy)$ is defined as the only element of $\Zpu$ such that $\omega(xy)^{p^f} = \omega(xy)$ and $\pi(\omega(xy))=xy$ and it's clear that $\omega(x)\cdot\omega(y)$ satisfies both these conditions.
+ 			We also recall from \cref{prop:structure-Cp} that we can find a big enough $f \in \N$ such that 
+ 			\begin{gather*}
+	 			\F_{p^f} \ni x_1 = \frac{x}{p^r} + M,\\
+	 			\F_{p^f} \ni x_1\overline{\zeta} = \frac{x\zeta}{p^r} + M = \left(\frac{x}{p^r} + M\right) \cdot (\zeta + M). 
+ 			\end{gather*}
+ 			Explained all the notations, we can finally write
+ 			\[
+ 				\omega\left(x_1\overline{\zeta}\right) = \omega(x_1)\cdot\omega\left(\overline{\zeta}\right) \implies \left\langle x_1\overline{\zeta}\right\rangle = \frac{x\zeta}{p^r\cdot\omega\left(x_1\overline{\zeta}\right)} = \langle x_1\rangle \cdot \frac{\zeta}{\omega\left(\overline{\zeta}\right)}.
+ 			\]
+ 			Now, since $\zeta^b = 1$, we have $\overline{\zeta}^b = 1$ so $\omega\left(\overline{\zeta}\right)^b = 1$, since $\omega$ is a group morphism and $\omega(1) = 1$. Finally,
+ 			\[
+ 				\left(\frac{\zeta}{\omega\left(\overline{\zeta}\right)}\right)^b = \frac{\zeta^b}{\omega\left(\overline{\zeta}\right)^b} = 1
+ 			\]
+ 			so $\xi := \tfrac{\zeta}{\omega\left( \overline{\zeta}\right)}$ is a root of $1$. Let's prove that $\pabs{\xi - 1} < 1$; let's suppose by contradiction that $\xi = 1 + \Delta$ with $\pabs{\Delta} \geq 1$ and let's write $\langle x_1 \rangle = 1 + \delta$ with $\pabs{\delta} < 1$. We know by hypothesis that $\langle x_1\overline{\zeta} \rangle \in D_1(1^-)$ so we must have
+ 			\[
+ 				\pabs{(1 + \delta) \cdot (1 + \Delta) - 1} = \pabs{\delta + \Delta \cdot(1 + \delta)} < 1
+ 			\]
+ 			but since $\pabs{\delta} < 1$ and $\pabs{1 + \delta} = 1$, we have $\pabs{\Delta \cdot (1 + \delta)} = \pabs{\Delta} \geq 1$ so
+ 			\[
+ 				\pabs{\delta + \Delta\cdot(1 + \delta)} = \max\left\{\pabs{\delta}, \pabs{\Delta \cdot (1 + \delta)}\right\} = \pabs{\Delta} \geq 1,
+ 			\]
+ 			which is absurd (here we have used several times the isosceles triangle principle). We have proved that $\xi$ is a root of $1$ with $\pabs{\xi - 1} < 1$ so we can compute $\log_p(\xi) = 0$. Then
+ 			\[
+ 				\log_p\left(\left\langle x_1\overline{\zeta}\right\rangle\right) = \log_p(\langle x_1 \rangle) + \log_p(\xi) = \log_p(\langle x_1 \rangle)
+ 			\]
+ 			and the function $\Log_p$ is well defined. \newline
+ 			Properties \textit{(1)} and \textit{(3)} are now obvious from the definition: if $x \in D_1(1^-)$ then we can choose $x = \langle x \rangle$  so $\Log_p(x) = \log_p(x)$ and $p = p^1 \cdot 1 \cdot 1$ so $\Log_p(p) = \log_p(1) = 0$. To prove \textit{(2)} let $x = p^r\omega(x_1)\langle x_1 \rangle$, $y = p^s \omega(y_1) \langle y_1 \rangle$ and $z = xy = p^{r+s}\omega(z_1)\langle z_1 \rangle$. Now $p^{r+s}$ isn't necessarily the same fractional power as $p^rp^s$ (it can differ by a root of unit), but we can choose to use exactly $p^rp^s$, since the value of $\Log_p$ doesn't depend on the choice of the fractional power. In this case we'll have $z_1 = \tfrac{z}{p^rp^s} + M = x_1y_1$ so $\omega(z_1) = \omega(x_1)\cdot\omega(y_1)$ and $\langle z_1 \rangle = \langle x_1 \rangle \cdot \langle y_1 \rangle$. Then $\Log_p(xy) = \Log_p(x) + \Log_p(y)$.
+ 		\end{proof}
+ 		\begin{prop}
+ 			$\Log_p$ is locally analytic on $\Cp^\times$ with derivative $\Cp^\times \ni x \mapsto \tfrac{1}{x}$.
+ 		\end{prop}
+ 		\begin{proof}
+ 			Let's fix a point $x_0 \in \Cp^\times$ and let $r := \pabs{x_0}$. For every $x \in D_{x_0}(r^-)$ (the largest disc about $x_0$ which doesn't contain $0$) we have $\pabs{\tfrac{x}{x_0} - 1} < 1$ and so
+ 			\[
+ 				\Log_p(x) = \Log_p\left(x_0 \cdot \left(1 + \frac{x}{x_0} - 1\right)\right) = \Log_p(x_0) + \sum_{n=1}^{+\infty} (-1)^{n+1}\cdot\frac{(x - x_0)^n}{n\cdot x_0^n}.
+ 			\]
+ 			We have just proved that, in a neighbourhood of $x_0$, $\Log_p$ can be represented by a convergent power series in $x - x_0$. Since this reasoning can be done for any $x_0 \in \Cp^\times$ we can conclude that $\Log_p$ is locally analytic.\newline
+ 			Let's consider $x \in D_{x_0}(r^-)$ as above: using the locally analyticity of $\Log_p$ and \cref{thm:derivative-power-series} we obtain:
+ 			\begin{gather*}
+				\frac{\mathrm{d}}{\mathrm{d}x}\Log_p(x) = \sum_{n=1}^{+\infty} (-1)^{n+1}\cdot\frac{(x-x_0)^{n-1}}{x_0^n} = x_0^{-1} \cdot \sum_{n=0}^{+\infty} \left(1 - \frac{x}{x_0}\right)^n = \frac{x_0^{-1}}{(x/x_0)} = \frac{1}{x}. \qedhere
+ 			\end{gather*}
+ 		\end{proof}
+ 		We have found a locally analytic function defined on $\Cp^\times$ which extends $\log_p$ and has the same basic properties. 
+ 		
+ 		It is now natural to try to build a homomorphism $f\colon \Cp \to \Cp^\times$ extending the exponential, which is only defined in $D(r_p^-)$. If there exists such an extension then, fixed $x \in \Cp^\times$ and $n \in \N$ such that $p^nx \in D(r_p^-)$, then
+ 		\[	
+ 			f(x)^{p^n} = f(p^nx) = \exp_p(p^nx)
+ 		\]
+ 		so $f(x)$ must be a $p^n$-th root of $\exp_p(p^nx)$. As stated in the next proposition, this extension can actually be done in a coherent way.
+ 		\begin{prop}
+ 			There exists a continuous homomorphism $\mathrm{Exp}\colon \Cp \to D_1(1^-)$ extending $\exp_p$.
+ 		\end{prop}
+ 		\begin{proof}
+ 			The idea behind the proof exploits the fact that, since $(D_1(1^-), \cdot)$ is a divisible group, there is an extension property for homomorphisms defined over subgroups. For the whole proof see \cite[259]{robert:padic-analysis}.
+ 		\end{proof}
+ 		Unlike the Iwasawa logarithm, the extensions $\mathrm{Exp}$ of the exponential are not defined in a canonic way so they're not very useful. Anyway it is easy to prove that, chosen such an extension $\mathrm{Exp}$, $\log_p \circ\, \mathrm{Exp} = \mathrm{id}_{\Cp}$. In-fact:
+ 		\[
+ 			p^n\cdot \left(\log_p\circ\,\mathrm{Exp}(x)\right) = \log_p\left(\mathrm{Exp}(x)^{p^n}\right) = \log_p\left(\mathrm{Exp}\left(p^nx\right)\right) = \log_p\left(\exp_p\left(p^nx\right)\right) = p^nx.
+ 		\]
+ 		
+ 		We'll now describe a slightly different exponential function which converges in $D(1^-)$: the Artin-Hasse exponential. Before defining it we'll need to study some basic properties of the well known M{\"o}bius function.
+ 		\begin{defn}
+ 			Let $\mu\colon \N^\times \to \N$ be defined by
+ 			\[
+ 				\mu(n) := 
+ 				\begin{cases}
+	 				0, & \text{if $n$ is divisible by a perfect square greater than 1;}\\
+	 				(-1)^k, & \text{if $n$ is a product of $k$ distinct prime factors;}
+ 				\end{cases}.
+ 			\]
+ 			This is the \emph{M{\"o}bius function}.
+ 		\end{defn}
+ 		\begin{prop}
+	 		\label{prop:mobius-function}
+	 		Let $n \in \N^\times$, then
+	 		\[
+	 			\sum_{d \mid n} \mu(d) =
+	 			\begin{cases}
+		 			1, & \text{if $n=1$;} \\
+		 			0, & \text{otherwise;}
+	 			\end{cases}.
+	 		\]
+	 		In particular, if $p$ is a prime,
+	 		\[
+	 			\sum_{\mathclap{d \mid n,\,p \nmid d}} \mu(d) = 
+	 			\begin{cases}
+		 			1, & \text{if $n$ is a power of $p$;} \\
+		 			0, & \text{otherwise;}
+	 			\end{cases}.
+	 		\]
+ 		\end{prop}
+ 		\begin{proof}
+ 			The case $n=1$ is trivial ($\mu(1) = 1$). Let $n = p_1^{a_1}\dots \,p_s^{a_s}$ with $s \geq 1$ and $p_i$ prime for every $i=1,\dots,s$. Then, by an easy combinatoric argument, we have
+ 			\[
+ 				\sum_{d \mid n} \mu(d) = \sum_{\epsilon_i = 0 \lor 1} \mu(p_1^{\epsilon_1}\dots\,p_s^{\epsilon_s}) = \sum_{\epsilon_i = 0 \lor 1} (-1)^{\sum \epsilon_i} = (1 - 1)^s = 0.
+ 			\]
+ 			The second statement is just a particular case of the first one applied to $n \cdot p^{-\ord(n)}$ in place of $n$.
+ 		\end{proof}
+ 		\begin{prop}
+ 			\label{prop:formal-identity-exp}
+ 			In $\Q\llbracket X \rrbracket$ the following holds:
+ 			\[
+ 				\exp(X) = \prod_{n=1}^{+\infty} B_{-\mu(n)/n}(-X^n).
+ 			\]
+ 		\end{prop}
+ 		\begin{proof}
+ 			First of all let's observe that the infinite product of series actually makes sense: in-fact $B_{-\mu(n)/n,\,p}(-X^n) = 1 + \tfrac{\mu(n)}{n}X^n + o(X^n)$ so the $n$-th factor has no power of $X$ less than the $n$-th, so only a finite number of series is involved to determine the coefficient of any power of $X$. 
+ 			To prove that the identity holds we'll use \cref{prop:formal-series}; let $x \in \R$ with $\abs{x} < 1$, then we know that
+ 			\[
+ 				B_{-\mu(n)/n}(-x^n) = (1 - x^n)^{-\frac{\mu(n)}{n}}.
+ 			\]
+ 			Taking the (classical) $\log$ of the right side we obtain
+ 			\[
+ 				\log\left(\prod_{n=1}^{+\infty} (1 - x^n)^{-\frac{\mu(n)}{n}}\right) = -\sum_{n=1}^{+\infty}\frac{\mu(n)}{n} \cdot \log(1 - x^n) = \sum_{n=1}^{+\infty} \frac{\mu(n)}{n}\cdot\sum_{m=1}^{+\infty} \frac{x^{nm}}{m} = \sum_{j=1}^{+\infty}\left(\frac{x^j}{j}\cdot \sum_{n \mid j} \mu(n)\right)
+ 			\]
+ 			where in the last step we set $j = nm$ and we rearranged the terms of the series since it is absolutely convergent. To see why this is true, let's consider
+ 			\[
+ 				\sum_{n=1}^{+\infty} \abs{\frac{\mu(n)}{n}}\cdot\abs{\log(1 - x^n)} \leq \sum_{n=1}^{+\infty} \frac{\abs{\log(1 - x^n)}}{n}.
+ 			\]
+ 			Since $\abs{\log(1 - x^n)} \sim -\abs{x}^n$ as $n \to +\infty$, we can just study the convergence of the series
+ 			\[
+ 				\sum_{n=1}^{+\infty} \frac{\abs{x}^n}{n},
+ 			\]
+ 			which converges since it is dominated by the convergent geometric series $\sum_{n=1}^{+\infty} \abs{x}^n$ (we're using $\abs{x} < 1$). Now that we have justified why we can rearrange terms, using \cref{prop:mobius-function}, we obtain
+ 			\begin{gather*}
+ 				\log\left(\prod_{n=1}^{+\infty} (1 - x^n)^{-\frac{\mu(n)}{n}}\right) = \sum_{j=1}^{+\infty}\left(\frac{x^j}{j}\cdot \sum_{n \mid j} \mu(n)\right) = x = \log(\exp(x)) \\
+ 				\implies \exp(x) = \prod_{n=1}^{+\infty} (1 - x^n)^{-\frac{\mu(n)}{n}}
+ 			\end{gather*}
+ 			which, translated back to formal power series, concludes the proof.
+ 		\end{proof}
+ 		We have just proved that
+ 		\[
+ 			\exp_p(X) = \prod_{n=1}^{+\infty} B_{-\mu(n)/n,\,p}(-X^n)
+ 		\]
+ 		(recall that $B_{-\mu(n)/n,\,p}(X) = B_{-\mu(n)/n}(X)$ and $\exp_p(X) = \exp(X)$, as elements of $\Q \llbracket X \rrbracket$).
+ 		With this new expression of $\exp_p(X)$ we can understand where convergence ``problems'' arise. In-fact if $p \mid n$ and $n$ is square-free (so $\mu(n) \neq 0$) then $\pabs{\mu(n)/n} = \pabs{n}^{-1} \geq p$ so $B_{-\mu(n)/n,\,p}(-X^n)$ converges only if $\pabs{x}^n \in D((r_p\pabs{n})^-)$ (see \cref{prop:convergence-binomial}). If $n=p$ we have convergence precisely when
+ 		\[
+ 			\pabs{x} < \left(p^{-1/(p-1)}\cdot p^{-1}\right)^{\frac{1}{p}} = p^{-1/(p-1)} = r_p.
+ 		\]
+ 		Instead, if $p \nmid n$, we have no problems, since $-\tfrac{\mu(n)}{n} \in \Zp$ and, by \cref{prop:convergence-binomial}, we have $B_{-\mu(n)/n,\,p}(-X^n) \in \Zp\llbracket X \rrbracket$ so $x \in D(1^-)$ guarantees convergence.	This motivates the following definition.
+ 		\begin{defn}
+ 			\label{defn:artin-hasse}
+ 			The (partial) function $\E_p(X)\colon \Cp \to \Cp$  defined by
+ 			\[
+ 				\E_p(X) := \prod_{\substack{n=1 \\ p\nmid n}}^{+\infty} B_{-\mu(n)/n,\,p}(-X^n) = \prod_{\substack{n=1 \\ p\nmid n}}^{+\infty} (1 - X^n)^{-\frac{\mu(n)}{n}}
+ 			\]
+ 			is called the \emph{Artin-Hasse exponential}.
+ 		\end{defn}
+ 	 	We observe again that  $B_{-\mu(n)/n,\,p}(-X^n) \in 1 + X^n\Q\llbracket X \rrbracket$ so the infinite product makes sense.
+ 	 	\begin{prop}
+ 	 		\label{prop:artin-hasse-formula}
+ 	 		In $\Q\llbracket X \rrbracket$ the following holds:
+ 	 		\[
+ 	 			\E_p(X) = \exp_p\left(\sum_{i=0
+ 	 			}^{+\infty} \frac{X^{p^i}}{p^i}\right).
+ 	 		\]
+ 	 	\end{prop}
+  		\begin{proof}
+  			As usual let's consider $x \in \R$ with $\abs{x} < 1$: then 
+  			\[
+  				\E_p(x) := \prod_{\substack{n=1 \\ p\nmid n}}^{+\infty} (1 - x^n)^{-\frac{\mu(n)}{n}}
+  			\]
+  			and taking logarithm we obtain
+  			\[
+  				\log\left(\E_p(x)\right) = -\sum_{\substack{n=1 \\ p \nmid n}} \frac{\mu(n)}{n} \left( \sum_{m=1}^{+\infty} \frac{x^{mn}}{m}\right) = \sum_{j=1}^{+\infty} \left(\frac{x^j}{j} \cdot \sum_{\mathclap{n \mid j,\,p \nmid n}} \mu(n) \right),
+  			\] 
+  			where in the last step we set $j=nm$ and we rearranged the terms of the series (we can do it, the proof is analogue to the one given in \cref{prop:formal-identity-exp}). Using \cref{prop:mobius-function} we obtain the following relation (in $\R$):
+  			\[
+  				\log\left(\E_p(x)\right) = \sum_{m=0}^{+\infty} \frac{x^{p^m}}{p^m} \implies \E_p(x) = \exp\left(\sum_{m=0}^{+\infty} \frac{x^{p^m}}{p^m}\right).
+  			\]
+  			We can conclude immediately applying \cref{prop:formal-series} (recall that  $\exp_p$ and $\exp$ are exactly the same formal series in $\Q\llbracket X\rrbracket$).
+  		\end{proof}
+  		At this point it is very easy to prove that $\E_p(X)$ converges on $D(1^-)$ (much better than the smaller disc of convergence of $\exp_p(X)$).
+  		\begin{prop}
+  			\label{prop:artin-hasse-convergence}
+  			The Artin-Hasse exponential $\E_p(X)$ converges on $D(1^-)$.
+  		\end{prop} 
+  		\begin{proof}
+  			We recall the definition of $\E_p$:
+  			\[
+  				\E_p(X) := \prod_{\substack{n=1 \\ p \nmid n}}^{+\infty} B_{-\mu(n)/n,\,p}(-X^n).
+  			\]
+  			Now if $p \nmid n$ we have already proved that $B_{-\mu(n)/n,\,p}(-X^n) \in 1 + X^n(\Zp\cap\Q)\llbracket X\rrbracket$ so the whole series $\E_p(X)$ has coefficients in $\Zp\cap\Q$. Then we conclude using \cref{prop:convergence-power-series-Zp}.
+  		\end{proof}
+  		We could have proved directly that $\exp_p\left(\sum_{n=0}^{+\infty} \frac{x^{p^n}}{p^n}\right) \in \Zp\llbracket X\rrbracket$ using the Dwork's lemma. In-fact
+  		we already know that $\E_p(X) \in 1 + X\Qp\ser{X}$ and we can compute
+  		\begin{gather*}
+  			\E_p(X^p) = \exp_p\left(\sum_{n=0}^{+\infty} \frac{X^{p^{n+1}}}{p^n}\right), \\
+  			\E_p(X)^p = \exp_p\left(\sum_{n=0}^{+\infty} \frac{X^{p^n}}{p^{n-1}}\right) = \exp_p\left(pX + \sum_{n=0}^{+\infty} \frac{X^{p^{n+1}}}{p^n}\right),
+  		\end{gather*}
+  		where we used $\exp_p(Y)^p = \exp_p(pY)$ (this formal identity can be easily verified using \cref{prop:formal-series}). Since $\tfrac{\exp_p(X)}{\exp_p(Y)} = \exp_p(X - Y)$ (also easy to prove) we have
+  		\[
+  			\frac{\E_p(X^p)}{\E_p(X)^p} = \frac{\exp_p\left(\sum_{n=0}^{+\infty} \frac{X^{p^{n+1}}}{p^n}\right)}{\exp_p\left(pX + \sum_{n=0}^{+\infty} \frac{X^{p^{n+1}}}{p^n}\right)} = \exp_p(-pX) \in 1 + pX\Zp\ser{X}
+  		\]
+  		and we can conclude that $\E_p(X) \in 1 + X\Zp\ser{X}$ thanks to \cref{lemma:dwork}.

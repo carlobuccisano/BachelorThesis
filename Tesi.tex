@@ -1,0 +1,242 @@
+\documentclass[a4paper, 11pt, openright, twoside]{book}
+
+% Linguistic and standard settings
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian, english]{babel}
+
+\usepackage{comment} 		% Use comment env
+
+\begin{comment}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+%------------------------------ colors
+\usepackage[usenames,dvipsnames,table]{xcolor} % use colors on table and more
+\definecolor{333}{RGB}{51, 51, 51} % define custom color
+%------------------------------ source code
+\usepackage{listings}
+\lstset{
+  basicstyle=\footnotesize\sffamily,
+  commentstyle=\itshape\color{gray},
+  captionpos=b,
+  frame=shadowbox,
+  language=HTML,
+  rulesepcolor=\color{333},
+  tabsize=2
+}
+%------------------------------ define Abstract environment, missing in the 'book' class
+\newenvironment{abstract}{\cleardoublepage \null \vfill \begin{center}\bfseries\abstractname \end{center}}{\vfill\null}
+\addto\captionsenglish{\renewcommand*\abstractname{Sommario}} % change Abstract title
+%------------------------------ active url
+\usepackage{url}
+\renewcommand{\UrlFont}{\color{black}\small\ttfamily}
+\usepackage[colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black]{hyperref} % active ref
+%------------------------------ macros
+\newcommand{\sectionname}{Section} % define Section ref
+\newcommand{\subsectionname}{Sub-section} % define Sub-section ref
+\renewcommand*\arraystretch{1.4} % tables padding
+\end{comment} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MY STUFF %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{braket} 					% Nice sets
+%\usepackage{commath} 					% Nice differential (dx) and derivatives
+\usepackage{hyperref} 					% Nice refs
+\usepackage[capitalise]{cleveref} 		% Nicer refs
+\usepackage{emptypage} 					% Remove headings from blank pages
+\usepackage{enumitem} 					% Lists
+\usepackage{fancyhdr} 					% Modify page style
+\usepackage{float}
+\usepackage[a4paper,width=160mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}		% Modify margins
+\usepackage{graphicx}					% Insert figures
+\usepackage{caption}					% Nice captions
+\usepackage{subfig}						% More figures together
+\usepackage{mathtools}
+\usepackage{nicefrac}					% Nice inline fractions
+\usepackage{stmaryrd}
+\usepackage{tikz-cd} 					% Diagrams
+\usepackage{titlesec}       			% Modify title formats (e.g. remove 'Chapter')
+\usepackage{verbatim}
+\usepackage[swapnames]{frontespizio}
+\usepackage{lipsum} 					% Write garbage
+
+%------------------------------ define Abstract environment, missing in the 'book' class
+\newenvironment{abstract}{
+	\cleardoublepage \null \vfill 
+	\begin{center}
+		\bfseries\abstractname
+	\end{center}
+}
+{\vfill\null}
+\addto\captionsenglish{\renewcommand*\abstractname{Abstract}} % change Abstract title
+
+
+%%% Use smaller fonts for didascalie
+\captionsetup{font=small, labelfont={sf, bf}} 
+
+%%% Remove `Chapter` from chapters %%%
+\titleformat{\chapter}
+{\Huge \normalfont \bfseries}{\thechapter}{1em}{}
+
+%%% Page Styles %%%
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\bfseries \leftmark}
+\fancyhead[RO]{\bfseries \rightmark}
+\fancyhead[RE, LO]{\bfseries \thepage}
+
+\setlength{\headheight}{13.6pt}
+
+\renewcommand\chaptermark[1]{\markboth{\thechapter.\space#1}{}} 
+\renewcommand\sectionmark[1]{\markright{\thesection.\ #1}} 
+
+%%% Use empty pagestyle instead of plain, to remove chapter page numbering %%%
+\makeatletter
+\let\ps@plain\ps@empty
+\makeatother
+
+%%% Colors setup for refs %%%
+\hypersetup{    
+	colorlinks=false,
+	citecolor=Violet,
+	linkcolor=Red,
+	urlcolor=Blue
+}
+
+%%% Bibliography stuff %%
+
+\usepackage[autostyle]{csquotes}
+\usepackage[style=numeric, backend=biber, citestyle=numeric]{biblatex}
+\addbibresource{Backmatter/bibliography.bib}
+
+\DeclareBibliographyCategory{book}
+\DeclareBibliographyCategory{online}
+
+\addtocategory{book}{robert:padic-analysis}
+\addtocategory{book}{koblitz:padic-numbers}
+\addtocategory{book}{bourbaki:topologie}
+\addtocategory{online}{chen:padics}
+\addtocategory{online}{michon:padic-arithmetic}
+\addtocategory{online}{thorne:teichmuller}
+\addtocategory{online}{conrad:algebraic-closure}
+
+\defbibheading{book}{\section*{Books}}
+\defbibheading{online}{\section*{Sites}}
+
+%%% abs and norm %%%
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+% New math operators
+\DeclareMathOperator{\Ima}{Im}			% Write Im of a function in math mode
+\DeclareMathOperator{\dist}{ dist }		% Write dist(A, B) between sets
+\DeclareMathOperator{\Log}{Log} 		% Iwasawa continuation of log_p
+\DeclareMathOperator{\card}{card}		% Cardinality of a set
+
+% New commands
+\newcommand{\N}{ \mathbb{N} }
+\newcommand{\Nb}{ \mathbf{N} }
+\newcommand{\Z}{ \mathbb{Z} }
+\newcommand{\Q}{ \mathbb{Q} }
+\newcommand{\R}{ \mathbb{R} } 
+\newcommand{\C}{ \mathbb{C} }
+\newcommand{\F}{ \mathbb{F} }
+\newcommand{\E}{ \mathrm{E} } % Artin-Hasse exponential
+\newcommand{\Zp}{ \Z_p }
+\newcommand{\Qp}{ \Q_p }
+\newcommand{\Fp}{ \F_p }
+\newcommand{\Cp}{ \C_p }
+\newcommand{\padic}{$p$-adic }
+\newcommand{\Qpa}{ \Qp^{\textup{alg cl} } }
+\newcommand{\Qpu}{ \Qp^{\textup{unram}  } }
+\newcommand{\Zpu}{ \Zp^{\textup{unram}  } }
+\newcommand{\ord}{ \textrm{ord}_p\, }  %%% \, is a slight space %%%
+\newcommand{\pabs}[1]{ \abs{#1}_p }
+\newcommand{\ser}[1]{ \llbracket {#1} \rrbracket } % Write quickly formal power series
+\newcommand{\newt}[1]{ \mathfrak{N}(#1) } % Write quickly the Newton polygon of f
+
+% Renewed commands
+\renewcommand{\phi}{\varphi}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\hat}{\widehat}
+\renewcommand{\tilde}{\widetilde}
+
+% Theorem styles
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[chapter]
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{corollary}{Corollary}[thm]
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{example}[thm]{Example}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END OF MY STUFF %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+	\frontmatter
+	%\input{Frontmatter/titlepage}
+	\input{Frontmatter/titlepage2}
+	\input{Frontmatter/abstract}
+	
+	%\cleardoublepage % make left page blank
+	\begin{comment}
+		\thispagestyle{empty} %------------------------------ DEDICA
+		
+		\null
+		\vspace{2cm}
+		\begin{flushright}
+		A ...
+		\end{flushright}
+		\vfill
+		
+		\begin{quote}
+		  Quote
+		
+		  \textit{Author}
+		\end{quote}
+		\vfill
+		\null
+	\end{comment}
+	
+	
+	\begingroup %------------------------------ CONTENTS
+	  \makeatletter
+	  \let\ps@plain\ps@empty
+	  \makeatother
+	  \tableofcontents
+	  \clearpage
+	\endgroup
+	
+	\mainmatter
+	\setcounter{chapter}{0}
+	%part{Setting up the p-adic environment}
+	\input{Mainmatter/chapter1}
+	\input{Mainmatter/chapter2}
+	\input{Mainmatter/chapter3}
+	\input{Mainmatter/chapter4}
+	\input{Mainmatter/chapter5}
+		
+	\backmatter
+	%\input{Backmatter/notations}
+	\chapter{\bibname}
+	\nocite{robert:padic-analysis, koblitz:padic-numbers, bourbaki:topologie, chen:padics, michon:padic-arithmetic, thorne:teichmuller, conrad:algebraic-closure}
+	%\printbibliography[heading=book, category=book]
+	%\printbibliography[heading=online, category=online]
+	\bibbycategory
+\end{document} 
